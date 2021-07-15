@@ -49,7 +49,9 @@ module.exports = ({ mail, formulaire }) => {
       const { id_form } = req.params;
       let result = await Formulaire.findOne({ id_form }).lean();
 
-      if (!result) res.sendStatus(401);
+      if (!result) {
+        return res.sendStatus(401);
+      }
 
       return res.json(result);
     })
