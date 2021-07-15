@@ -6,10 +6,12 @@ const logger = require("../../common/logger");
 const { paginator } = require("../../common/utils/paginator");
 const config = require("config");
 
+const erratum = require("./misc/erratum");
+
 const launch = async (mail) => {
   await paginator(
     Formulaire,
-    { origine: "1J1S" },
+    { origine: "1J1S", email: { $nin: erratum } },
     // { $nor: [{ offres: { $exists: false } }, { offres: { $size: 0 } }] },
     { lean: true, maxItems: 42000, limit: 30 }, // premier envoi 1J1S
     // { lean: true, maxItems: 1, limit: 1 }, // Test 1 formulaire
@@ -17,6 +19,8 @@ const launch = async (mail) => {
     async (form) => {
       const campagne = "matcha-1J1S";
       // const campagne = "test";
+
+      return;
 
       const { raison_sociale, email, id_form, _id } = form;
       const params = {
