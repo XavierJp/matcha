@@ -20,8 +20,6 @@ const launch = async (mail) => {
       const campagne = "matcha-1J1S";
       // const campagne = "test";
 
-      return;
-
       const { raison_sociale, email, id_form, _id } = form;
       const params = {
         URL: `${config.publicUrl}/formulaire/${id_form}`,
