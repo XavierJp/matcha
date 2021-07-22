@@ -5,7 +5,7 @@ const logger = require("../../common/logger");
 const { Formulaire } = require("../../common/model");
 const { asyncForEach } = require("../../common/utils/asyncUtils");
 
-const cancelFormulaire = async () => {
+const annuleFormulaire = async () => {
   const today = moment().add(3, "days").startOf("day").utc(true);
 
   const formulaires = await Formulaire.find({
@@ -17,6 +17,8 @@ const cancelFormulaire = async () => {
   // reduce formulaire with eligible offers
   const offersToCancel = formulaires.reduce((acc, formulaire) => {
     formulaire.offres
+      // The query returns all offers included in the form, regardless of the statuts filter in the query.
+      // The payload is smaller than not filtering it.
       .filter((x) => x.relance_mail_sent === true && x.statut === "Active")
       .forEach((offre) => {
         // if the expiration date is not equal or above today's date, do nothing
@@ -52,4 +54,4 @@ const cancelFormulaire = async () => {
   }
 };
 
-module.exports = { cancelFormulaire };
+module.exports = { annuleFormulaire };

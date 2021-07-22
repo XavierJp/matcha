@@ -20,6 +20,8 @@ const RelanceFormulaire = async (mail) => {
     acc[formulaire._id] = { ...formulaire, offres: [] };
 
     formulaire.offres
+      // The query returns all offers included in the form, regardless of the statuts filter in the query.
+      // The payload is smaller than not filtering it.
       .filter((x) => x.relance_mail_sent === false && x.statut === "Active")
       .forEach((offre) => {
         let remainingDays = moment(offre.date_expiration).diff(moment(), "days");
