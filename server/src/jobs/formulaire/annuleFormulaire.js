@@ -6,7 +6,7 @@ const { Formulaire } = require("../../common/model");
 const { asyncForEach } = require("../../common/utils/asyncUtils");
 
 const annuleFormulaire = async () => {
-  const today = moment().add(3, "days").startOf("day").utc(true);
+  const today = moment().startOf("day").utc(true);
 
   const formulaires = await Formulaire.find({
     "offres.statut": "Active",
