@@ -106,7 +106,8 @@ const MyTable = ({ formulaires }) => {
                 </Td>
                 <Td>{item.offres.length}</Td>
                 <Td>
-                  {item.prenom.toLowerCase().charAt(0).toUpperCase() + item.prenom.slice(1)} {item.nom.toUpperCase()}
+                  {item?.prenom?.toLowerCase().charAt(0).toUpperCase() + item?.prenom?.slice(1)}{' '}
+                  {item?.nom?.toUpperCase()}
                 </Td>
                 <Td>{item.email}</Td>
                 <Td>{item.telephone}</Td>
@@ -142,7 +143,7 @@ export default function List() {
         }
 
   useEffect(() => {
-    getWithQS({ query, limit: 500 })
+    getWithQS({ query, limit: 10000 })
       .then((formulaires) => setState(formulaires.data))
       .finally(() => setLoading(false))
   }, [])
