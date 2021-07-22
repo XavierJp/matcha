@@ -24,9 +24,8 @@ module.exports = async () => {
       return null;
     },
     getUser: (email) => User.findOne({ email }),
-    createUser: async (username, organization, password, email, options = {}) => {
-      let hash = options.hash || sha512Utils.hash(password);
-      let { isAdmin, scope } = options;
+    createUser: async ({ username, organization, scope, password, email, isAdmin }) => {
+      let hash = sha512Utils.hash(password);
 
       let user = new User({
         username,
