@@ -30,7 +30,7 @@ module.exports = async () => {
       return null;
     },
     getUser: (email) => User.findOne({ email }),
-    createUser: async ({ username, organization, password, email, scope, isAdmin = false }) => {
+    createUser: async ({ nom, prenom, username, organization, password, email, scope, isAdmin = false }) => {
       if (!scope) {
         throw new Error("scope is mandatory");
       }
@@ -42,6 +42,8 @@ module.exports = async () => {
       }
 
       let user = new User({
+        nom,
+        prenom,
         username,
         email,
         organization,

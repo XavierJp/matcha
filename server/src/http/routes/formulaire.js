@@ -3,6 +3,7 @@ const { Formulaire } = require("../../common/model");
 const tryCatch = require("../middlewares/tryCatchMiddleware");
 const { getElasticInstance } = require("../../common/esClient");
 const logger = require("../../common/logger");
+const config = require("config");
 
 const esClient = getElasticInstance();
 
@@ -72,10 +73,13 @@ module.exports = ({ mail, formulaire }) => {
       const mailBody = {
         id_form,
         email,
-        raison_sociale,
+        senderName: raison_sociale,
         tags: ["matcha-nouveau-formulaire"],
         templateId: 178,
         subject: `Accédez à vos offres déposées sur Matcha`,
+        params: {
+          URL: `${config.publicUrl}/formulaire/${id_form}`,
+        },
       };
 
       const payload = mail.getEmailBody(mailBody);

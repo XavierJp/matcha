@@ -1,9 +1,9 @@
 const express = require("express");
-const logger = require("../../common/logger");
+// const logger = require("../../common/logger");
 const { User } = require("../../common/model");
 const tryCatch = require("../middlewares/tryCatchMiddleware");
 
-module.exports = ({ users, mail }) => {
+module.exports = ({ users }) => {
   const router = express.Router();
 
   router.get(
@@ -18,19 +18,34 @@ module.exports = ({ users, mail }) => {
     "/",
     tryCatch(async (req, res) => {
       const userPayload = req.body;
-      let user = await users.createUser(userPayload);
+      const user = await users.createUser(userPayload);
 
-      let { email, username, password, nom, prenom, _id } = user;
-      // send mail with credentials
-      const mailBody = users.getEmailBody({ email, username, password, nom, prenom });
+      // let { email, username, password, nom, prenom, _id } = user;
 
-      const { body: result } = await mail.sendmail(mailBody);
+      // let mailParams = {
+      //   email,
+      //   senderName: `${prenom} ${nom}`,
+      //   templateId: 208,
+      //   tag: ["matcha-nouveau-utilisateur"],
+      //   params: {
+      //     URL: `${config.publicUrl}/admin`,
+      //     USERNAME: username,
+      //     PASSWORD: password,
+      //   },
+      // };
 
-      if (!result.messageId) {
-        logger.info(`error : ${result} — ${email}`);
-      }
+      // // send mail with credentials
+      // const mailBody = users.getEmailBody(mailParams);
 
-      await User.findByIdAndUpdate(_id, { mail_sent: true });
+      // const { body: result } = await mail.sendmail(mailBody);
+
+      // console.log(result);
+
+      // if (!result.messageId) {
+      //   logger.info(`error : ${result} — ${email}`);
+      // }
+
+      // await User.findByIdAndUpdate(_id, { mail_sent: true });
 
       return res.json(user);
     })

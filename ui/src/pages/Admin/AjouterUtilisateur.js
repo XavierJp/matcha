@@ -34,18 +34,23 @@ export default (props) => {
     <Formik
       enableReinitialize={true}
       initialValues={{
+        nom: props.nom ?? '',
+        prenom: props.prenom ?? '',
         username: props.username ?? '',
         organization: props.organization ?? '',
         scope: props.scope ?? '',
         email: props.email ?? '',
         isAdmin: props.isAdmin ?? 'false',
+        // mailSent: props.mail_sent ?? 'false',
       }}
       validationSchema={Yup.object().shape({
+        nom: Yup.string().required('Champ obligatoire'),
+        prenom: Yup.string().required('Champ obligatoire'),
         username: Yup.string().required('Champ obligatoire'),
         organization: Yup.string(),
         scope: Yup.string().required('Champs obligatoire'),
-        email: Yup.string().email('Insérez un email valide').required('champ obligatoire'),
-        isAdmin: Yup.bool(),
+        email: Yup.string().email('Insérez un email valide').required('Champ obligatoire'),
+        isAdmin: Yup.string(),
       })}
       onSubmit={async (values, { resetForm }) => {
         await handleSave(values)
@@ -95,10 +100,29 @@ export default (props) => {
                 </Heading>
               </ModalHeader>
               <ModalBody pb={6}>
-                <FormControl isRequired>
+                <Stack direction='row'>
+                  <FormControl isRequired>
+                    <FormLabel>Nom</FormLabel>
+                    <Input type='text' name='nom' defaultValue={values.nom} onChange={handleChange} />
+                    {errors.nom && touched.nom && <FormErrorMessage>{errors.nom}</FormErrorMessage>}
+                  </FormControl>
+                  <FormControl isRequired>
+                    <FormLabel>Prénom</FormLabel>
+                    <Input type='text' name='prenom' defaultValue={values.prenom} onChange={handleChange} />
+                    {errors.prenom && touched.prenom && <FormErrorMessage>{errors.prenom}</FormErrorMessage>}
+                  </FormControl>
+                </Stack>
+
+                <FormControl mt={4} isRequired>
                   <FormLabel>Nom d'utilisateur</FormLabel>
                   <Input type='text' name='username' defaultValue={values.username} onChange={handleChange} />
                   {errors.username && touched.username && <FormErrorMessage>{errors.username}</FormErrorMessage>}
+                  <FormHelperText>Login de l'utilisateur. ex: cci-bretagne</FormHelperText>
+                </FormControl>
+
+                <FormControl mt={4} isRequired>
+                  <FormLabel>Email</FormLabel>
+                  <Input type='text' name='email' defaultValue={values.email} onChange={handleChange} />
                 </FormControl>
 
                 <FormControl mt={4} isRequired>
@@ -115,20 +139,18 @@ export default (props) => {
                   <FormHelperText>Rattache une origine spécifique à l'utilisateur. [all = full access]</FormHelperText>
                 </FormControl>
 
-                <FormControl mt={4} isRequired>
-                  <FormLabel>Email</FormLabel>
-                  <Input type='text' name='email' defaultValue={values.email} onChange={handleChange} />
-                </FormControl>
-
                 <FormControl mt={4}>
                   <FormLabel>Administrateur</FormLabel>
                   <RadioGroup
                     onChange={(checked) => setFieldValue('isAdmin', checked)}
-                    value={values.isAdmin === true ? 'true' : 'false'}
+                    // name='isAdmin'
+                    // onChange={handleChange}
+                    // value={values.isAdmin === true ? 'true' : 'false'}
+                    value={values.isAdmin}
                   >
                     <Stack spacing={10} direction='row'>
-                      <Radio value='true'>Oui</Radio>
-                      <Radio value='false'>Non</Radio>
+                      <Radio value={'true' || true}>Oui</Radio>
+                      <Radio value={'false' || false}>Non</Radio>
                     </Stack>
                   </RadioGroup>
                 </FormControl>
