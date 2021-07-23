@@ -24,8 +24,6 @@ export default () => {
   const [auth, setAuth] = useAuth()
   const history = useHistory()
 
-  console.log(auth)
-
   return (
     <Box py={3}>
       <Container maxW='container.xl'>

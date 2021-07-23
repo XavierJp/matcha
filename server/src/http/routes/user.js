@@ -1,8 +1,9 @@
 const express = require("express");
+const logger = require("../../common/logger");
 const { User } = require("../../common/model");
 const tryCatch = require("../middlewares/tryCatchMiddleware");
 
-module.exports = ({ users }) => {
+module.exports = ({ users, mail }) => {
   const router = express.Router();
 
   router.get(
@@ -18,6 +19,19 @@ module.exports = ({ users }) => {
     tryCatch(async (req, res) => {
       const userPayload = req.body;
       let user = await users.createUser(userPayload);
+
+      let { email, username, password, nom, prenom, _id } = user;
+      // send mail with credentials
+      const mailBody = users.getEmailBody({ email, username, password, nom, prenom });
+
+      const { body: result } = await mail.sendmail(mailBody);
+
+      if (!result.messageId) {
+        logger.info(`error : ${result} — ${email}`);
+      }
+
+      await User.findByIdAndUpdate(_id, { mail_sent: true });
+
       return res.json(user);
     })
   );

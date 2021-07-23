@@ -15,28 +15,21 @@ import {
   BreadcrumbLink,
   Spacer,
   Flex,
-  Text,
-  Badge,
-  useEditableControls,
-  Editable,
-  EditablePreview,
-  EditableInput,
-  ButtonGroup,
-  IconButton,
   useToast,
+  Button,
+  useDisclosure,
 } from '@chakra-ui/react'
-import moment from 'moment'
-import { AiOutlineEdit, AiOutlineRight, AiOutlineCheck, AiOutlineClose } from 'react-icons/ai'
+import { AiOutlineEdit } from 'react-icons/ai'
+import { IoIosAddCircleOutline } from 'react-icons/io'
 
 import { Layout } from '../../components'
 import { ArrowDropRightLine } from '../../theme/components/icons/'
 import { useEffect, useState } from 'react'
-import { getUsers } from '../../api'
+import { createUser, getUsers, updateUser } from '../../api'
+import AjouterUtilisateur from './AjouterUtilisateur'
 
-const MyTable = ({ users }) => {
+const MyTable = ({ users, editUser }) => {
   if (users.length < 0) return <div>Chargement en cours</div>
-
-  const Date = (date) => moment(date).format('DD/MM/YYYY')
 
   return (
     <Box py='4'>
@@ -64,7 +57,7 @@ const MyTable = ({ users }) => {
                 <Td>{item.scope}</Td>
                 <Td>
                   <Center>
-                    <Link to={`/user/${item.id_form}`} target='_blank'>
+                    <Link onClick={() => editUser(item)}>
                       <Icon color='bluefrance.500' w={5} h={5} as={AiOutlineEdit} />
                     </Link>
                   </Center>
@@ -80,14 +73,54 @@ const MyTable = ({ users }) => {
 
 export default () => {
   const [users, setUsers] = useState([])
+  const ajouterUserPopup = useDisclosure()
+  const [currentUser, setCurrentUser] = useState({})
+  const toast = useToast()
 
   useEffect(() => {
     getUsers().then((users) => setUsers(users.data))
   })
 
+  const editUser = (user) => {
+    setCurrentUser(user)
+    ajouterUserPopup.onOpen()
+  }
+
+  const addUser = () => {
+    setCurrentUser({})
+    ajouterUserPopup.onOpen()
+  }
+
+  const saveUser = (values) => {
+    if (currentUser._id) {
+      // update
+      updateUser(currentUser._id, values).then(() => {
+        toast({
+          title: 'Enregistré avec succès',
+          position: 'top-right',
+          status: 'success',
+          duration: 2000,
+          isClosable: true,
+        })
+      })
+    } else {
+      // create
+      createUser(values).then(() => {
+        toast({
+          title: 'Utilisateur créé !',
+          description: "Un mail d'accès lui a été envoyé",
+          position: 'top-right',
+          status: 'success',
+          duration: 4000,
+        })
+      })
+    }
+  }
+
   return (
     <Layout background='beige'>
       <Container maxW='container.xl' py={4}>
+        <AjouterUtilisateur {...ajouterUserPopup} {...currentUser} handleSave={saveUser} />
         <Box pt={3}>
           <Breadcrumb separator={<ArrowDropRightLine color='grey.600' />} textStyle='xs'>
             <BreadcrumbItem>
@@ -103,11 +136,17 @@ export default () => {
             </BreadcrumbItem>
           </Breadcrumb>
         </Box>
-        <Box textStyle='h3' fontSize={['sm', '3xl']} fontWeight='700' color='grey.800' py={3}>
-          Gestion des utilisateurs
-        </Box>
+        <Flex alignItems='center'>
+          <Box textStyle='h3' fontSize={['sm', '3xl']} fontWeight='700' color='grey.800' py={3}>
+            Gestion des utilisateurs
+          </Box>
+          <Spacer />
+          <Button variant='primary' rightIcon={<IoIosAddCircleOutline />} px={6} onClick={() => addUser()}>
+            Ajouter un utilisateur
+          </Button>
+        </Flex>
 
-        <MyTable users={users} />
+        <MyTable users={users} editUser={editUser} />
       </Container>
     </Layout>
   )
