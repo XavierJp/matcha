@@ -5,7 +5,7 @@ const logger = require("../../common/logger");
 const { Formulaire } = require("../../common/model");
 const { asyncForEach } = require("../../common/utils/asyncUtils");
 
-const RelanceFormulaire = async (mail) => {
+const relanceFormulaire = async (mail) => {
   // number of days to expiration for the reminder email to be sent
   let threshold = 7;
 
@@ -20,6 +20,8 @@ const RelanceFormulaire = async (mail) => {
     acc[formulaire._id] = { ...formulaire, offres: [] };
 
     formulaire.offres
+      // The query returns all offers included in the form, regardless of the status filter in the query.
+      // The payload is smaller than not filtering it.
       .filter((x) => x.relance_mail_sent === false && x.statut === "Active")
       .forEach((offre) => {
         let remainingDays = moment(offre.date_expiration).diff(moment(), "days");
@@ -90,4 +92,4 @@ const RelanceFormulaire = async (mail) => {
   }
 };
 
-module.exports = { RelanceFormulaire };
+module.exports = { relanceFormulaire };

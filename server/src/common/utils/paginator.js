@@ -8,7 +8,7 @@ const paginator = async (
 ) => {
   let currentOffset = offset;
   let computed = offset;
-  let nbTotalItems = maxItems || 10;
+  let nbTotalItems = maxItems || 100000000;
 
   // create a new progress bar instance and use shades_classic theme
   const progressBar = showProgress
@@ -18,7 +18,7 @@ const paginator = async (
 
   while (computed < nbTotalItems) {
     let { docs, total } = await Model.paginate(query, { offset: currentOffset, limit, lean });
-    if (nbTotalItems === 10) {
+    if (nbTotalItems === 100000000) {
       nbTotalItems = maxItems || total;
       progressBar?.setTotal(nbTotalItems);
     }

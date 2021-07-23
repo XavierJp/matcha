@@ -142,7 +142,7 @@ export default function List() {
         }
 
   useEffect(() => {
-    getWithQS({ query, limit: 500 })
+    getWithQS({ query, limit: 10000 })
       .then((formulaires) => setState(formulaires.data))
       .finally(() => setLoading(false))
   }, [])
