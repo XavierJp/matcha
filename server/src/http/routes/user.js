@@ -1,9 +1,10 @@
+const config = require("config");
 const express = require("express");
-// const logger = require("../../common/logger");
+const logger = require("../../common/logger");
 const { User } = require("../../common/model");
 const tryCatch = require("../middlewares/tryCatchMiddleware");
 
-module.exports = ({ users }) => {
+module.exports = ({ users, mail }) => {
   const router = express.Router();
 
   router.get(
@@ -18,34 +19,35 @@ module.exports = ({ users }) => {
     "/",
     tryCatch(async (req, res) => {
       const userPayload = req.body;
-      const user = await users.createUser(userPayload);
+      const password = users.generatePassword();
+      const user = await users.createUser({ ...userPayload, password });
 
-      // let { email, username, password, nom, prenom, _id } = user;
+      let { email, username, nom, prenom, _id } = user;
 
-      // let mailParams = {
-      //   email,
-      //   senderName: `${prenom} ${nom}`,
-      //   templateId: 208,
-      //   tag: ["matcha-nouveau-utilisateur"],
-      //   params: {
-      //     URL: `${config.publicUrl}/admin`,
-      //     USERNAME: username,
-      //     PASSWORD: password,
-      //   },
-      // };
+      let mailParams = {
+        email,
+        senderName: `${prenom} ${nom}`,
+        templateId: 208,
+        tags: ["matcha-nouveau-utilisateur"],
+        params: {
+          URL: `${config.publicUrl}/admin`,
+          USERNAME: username,
+          PASSWORD: password,
+        },
+      };
+
+      console.log(mailParams);
 
       // // send mail with credentials
-      // const mailBody = users.getEmailBody(mailParams);
+      const mailBody = mail.getEmailBody(mailParams);
 
-      // const { body: result } = await mail.sendmail(mailBody);
+      const { body: result } = await mail.sendmail(mailBody);
 
-      // console.log(result);
+      if (!result.messageId) {
+        logger.info(`error : ${result} — ${email}`);
+      }
 
-      // if (!result.messageId) {
-      //   logger.info(`error : ${result} — ${email}`);
-      // }
-
-      // await User.findByIdAndUpdate(_id, { mail_sent: true });
+      await User.findByIdAndUpdate(_id, { mail_sent: true });
 
       return res.json(user);
     })

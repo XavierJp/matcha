@@ -84,8 +84,8 @@ const MyTable = ({ users, editUser, removeUser }) => {
 
 export default () => {
   const [users, setUsers] = useState([])
-  const ajouterUserPopup = useDisclosure()
   const [currentUser, setCurrentUser] = useState({})
+  const ajouterUserPopup = useDisclosure()
   const toast = useToast()
 
   useEffect(() => {
@@ -98,9 +98,18 @@ export default () => {
   }
 
   const removeUser = async (_id) => {
-    await deleteUser(_id)
-    let list = users.filter((x) => x._id !== _id)
-    setUsers(list)
+    await deleteUser(_id).then(() => {
+      toast({
+        title: 'Utilisateur supprimé avec succès',
+        position: 'top-right',
+        status: 'success',
+        duration: 2000,
+        isClosable: true,
+      })
+
+      let list = users.filter((x) => x._id !== _id)
+      setUsers(list)
+    })
   }
 
   const addUser = () => {
@@ -125,7 +134,6 @@ export default () => {
     } else {
       // create
       createUser(values).then((result) => {
-        console.log(result)
         setUsers([...users, result.data])
         toast({
           title: 'Utilisateur créé !',

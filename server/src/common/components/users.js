@@ -14,6 +14,7 @@ const rehashPassword = (user, password) => {
 
 module.exports = async () => {
   return {
+    generatePassword: () => passwordGenerator.generate(passwordOptions),
     authenticate: async (username, password) => {
       const user = await User.findOne({ username });
       if (!user) {
@@ -38,6 +39,8 @@ module.exports = async () => {
       let hash;
       if (!password) {
         const password = passwordGenerator.generate(passwordOptions);
+        hash = sha512Utils.hash(password);
+      } else {
         hash = sha512Utils.hash(password);
       }
 

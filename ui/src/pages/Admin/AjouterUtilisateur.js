@@ -40,7 +40,7 @@ export default (props) => {
         organization: props.organization ?? '',
         scope: props.scope ?? '',
         email: props.email ?? '',
-        isAdmin: props.isAdmin ?? 'false',
+        isAdmin: props.isAdmin?.toString() ?? 'false',
         // mailSent: props.mail_sent ?? 'false',
       }}
       validationSchema={Yup.object().shape({
@@ -141,13 +141,7 @@ export default (props) => {
 
                 <FormControl mt={4}>
                   <FormLabel>Administrateur</FormLabel>
-                  <RadioGroup
-                    onChange={(checked) => setFieldValue('isAdmin', checked)}
-                    // name='isAdmin'
-                    // onChange={handleChange}
-                    // value={values.isAdmin === true ? 'true' : 'false'}
-                    value={values.isAdmin}
-                  >
+                  <RadioGroup onChange={(checked) => setFieldValue('isAdmin', checked)} value={values.isAdmin}>
                     <Stack spacing={10} direction='row'>
                       <Radio value={'true' || true}>Oui</Radio>
                       <Radio value={'false' || false}>Non</Radio>
