@@ -12,6 +12,8 @@ import {
   Text,
   MenuItem,
   MenuDivider,
+  Alert,
+  AlertIcon,
 } from '@chakra-ui/react'
 import { RiAccountCircleLine } from 'react-icons/ri'
 
@@ -25,7 +27,13 @@ export default () => {
   const history = useHistory()
 
   return (
-    <Box py={3}>
+    <Box pb={3}>
+      {process.env.REACT_APP_BASE_URL.includes('recette') && (
+        <Alert status='info' variant='top-accent' justifyContent='center'>
+          <AlertIcon />
+          Environnement de test
+        </Alert>
+      )}
       <Container maxW='container.xl'>
         <Flex justifyContent='flex-start' alignItems='center'>
           <Image src={logoMinistere} alt='logo ministere' />
