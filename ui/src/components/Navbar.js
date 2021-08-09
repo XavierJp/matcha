@@ -25,7 +25,7 @@ export default () => {
             <Box pr={10} />
             <Image display={['none', 'flex']} src={logo} alt='logo matcha' />
             <Spacer />
-            {auth.permissions.isAdmin ? (
+            {auth.sub !== 'anonymous' ? (
               <>
                 <Button
                   display={['none', 'flex']}
