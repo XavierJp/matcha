@@ -1,4 +1,18 @@
-import { Box, Flex, Image, Container, Spacer, Button, Alert, AlertIcon, Center } from '@chakra-ui/react'
+import {
+  Box,
+  Flex,
+  Image,
+  Container,
+  Spacer,
+  Button,
+  Menu,
+  MenuButton,
+  MenuList,
+  Icon,
+  Text,
+  MenuItem,
+  MenuDivider,
+} from '@chakra-ui/react'
 import { RiAccountCircleLine } from 'react-icons/ri'
 
 import logo from '../assets/images/logo.svg'
@@ -11,50 +25,50 @@ export default () => {
   const history = useHistory()
 
   return (
-    <>
-      {process.env.REACT_APP_BASE_URL.includes('recette') && (
-        <Alert status='info' variant='top-accent' justifyContent='center'>
-          <AlertIcon />
-          Environnement de test
-        </Alert>
-      )}
-      <Box py={3}>
-        <Container maxW='container.xl'>
-          <Flex justifyContent='flex-start' alignItems='center'>
-            <Image src={logoMinistere} alt='logo ministere' />
-            <Box pr={10} />
-            <Image display={['none', 'flex']} src={logo} alt='logo matcha' />
-            <Spacer />
-            {auth.sub !== 'anonymous' ? (
-              <>
-                <Button
-                  display={['none', 'flex']}
-                  onClick={() => setAuth('')}
-                  fontWeight='normal'
-                  variant='link'
-                  color='bluefrance.500'
-                  leftIcon={<RiAccountCircleLine />}
-                >
-                  Se déconnecter
-                </Button>
-              </>
-            ) : history.location.pathname === '/' ? (
-              <>
-                <Button
-                  display={['none', 'flex']}
-                  onClick={() => history.push('/login')}
-                  fontWeight='normal'
-                  variant='link'
-                  color='bluefrance.500'
-                  leftIcon={<RiAccountCircleLine />}
-                >
-                  Espace partenaires
-                </Button>
-              </>
-            ) : null}
-          </Flex>
-        </Container>
-      </Box>
-    </>
+    <Box py={3}>
+      <Container maxW='container.xl'>
+        <Flex justifyContent='flex-start' alignItems='center'>
+          <Image src={logoMinistere} alt='logo ministere' />
+          <Box pr={10} />
+          <Image display={['none', 'flex']} src={logo} alt='logo matcha' />
+          <Spacer />
+          {history.location.pathname === '/' && auth.sub === 'anonymous' && (
+            <Button
+              display={['none', 'flex']}
+              onClick={() => history.push('/login')}
+              fontWeight='normal'
+              variant='link'
+              color='bluefrance.500'
+              leftIcon={<RiAccountCircleLine />}
+            >
+              Espace partenaires
+            </Button>
+          )}
+          {auth.sub !== 'anonymous' && (
+            <Menu>
+              <MenuButton as={Button} variant='pill'>
+                <Flex alignItems='center'>
+                  <Icon as={RiAccountCircleLine} color='bluefrance.500' />
+                  <Box display={['none', 'block']} ml={2}>
+                    <Text color='bluefrance.500'>{auth.sub}</Text>
+                  </Box>
+                </Flex>
+              </MenuButton>
+              <MenuList>
+                <MenuItem onClick={() => history.push('/admin')}>Gestion des offres</MenuItem>
+                {auth.permissions.isAdmin && (
+                  <>
+                    <MenuDivider />
+                    <MenuItem onClick={() => history.push('/admin/users')}>Gestion des utilisateurs</MenuItem>
+                  </>
+                )}
+                <MenuDivider />
+                <MenuItem onClick={() => setAuth('')}>Déconnexion</MenuItem>
+              </MenuList>
+            </Menu>
+          )}
+        </Flex>
+      </Container>
+    </Box>
   )
 }

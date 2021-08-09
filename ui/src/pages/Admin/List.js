@@ -118,8 +118,7 @@ const MyTable = ({ formulaires }) => {
                   </Center>
                 </Td>
                 <Td>
-                  {item?.prenom?.toLowerCase().charAt(0).toUpperCase() + item?.prenom?.slice(1)}{' '}
-                  {item?.nom?.toUpperCase()}
+                  {item.prenom?.toLowerCase().charAt(0).toUpperCase() + item.prenom?.slice(1)} {item.nom?.toUpperCase()}
                 </Td>
                 <Td maxW='250px'>
                   <Text isTruncated>{item.email}</Text>

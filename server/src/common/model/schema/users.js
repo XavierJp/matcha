@@ -2,6 +2,11 @@ const { Schema } = require("mongoose");
 
 module.exports = new Schema(
   {
+    nom: {
+      type: String,
+      description: "Nom de l'utilisateur",
+    },
+    prenom: { type: String, description: "Prénom de l'utilisateur" },
     username: {
       type: String,
       default: null,
@@ -33,6 +38,11 @@ module.exports = new Schema(
       type: String,
       default: null,
       description: "Scope accessible par l'utilisateur",
+    },
+    mail_sent: {
+      type: Boolean,
+      default: false,
+      description: "L'utilisateur a reçu ses identifiants de connexion",
     },
     last_connection: {
       type: Date,

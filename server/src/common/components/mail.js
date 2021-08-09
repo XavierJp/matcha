@@ -40,15 +40,12 @@ module.exports = () => {
         throw new Error("Sendmail ERROR :", error);
       }
     },
-    getEmailBody: ({ email, raison_sociale, templateId, params, tags, id_form, subject }) => {
-      if (!id_form) {
-        throw new Error("getEmailBody ERROR : id_form is missing");
-      }
+    getEmailBody: ({ email, senderName, templateId, params, tags, subject }) => {
       if (!email) {
         throw new Error("getEmailBody ERROR : email is missing");
       }
-      if (!raison_sociale) {
-        throw new Error("getEmailBody ERROR : raison_sociale is missing");
+      if (!senderName) {
+        throw new Error("getEmailBody ERROR : senderName is missing");
       }
       if (!templateId) {
         throw new Error("getEmailBody ERROR : templateId is missing");
@@ -62,9 +59,6 @@ module.exports = () => {
       if (!Array.isArray(tags)) {
         throw new Error("getEmailBody ERROR : tags must be an array of string(s)");
       }
-      if (!subject) {
-        throw new Error("getEmailBody ERROR : subject is missing");
-      }
 
       return {
         sender: {
@@ -73,7 +67,7 @@ module.exports = () => {
         },
         to: [
           {
-            name: `${raison_sociale}`,
+            name: `${senderName}`,
             email: `${email}`,
           },
         ],
@@ -85,7 +79,6 @@ module.exports = () => {
         templateId,
         tags,
         params: {
-          URL: `${config.publicUrl}/formulaire/${id_form}`,
           ...params,
         },
       };

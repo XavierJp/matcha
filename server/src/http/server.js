@@ -7,8 +7,9 @@ const errorMiddleware = require("./middlewares/errorMiddleware");
 const tryCatch = require("./middlewares/tryCatchMiddleware");
 const corsMiddleware = require("./middlewares/corsMiddleware");
 const packageJson = require("../../package.json");
-const login = require("./routes/login");
 
+const login = require("./routes/login");
+const user = require("./routes/user");
 const password = require("./routes/password");
 const formulaire = require("./routes/formulaire");
 const entreprise = require("./routes/entreprise");
@@ -21,6 +22,7 @@ module.exports = async (components) => {
   app.use(corsMiddleware());
   app.use(logMiddleware());
 
+  app.use("/api/user", user(components));
   app.use("/api/login", login(components));
   app.use("/api/password", password(components));
   app.use("/api/formulaire", formulaire(components));
