@@ -1,16 +1,26 @@
 const { program: cli } = require("commander");
-const { annuleFormulaire } = require("./jobs/formulaire/annuleFormulaire");
-const { getAllEvents } = require("./jobs/formulaire/getAllEvents");
-const { RelanceFormulaire } = require("./jobs/formulaire/relanceFormulaire");
-const { generateIndexes } = require("./jobs/indexes/generateIndexes");
 const { runScript } = require("./jobs/scriptWrapper");
-const resetPassword = require("./jobs/seed/resetPassword");
+const { createUser } = require("./jobs/formulaire/createUser");
+const { getAllEvents } = require("./jobs/formulaire/getAllEvents");
+const { resetPassword } = require("./jobs/formulaire/resetPassword");
+const { generateIndexes } = require("./jobs/indexes/generateIndexes");
+const { annuleFormulaire } = require("./jobs/formulaire/annuleFormulaire");
+const { relanceFormulaire } = require("./jobs/formulaire/relanceFormulaire");
+
+cli.addHelpText("after");
 
 cli
   .command("index formulaire")
   .description("Synchronise les index des collections mongo & reconstruit l'index elasticsearch")
   .action(() => {
     runScript(() => generateIndexes());
+  });
+
+cli
+  .command("create-user <email> <username> <organization> <scope> [isAdmin]")
+  .description("Permet de créer un accès utilisateur à l'espace partenaire")
+  .action((email, username, organization, scope, isAdmin) => {
+    runScript(({ users }) => createUser(users, email, username, organization, scope, isAdmin));
   });
 
 cli
@@ -24,7 +34,7 @@ cli
   .command("relance-formulaire")
   .description("Envoie une relance par mail pour les offres expirant dans 7 jours")
   .action(() => {
-    runScript(({ mail }) => RelanceFormulaire(mail));
+    runScript(({ mail }) => relanceFormulaire(mail));
   });
 
 cli

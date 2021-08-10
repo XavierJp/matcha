@@ -1,5 +1,11 @@
 const { User } = require("../model");
 const sha512Utils = require("../utils/sha512Utils");
+const passwordGenerator = require("generate-password");
+
+const passwordOptions = {
+  length: 12,
+  numbers: true,
+};
 
 const rehashPassword = (user, password) => {
   user.password = sha512Utils.hash(password);
@@ -8,6 +14,7 @@ const rehashPassword = (user, password) => {
 
 module.exports = async () => {
   return {
+    generatePassword: () => passwordGenerator.generate(passwordOptions),
     authenticate: async (username, password) => {
       const user = await User.findOne({ username });
       if (!user) {
@@ -24,29 +31,45 @@ module.exports = async () => {
       return null;
     },
     getUser: (email) => User.findOne({ email }),
-    createUser: async (username, organization, password, email, options = {}) => {
-      let hash = options.hash || sha512Utils.hash(password);
-      let { isAdmin, scope } = options;
+    createUser: async ({ nom, prenom, username, organization, password, email, scope, isAdmin = false }) => {
+      if (!scope) {
+        throw new Error("scope is mandatory");
+      }
+
+      let hash;
+      if (!password) {
+        const password = passwordGenerator.generate(passwordOptions);
+        hash = sha512Utils.hash(password);
+      } else {
+        hash = sha512Utils.hash(password);
+      }
 
       let user = new User({
+        nom,
+        prenom,
         username,
         email,
         organization,
         password: hash,
-        isAdmin: isAdmin ?? false,
-        scope: scope ?? "",
+        isAdmin: isAdmin,
+        scope: scope,
       });
 
       await user.save();
+      user.password = undefined;
       return user.toObject();
     },
-    removeUser: async (username) => {
-      const user = await User.findOne({ username });
+    updateUser: async (userId, userPayload) => {
+      const user = await User.findOneAndUpdate({ _id: userId }, userPayload, { new: true });
+      return user;
+    },
+    removeUser: async (id) => {
+      const user = await User.findById(id);
       if (!user) {
-        throw new Error(`Unable to find user ${username}`);
+        throw new Error(`Unable to find user ${id}`);
       }
 
-      return await user.deleteOne({ username });
+      return await user.deleteOne({ _id: id });
     },
     changePassword: async (username, newPassword) => {
       const user = await User.findOne({ username });

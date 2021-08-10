@@ -5,7 +5,7 @@ const logger = require("../../common/logger");
 const { Formulaire } = require("../../common/model");
 const { asyncForEach } = require("../../common/utils/asyncUtils");
 
-const RelanceFormulaire = async (mail) => {
+const relanceFormulaire = async (mail) => {
   // number of days to expiration for the reminder email to be sent
   let threshold = 7;
 
@@ -92,4 +92,4 @@ const RelanceFormulaire = async (mail) => {
   }
 };
 
-module.exports = { RelanceFormulaire };
+module.exports = { relanceFormulaire };

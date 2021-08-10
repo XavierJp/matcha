@@ -81,7 +81,7 @@ const LoginPage = () => {
                     <Button variant='link' onClick={() => history.push('/')}>
                       Annuler
                     </Button>
-                    <Button colorScheme='blue' type='submit'>
+                    <Button variant='primary' type='submit'>
                       Connexion
                     </Button>
                     {/* <Link to='/forgotten-password' as={NavLink} color='grey.500'>

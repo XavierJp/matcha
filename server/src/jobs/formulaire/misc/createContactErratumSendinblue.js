@@ -2,13 +2,11 @@ const { createXLSXFile } = require("../../../common/utils/fileUtils");
 const { Formulaire } = require("../../../common/model");
 const { runScript } = require("../../scriptWrapper");
 const logger = require("../../../common/logger");
-const { erratum } = require("./emailToFilter");
 const path = require("path");
 
 runScript(async () => {
   let contacts = await Formulaire.find({
     origine: "1J1S",
-    email: { $in: erratum },
   })
     .select("email id_form")
     .lean();
