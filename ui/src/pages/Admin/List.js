@@ -185,15 +185,17 @@ export default function List() {
     <AnimationContainer>
       <Layout background='beige'>
         <Container maxW='container.xl' py={4}>
-          <Breadcrumb spacing='4px' separator={<AiOutlineRight />}>
+          <Breadcrumb spacing='4px' separator={<AiOutlineRight />} textStyle='xs'>
             <BreadcrumbItem>
-              <BreadcrumbLink textDecoration='underline' as={Link} to='/'>
+              <BreadcrumbLink textDecoration='underline' as={Link} to='/' textStyle='xs'>
                 Accueil
               </BreadcrumbLink>
             </BreadcrumbItem>
 
             <BreadcrumbItem isCurrentPage>
-              <BreadcrumbLink href='#'>Administration des offres</BreadcrumbLink>
+              <BreadcrumbLink href='#' textStyle='xs'>
+                Administration des offres
+              </BreadcrumbLink>
             </BreadcrumbItem>
           </Breadcrumb>
 
