@@ -27,7 +27,7 @@ const users = [
     organization: "Opco 2i",
     password: passwordGenerator.generate(passwordOptions),
     email: "d.neveu@opco2i.fr",
-    isAdmin: true,
+    isAdmin: false,
     scope: "opco2i",
   },
   {
@@ -35,7 +35,7 @@ const users = [
     organization: "CCI Guyane",
     password: passwordGenerator.generate(passwordOptions),
     email: "l.nemouthe@guyane.cci.fr",
-    isAdmin: true,
+    isAdmin: false,
     scope: "cci-guyane",
   },
 ];
@@ -53,12 +53,12 @@ const createUser = async (users) => {
   const userList = await buildAdminsUsers();
 
   // Users creation
-  await asyncForEach(userList, async ({ username, organization, password, email, isAdmin, scope }) => {
+  await asyncForEach(userList, async (user) => {
     try {
-      let exist = await users.getUser(email);
+      let exist = await users.getUser(user.email);
       if (exist) return;
 
-      await users.createUser(username, organization, password, email, { isAdmin, scope });
+      await users.createUser(user);
     } catch (e) {
       logger.error(e);
     }

@@ -27,6 +27,11 @@ import {
   ButtonGroup,
   IconButton,
   useToast,
+  Select,
+  FormControl,
+  FormLabel,
+  Grid,
+  GridItem,
 } from '@chakra-ui/react'
 
 import { AnimationContainer, Layout } from '../../components'
@@ -87,7 +92,7 @@ const MyTable = ({ formulaires }) => {
             Raison Sociale
           </Th>
           <Th>Origine</Th>
-          <Th>Nombre d'offre(s)</Th>
+          <Th>Nombre d'offre.s (active.s)</Th>
           <Th>Contact</Th>
           <Th>Email</Th>
           <Th>Téléphone</Th>
@@ -95,21 +100,29 @@ const MyTable = ({ formulaires }) => {
         </Thead>
         <Tbody>
           {formulaires?.map((item, index) => {
+            let active = item.offres.filter((x) => x.statut === 'Active')
             return (
               <Tr key={index}>
                 <Td py={4} paddingLeft='30px'>
                   {item.raison_sociale}
+                  <Text>
+                    <Badge>{item.siret}</Badge>
+                  </Text>
                 </Td>
-                {/* <Td>{item.origine}</Td> */}
                 <Td>
-                  <EditableField value={item.origine} id_form={item.id_form} />
+                  <EditableField key={item.origine} value={item.origine} id_form={item.id_form} />
                 </Td>
-                <Td>{item.offres.length}</Td>
                 <Td>
-                  {item?.prenom?.toLowerCase().charAt(0).toUpperCase() + item?.prenom?.slice(1)}{' '}
-                  {item?.nom?.toUpperCase()}
+                  <Center>
+                    {item.offres.length} / ({active.length})
+                  </Center>
                 </Td>
-                <Td>{item.email}</Td>
+                <Td>
+                  {item.prenom?.toLowerCase().charAt(0).toUpperCase() + item.prenom?.slice(1)} {item.nom?.toUpperCase()}
+                </Td>
+                <Td maxW='250px'>
+                  <Text isTruncated>{item.email}</Text>
+                </Td>
                 <Td>{item.telephone}</Td>
                 <Td>
                   <Center>
@@ -130,9 +143,10 @@ const MyTable = ({ formulaires }) => {
 export default function List() {
   const [state, setState] = useState([])
   const [loading, setLoading] = useState(true)
+  const [filter, setFilter] = useState('')
   const [auth] = useAuth()
 
-  let query =
+  let scope =
     auth.scope === 'all'
       ? {
           $nor: [{ offres: { $exists: false } }, { offres: { $size: 0 } }],
@@ -142,11 +156,22 @@ export default function List() {
           origine: { $regex: auth.scope },
         }
 
+  const [query, setQuery] = useState(scope)
+
+  const handleFilter = (filter) => {
+    setFilter(filter)
+    setLoading(true)
+    setQuery({
+      $nor: [{ offres: { $exists: false } }, { offres: { $size: 0 } }],
+      origine: { $regex: filter },
+    })
+  }
+
   useEffect(() => {
-    getWithQS({ query, limit: 500 })
+    getWithQS({ query, limit: 10000 })
       .then((formulaires) => setState(formulaires.data))
       .finally(() => setLoading(false))
-  }, [])
+  }, [query])
 
   if (loading) {
     return (
@@ -160,15 +185,17 @@ export default function List() {
     <AnimationContainer>
       <Layout background='beige'>
         <Container maxW='container.xl' py={4}>
-          <Breadcrumb spacing='4px' separator={<AiOutlineRight />}>
+          <Breadcrumb spacing='4px' separator={<AiOutlineRight />} textStyle='xs'>
             <BreadcrumbItem>
-              <BreadcrumbLink textDecoration='underline' as={Link} to='/'>
+              <BreadcrumbLink textDecoration='underline' as={Link} to='/' textStyle='xs'>
                 Accueil
               </BreadcrumbLink>
             </BreadcrumbItem>
 
             <BreadcrumbItem isCurrentPage>
-              <BreadcrumbLink href='#'>Administration des offres</BreadcrumbLink>
+              <BreadcrumbLink href='#' textStyle='xs'>
+                Administration des offres
+              </BreadcrumbLink>
             </BreadcrumbItem>
           </Breadcrumb>
 
@@ -182,6 +209,25 @@ export default function List() {
               <Badge variant='outline'>{state.stats.nbOffres}</Badge> offres
             </Text>
           </Flex>
+
+          {auth.permissions.isAdmin && (
+            <Grid templateColumns='1fr 3fr'>
+              <GridItem>
+                <FormControl>
+                  <FormLabel>Filtrer par origine</FormLabel>
+                  <Select value={filter} onChange={(e) => handleFilter(e.target.value)}>
+                    <option value=''>Toutes les offres</option>
+                    <option value='lbb'>LBB</option>
+                    <option value='opco2i'>Opco 2i</option>
+                    <option value='1J1S'>1J1S</option>
+                    <option value='matcha'>Matcha</option>
+                    <option value='lba'>LBA</option>
+                  </Select>
+                </FormControl>
+              </GridItem>
+              <Spacer />
+            </Grid>
+          )}
 
           <MyTable formulaires={state.data} />
         </Container>

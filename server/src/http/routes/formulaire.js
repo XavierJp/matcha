@@ -3,6 +3,7 @@ const { Formulaire } = require("../../common/model");
 const tryCatch = require("../middlewares/tryCatchMiddleware");
 const { getElasticInstance } = require("../../common/esClient");
 const logger = require("../../common/logger");
+const config = require("config");
 
 const esClient = getElasticInstance();
 
@@ -70,12 +71,14 @@ module.exports = ({ mail, formulaire }) => {
       let { _id, id_form, raison_sociale, email } = newFormulaire;
 
       const mailBody = {
-        id_form,
         email,
-        raison_sociale,
+        senderName: raison_sociale,
         tags: ["matcha-nouveau-formulaire"],
         templateId: 178,
         subject: `Accédez à vos offres déposées sur Matcha`,
+        params: {
+          URL: `${config.publicUrl}/formulaire/${id_form}`,
+        },
       };
 
       const payload = mail.getEmailBody(mailBody);
@@ -211,8 +214,19 @@ module.exports = ({ mail, formulaire }) => {
                 nested: {
                   path: "offres",
                   query: {
-                    match: {
-                      "offres.romes": romes.join(" "),
+                    bool: {
+                      must: [
+                        {
+                          match: {
+                            "offres.romes": romes.join(" "),
+                          },
+                        },
+                        {
+                          match: {
+                            "offres.statut": "Active",
+                          },
+                        },
+                      ],
                     },
                   },
                 },
@@ -261,7 +275,7 @@ module.exports = ({ mail, formulaire }) => {
         x._source.events = undefined;
 
         x._source.offres.forEach((o) => {
-          if (romes.some((item) => o.romes.includes(item))) {
+          if (romes.some((item) => o.romes.includes(item)) && o.statut === "Active") {
             offres.push(o);
           }
         });
