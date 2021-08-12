@@ -13,12 +13,16 @@ const user = require("./routes/user");
 const password = require("./routes/password");
 const formulaire = require("./routes/formulaire");
 const entreprise = require("./routes/entreprise");
+const esSearch = require("./routes/esSearch");
 
 module.exports = async (components) => {
   const { db } = components;
   const app = express();
 
   app.use(bodyParser.json());
+  // Parse the ndjson as text for ES proxy
+  app.use(bodyParser.text({ type: "application/x-ndjson" }));
+
   app.use(corsMiddleware());
   app.use(logMiddleware());
 
@@ -27,6 +31,7 @@ module.exports = async (components) => {
   app.use("/api/password", password(components));
   app.use("/api/formulaire", formulaire(components));
   app.use("/api/entreprise", entreprise());
+  app.use("/api/es/search", esSearch());
 
   app.get(
     "/api",

@@ -16,6 +16,7 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
+    "@appbaseio/reactivesearch": "^3.22.0",
     "@chakra-ui/react": "^1.6.3",
     "@date-io/moment": "2.10.8",
     "@emotion/react": "^11",
