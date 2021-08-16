@@ -24,12 +24,12 @@ const App = () => {
     <AnimatePresence>
       <Switch>
         <PrivateRoute exact path='/admin'>
-          <List />
+          <Search />
         </PrivateRoute>
         <PrivateRoute exact path='/admin/users'>
           <Users />
         </PrivateRoute>
-        <Route exact path='/' component={Search} />
+        <Route exact path='/' component={HomePage} />
         <Route exact path='/login' component={Login} />
         <Route
           exact
