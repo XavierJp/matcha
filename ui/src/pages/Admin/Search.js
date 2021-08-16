@@ -14,6 +14,9 @@ import {
   AccordionItem,
   Button,
   Link,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
 } from '@chakra-ui/react'
 import { NavLink } from 'react-router-dom'
 import moment from 'moment'
@@ -22,6 +25,7 @@ import Facet from '../../components/Facet/Facet'
 
 import './search.css'
 import { ArrowRightLine } from '../../theme/components/icons'
+import { AiOutlineRight } from 'react-icons/ai'
 
 const ListeOffres = ({ offres }) => {
   return (
@@ -46,6 +50,19 @@ export default React.memo(() => {
   return (
     <Layout background='beige'>
       <Container maxW='container.xl' py={4}>
+        <Breadcrumb spacing='4px' separator={<AiOutlineRight />} textStyle='xs' mb={3}>
+          <BreadcrumbItem>
+            <BreadcrumbLink textDecoration='underline' as={NavLink} to='/' textStyle='xs'>
+              Accueil
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+
+          <BreadcrumbItem isCurrentPage>
+            <BreadcrumbLink href='#' textStyle='xs'>
+              Administration des offres
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+        </Breadcrumb>
         <div className='search-page'>
           <ReactiveBase url={`${process.env.REACT_APP_BASE_URL}/es/search`} app='formulaires'>
             <Grid templateColumns='1fr 3fr' gap={3} pt={3}>
