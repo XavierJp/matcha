@@ -65,19 +65,26 @@ export default React.memo(() => {
   return (
     <Layout background='beige'>
       <Container maxW='container.xl' py={4}>
-        <Breadcrumb spacing='4px' separator={<AiOutlineRight />} textStyle='xs' mb={3}>
-          <BreadcrumbItem>
-            <BreadcrumbLink textDecoration='underline' as={NavLink} to='/' textStyle='xs'>
-              Accueil
-            </BreadcrumbLink>
-          </BreadcrumbItem>
+        <Flex justifyContent='space-between' alignItems='center'>
+          <Breadcrumb spacing='4px' separator={<AiOutlineRight />} textStyle='xs' mb={3}>
+            <BreadcrumbItem>
+              <BreadcrumbLink textDecoration='underline' as={NavLink} to='/' textStyle='xs'>
+                Accueil
+              </BreadcrumbLink>
+            </BreadcrumbItem>
 
-          <BreadcrumbItem isCurrentPage>
-            <BreadcrumbLink href='#' textStyle='xs'>
-              Administration des offres
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-        </Breadcrumb>
+            <BreadcrumbItem isCurrentPage>
+              <BreadcrumbLink href='#' textStyle='xs'>
+                Administration des offres
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+          </Breadcrumb>
+          <Link as={NavLink} to={`/${auth.scope === 'all' ? 'matcha' : auth.scope}/`} target='_blank'>
+            <Button variant='primary' size='sm' mr={3}>
+              Nouveau formulaire {auth.scope === 'all' ? 'matcha' : auth.scope}
+            </Button>
+          </Link>
+        </Flex>
         <div className='search-page'>
           <ReactiveBase url={`${process.env.REACT_APP_BASE_URL}/es/search`} app='formulaires'>
             <Grid templateColumns='1fr 3fr' gap={3} pt={3}>
