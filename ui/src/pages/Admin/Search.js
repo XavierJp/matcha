@@ -105,7 +105,7 @@ export default React.memo(() => {
                   react={{
                     and: filters,
                   }}
-                  size={4}
+                  size={5}
                   renderResultStats={(stats) => {
                     return (
                       <div
