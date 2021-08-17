@@ -26,6 +26,7 @@ import Facet from '../../components/Facet/Facet'
 import './search.css'
 import { ArrowRightLine } from '../../theme/components/icons'
 import { AiOutlineRight } from 'react-icons/ai'
+import useAuth from '../../common/hooks/useAuth'
 
 const ListeOffres = ({ offres }) => {
   return (
@@ -46,6 +47,19 @@ const ListeOffres = ({ offres }) => {
 
 export default React.memo(() => {
   const { filters, facetDefinition, dataSearchDefinition } = constants
+  const [auth] = useAuth()
+
+  const queryFilter = () => {
+    if (auth.scope === 'all') return {}
+
+    return {
+      query: {
+        regexp: {
+          origine: { value: auth.scope, flags: 'ALL', case_insensitive: true },
+        },
+      },
+    }
+  }
 
   return (
     <Layout background='beige'>
@@ -71,7 +85,7 @@ export default React.memo(() => {
               </GridItem>
               <GridItem sx={{ margin: '0 .7em' }}>
                 <div className='search-container'>
-                  <DataSearch {...dataSearchDefinition} />
+                  <DataSearch {...dataSearchDefinition} defaultQuery={queryFilter} />
                 </div>
               </GridItem>
               <GridItem>
@@ -90,6 +104,7 @@ export default React.memo(() => {
                       nestedField={f.nestedField}
                       showSearch={f.showSearch}
                       showCount={f.showCount}
+                      defaultQuery={queryFilter}
                     />
                   )
                 })}
@@ -102,10 +117,11 @@ export default React.memo(() => {
                   infiniteScroll={true}
                   innerClass={{ pagination: 'search-pagination' }}
                   loader='Chargement des résultats..'
+                  size={5}
                   react={{
                     and: filters,
                   }}
-                  size={5}
+                  defaultQuery={queryFilter}
                   renderResultStats={(stats) => {
                     return (
                       <div
@@ -132,7 +148,13 @@ export default React.memo(() => {
                     // let pourvue = offres.filter((x) => x.statut === 'Pourvue')
 
                     return (
-                      <Link as={NavLink} to={`/formulaire/${formulaire.id_form}`} variant='card' target='_blank'>
+                      <Link
+                        as={NavLink}
+                        to={`/formulaire/${formulaire.id_form}`}
+                        variant='card'
+                        target='_blank'
+                        key={formulaire._id}
+                      >
                         <Box bg='none' key={formulaire._id}>
                           <Flex
                             key={formulaire._id}

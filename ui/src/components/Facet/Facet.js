@@ -13,6 +13,9 @@ const Facet = ({
   nestedField,
   filterLabel,
   filters,
+  defaultQuery,
+  transformData,
+  customQuery,
   title,
   showSearch,
   showCount,
@@ -62,6 +65,9 @@ const Facet = ({
                 filterLabel={filterLabel}
                 react={{ and: filters.filter((e) => e !== componentId) }}
                 // defaultValue={defaultValue}
+                defaultQuery={defaultQuery}
+                transformData={transformData}
+                customQuery={customQuery}
                 showCount={showCount}
                 queryFormat='or'
                 missingLabel='(Vide)'
