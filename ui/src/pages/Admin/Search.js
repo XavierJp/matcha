@@ -27,6 +27,7 @@ import './search.css'
 import { ArrowRightLine } from '../../theme/components/icons'
 import { AiOutlineRight } from 'react-icons/ai'
 import useAuth from '../../common/hooks/useAuth'
+import ExportButton from '../../components/ExportButton/ExportButton'
 
 const ListeOffres = ({ offres }) => {
   return (
@@ -46,7 +47,7 @@ const ListeOffres = ({ offres }) => {
 }
 
 export default React.memo(() => {
-  const { filters, facetDefinition, dataSearchDefinition } = constants
+  const { filters, facetDefinition, dataSearchDefinition, exportableColumns } = constants
   const [auth] = useAuth()
 
   const queryFilter = () => {
@@ -136,9 +137,13 @@ export default React.memo(() => {
                         <Text fontSize='sm'>
                           {stats.displayedResults} formulaires sur {stats.numberOfResults}
                         </Text>
-                        <Button variant='secondary' size='xs' isDisabled>
-                          Exporter
-                        </Button>
+                        <ExportButton
+                          index='formulaires'
+                          filters={filters}
+                          columns={exportableColumns
+                            .filter((c) => c.exportable)
+                            .map((c) => ({ header: c.Header, fieldName: c.accessor, formatter: c.formatter }))}
+                        />
                       </div>
                     )
                   }}
