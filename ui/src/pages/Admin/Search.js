@@ -1,5 +1,5 @@
-import React from 'react'
-import { ReactiveBase, DataSearch, ReactiveList } from '@appbaseio/reactivesearch'
+import { memo } from 'react'
+import { ReactiveBase, DataSearch, ReactiveList, SelectedFilters } from '@appbaseio/reactivesearch'
 import { Layout } from '../../components'
 import {
   Badge,
@@ -46,7 +46,7 @@ const ListeOffres = ({ offres }) => {
   )
 }
 
-export default React.memo(() => {
+export default memo(() => {
   const { filters, facetDefinition, dataSearchDefinition, exportableColumns } = constants
   const [auth] = useAuth()
 
@@ -117,7 +117,8 @@ export default React.memo(() => {
                   )
                 })}
               </GridItem>
-              <GridItem>
+              <GridItem m={3}>
+                <SelectedFilters clearAllLabel='Supprimer tous' />
                 <ReactiveList
                   componentId='resultsFormulaire'
                   dataField='_id'
@@ -138,7 +139,6 @@ export default React.memo(() => {
                           justifyContent: 'space-between',
                           alignItems: 'center',
                           flexGrow: '1',
-                          margin: '0 .7em',
                         }}
                       >
                         <Text fontSize='sm'>
@@ -156,8 +156,6 @@ export default React.memo(() => {
                   }}
                   renderItem={({ offres, ...formulaire }) => {
                     let active = offres.filter((x) => x.statut === 'Active')
-                    // let annulé = offres.filter((x) => x.statut === 'Annulée')
-                    // let pourvue = offres.filter((x) => x.statut === 'Pourvue')
 
                     return (
                       <Link
@@ -185,15 +183,18 @@ export default React.memo(() => {
                                 <Badge variant='outline'>{active.length}</Badge> offre(s) active(s)
                               </Text>
                             ) : (
-                              <Text>Aucune offre visible</Text>
+                              <Text>Aucune offre active</Text>
                             )}
                           </Flex>
                           <Flex justifyContent='space-between' textStyle='sm' py={3}>
                             <Box>
-                              <Text>
-                                {formulaire.prenom?.toLowerCase().charAt(0).toUpperCase() + formulaire.prenom?.slice(1)}{' '}
-                                {formulaire.nom?.toUpperCase()}
-                              </Text>
+                              {formulaire.prenom && (
+                                <Text>
+                                  {formulaire.prenom?.toLowerCase().charAt(0).toUpperCase() +
+                                    formulaire.prenom?.slice(1)}{' '}
+                                  {formulaire.nom?.toUpperCase()}
+                                </Text>
+                              )}
                               <Text>{formulaire.adresse}</Text>
                               <HStack gap={3}>
                                 <Text>{formulaire.telephone}</Text>
@@ -204,50 +205,6 @@ export default React.memo(() => {
                             <ArrowRightLine alignSelf='flex-end' color='bluefrance.500' boxSize={5} />
                           </Flex>
                           <Text fontSize='xs'>Origine : {formulaire.origine}</Text>
-                          {/* {annulé.length > 0 && (
-                          <Accordion pt={5} allowToggle>
-                          <CustomAccordionItem title='Offre(s) Annulée(s) :'>
-                          {annulé.map((offre) => {
-                            let debut = moment(offre.date_debut_apprentissage).format('DD/MM/YYYY')
-                            return (
-                              <Flex>
-                              {offre.libelle} - {offre.niveau}
-                              <Spacer />
-                              Date de début : {debut}
-                              </Flex>
-                              )
-                            })}
-                            </CustomAccordionItem>
-                            </Accordion>
-                            )}
-                            {pourvue.length > 0 && (
-                              <Accordion pt={5} allowToggle>
-                              <CustomAccordionItem title='Offre(s) Pourvue(s) :'>
-                              {pourvue.map((offre) => {
-                                let debut = moment(offre.date_debut_apprentissage).format('DD/MM/YYYY')
-                                return (
-                                  <Flex flex='1' textAlign='left'>
-                                  {offre.libelle} - {offre.niveau} - {debut}
-                                  </Flex>
-                                  )
-                                })}
-                                </CustomAccordionItem>
-                                </Accordion>
-                                )}
-                                {active.length > 0 && (
-                                  <Accordion allowToggle>
-                                  <CustomAccordionItem title='Offre(s) Active(s) :'>
-                                  {active.map((offre) => {
-                                    let debut = moment(offre.date_debut_apprentissage).format('DD/MM/YYYY')
-                                    return (
-                                      <Flex flex='1' textAlign='left'>
-                                      {offre.libelle} - {offre.niveau} - {debut}
-                                      </Flex>
-                                      )
-                                    })}
-                                    </CustomAccordionItem>
-                                    </Accordion>
-                                  )} */}
                         </Box>
                       </Link>
                     )

@@ -92,7 +92,7 @@ const facetDefinition = [
     componentId: `statutFilter`,
     dataField: 'offres.statut.keyword',
     nestedField: 'offres',
-    title: 'Statut(s)',
+    title: 'Statut(s) de(s) offre(s)',
     filterLabel: 'Statut(s)',
     sortBy: 'asc',
     helpTextSection: '',
