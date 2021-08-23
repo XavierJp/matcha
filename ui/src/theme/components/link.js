@@ -6,6 +6,14 @@ const Link = {
     unstyled: {
       _focus: { boxShadow: 'none', outlineColor: 'none' },
     },
+    card: {
+      p: 8,
+      my: 3,
+      bg: 'white',
+      _hover: { bg: '#eceae3', textDecoration: 'none' },
+      _focus: { boxShadow: 'none', outlineColor: 'none' },
+      display: 'block',
+    },
   },
 }
 

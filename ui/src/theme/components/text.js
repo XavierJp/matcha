@@ -1,4 +1,7 @@
 const Text = {
+  baseStyle: {
+    fontFamily: 'Marianne',
+  },
   variants: {
     highlight: {
       bg: '#f9f8f6',

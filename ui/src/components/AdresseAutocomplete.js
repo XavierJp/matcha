@@ -69,6 +69,7 @@ export default (props) => {
           onFocus={() => setTimeout(() => props.setFieldTouched(props.name, true), 100)}
           placeholder='Taper votre adresse complète'
           required={props.required ?? false}
+          onPaste={(e) => e.preventDefault()}
           {...getInputProps()}
         />
       </div>

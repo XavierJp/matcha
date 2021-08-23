@@ -1,9 +1,10 @@
-import * as Yup from 'yup'
+import { useParams, useHistory } from 'react-router-dom'
+import { IoIosAddCircleOutline } from 'react-icons/io'
+import { Formik, Form, useField, Field } from 'formik'
+import { AiOutlineEdit } from 'react-icons/ai'
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { IoIosAddCircleOutline } from 'react-icons/io'
-import { useParams, useHistory } from 'react-router-dom'
-import { Formik, Form, useField, Field } from 'formik'
+import * as Yup from 'yup'
 import {
   Button,
   Box,
@@ -28,33 +29,19 @@ import {
   useBreakpointValue,
   Image,
   Badge,
-  Switch,
-  Collapse,
   Center,
   Link as ChakraLink,
   AlertIcon,
   Alert,
-  AlertDescription,
-  AlertTitle,
-  CloseButton,
 } from '@chakra-ui/react'
-import { AiOutlineEdit } from 'react-icons/ai'
-import { ArrowDropRightLine } from '../../theme/components/icons/'
-import addOfferImage from '../../assets/images/add-offer.svg'
 
 import { getFormulaire, postFormulaire, postOffre, putFormulaire, putOffre } from '../../api'
 import { Layout, AdresseAutocomplete, AnimationContainer } from '../../components'
+import { ArrowDropRightLine } from '../../theme/components/icons/'
+import ConfirmationSuppression from './ConfirmationSuppression'
+import addOfferImage from '../../assets/images/add-offer.svg'
 import AjouterVoeux from './AjouterVoeux'
 import ListeVoeux from './ListeVoeux'
-import ConfirmationSuppression from './ConfirmationSuppression'
-
-const CustomToast = () => {
-  return (
-    <Box color='white' p={3} bg='grey.200' borderLeft='4px solid bluefrance.500'>
-      Hello World
-    </Box>
-  )
-}
 
 const CustomInput = (props) => {
   const [field, meta] = useField(props)

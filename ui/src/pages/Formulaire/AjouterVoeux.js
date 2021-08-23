@@ -17,12 +17,14 @@ import {
   Heading,
   Flex,
 } from '@chakra-ui/react'
+import { Formik } from 'formik'
+import moment from 'moment'
+import * as Yup from 'yup'
+
+import 'moment/locale/fr'
+
 import { DropdownCombobox } from '../../components'
 import { ArrowRightLine, Close } from '../../theme/components/icons/'
-import { Formik } from 'formik'
-import * as Yup from 'yup'
-import moment from 'moment'
-import 'moment/locale/fr'
 
 const DATE_FORMAT = 'YYYY-MM-DD'
 

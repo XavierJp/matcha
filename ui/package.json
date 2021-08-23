@@ -8,6 +8,7 @@
   "license": "MIT",
   "main": "src/index.js",
   "scripts": {
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "serve": "ws --port 3000 -d build --log.format dev --spa index.html",
@@ -15,6 +16,7 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
+    "@appbaseio/reactivesearch": "^3.22.0",
     "@chakra-ui/react": "^1.6.3",
     "@date-io/moment": "2.10.8",
     "@emotion/react": "^11",
@@ -72,6 +74,7 @@
     "eslint-plugin-react": "^7.20.6",
     "eslint-plugin-react-hooks": "^4.1.0",
     "local-web-server": "^4.2.1",
-    "prettier": "^2.2.1"
+    "prettier": "^2.2.1",
+    "source-map-explorer": "^2.5.2"
   }
 }

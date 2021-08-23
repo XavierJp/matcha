@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 
-import { Formulaire, NotFound, Login, List, HomePage, Users } from './pages'
+import { Formulaire, NotFound, Login, List, HomePage, Users, Search } from './pages'
 import useAuth from './common/hooks/useAuth'
 
 function PrivateRoute({ children, ...rest }) {
@@ -24,7 +24,7 @@ const App = () => {
     <AnimatePresence>
       <Switch>
         <PrivateRoute exact path='/admin'>
-          <List />
+          <Search />
         </PrivateRoute>
         <PrivateRoute exact path='/admin/users'>
           <Users />
