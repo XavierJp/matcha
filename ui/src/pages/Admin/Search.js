@@ -55,11 +55,19 @@ export default memo(() => {
 
     return {
       query: {
-        regexp: {
-          origine: { value: auth.scope, flags: 'ALL', case_insensitive: true },
+        match_phrase_prefix: {
+          origine: auth.scope,
         },
       },
     }
+
+    // return {
+    //   query: {
+    //     regexp: {
+    //       origine: { value: `${auth.scope}*`, flags: 'ALL', case_insensitive: true, max_determinized_states: 100000 },
+    //     },
+    //   },
+    // }
   }
 
   return (
