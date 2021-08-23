@@ -1,4 +1,3 @@
-import { useState, useRef } from 'react'
 import {
   Button,
   Modal,
@@ -13,9 +12,9 @@ import {
   useToast,
 } from '@chakra-ui/react'
 
-import { ArrowRightLine, Close } from '../../theme/components/icons'
-
 import 'moment/locale/fr'
+
+import { ArrowRightLine, Close } from '../../theme/components/icons'
 import { putOffre } from '../../api'
 
 export default (props) => {

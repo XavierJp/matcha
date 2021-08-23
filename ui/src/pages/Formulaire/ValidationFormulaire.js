@@ -1,4 +1,4 @@
-import React from 'react'
+import { useRef } from 'react'
 import {
   Button,
   Modal,
@@ -13,8 +13,8 @@ import {
 
 export default (props) => {
   let { isOpen, onClose, submitForm } = props
-  const initialRef = React.useRef()
-  const finalRef = React.useRef()
+  const initialRef = useRef()
+  const finalRef = useRef()
 
   return (
     <Modal

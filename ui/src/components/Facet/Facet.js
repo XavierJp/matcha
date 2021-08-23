@@ -1,7 +1,6 @@
-import React from 'react'
+import { memo } from 'react'
 import { MultiList } from '@appbaseio/reactivesearch'
 import { Accordion, AccordionButton, AccordionItem, AccordionPanel, Box } from '@chakra-ui/react'
-// import useAuth from '../../common/hooks/useAuth'
 
 import './facet.css'
 
@@ -19,26 +18,7 @@ const Facet = ({
   title,
   showSearch,
   showCount,
-  helpTextSection,
 }) => {
-  // let [auth] = useAuth()
-  // let defaultValue = null
-  // let defaultIndex = []
-
-  // if (hasOneOfRoles(auth, ['instructeur'])) {
-  //   if (componentId.startsWith('nom_academie')) {
-  //     const userAcademies = auth?.academie?.split(',') || []
-  //     defaultIndex = [0]
-  //     defaultValue = compact(
-  //       userAcademies.map((ua) => {
-  //         return academies[ua]?.nom_academie
-  //       })
-  //     )
-  //   } else if (componentId.startsWith('affelnet_statut') || componentId.startsWith('parcoursup_statut')) {
-  //     defaultIndex = [0]
-  //     //defaultValue = ["à publier"];
-  //   }
-  // }
   return (
     <Accordion allowMultiple bg='white' my={3}>
       <AccordionItem border='none'>
@@ -64,7 +44,6 @@ const Facet = ({
                 nestedField={nestedField}
                 filterLabel={filterLabel}
                 react={{ and: filters.filter((e) => e !== componentId) }}
-                // defaultValue={defaultValue}
                 defaultQuery={defaultQuery}
                 transformData={transformData}
                 customQuery={customQuery}
@@ -90,4 +69,4 @@ const Facet = ({
   )
 }
 
-export default React.memo(Facet)
+export default memo(Facet)

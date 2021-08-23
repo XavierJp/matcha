@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
 import { ReactiveComponent } from '@appbaseio/reactivesearch'
 import { Button } from '@chakra-ui/react'
+import { memo, useState } from 'react'
+
+import { downloadCSV, CSV_SEPARATOR } from '../../common/utils/downloadUtils'
 import { DownloadLine } from '../../theme/components/icons/Download-line'
 import { _post } from '../../common/httpClient'
-import { downloadCSV, CSV_SEPARATOR } from '../../common/utils/downloadUtils'
 
 const serializeObject = (columns, obj) => {
   const res = []
@@ -88,8 +89,6 @@ let getDataAsCSV = async (searchUrl, query, columns, setProgress) => {
   return `${headers}${lines}`
 }
 
-//let countMount = 0;
-
 const ExportButton = ({ index, filters, columns, defaultQuery = { match_all: {} } }) => {
   const [requestExport, setRequestExport] = useState(false)
   const [exporting, setExporting] = useState(false)
@@ -112,17 +111,12 @@ const ExportButton = ({ index, filters, columns, defaultQuery = { match_all: {} 
   }
 
   const onQueryChange = async (prevQuery, nextQuery) => {
-    // if (countMount === 1) {
     let csv = await getDataAsCSV(index, nextQuery, columns, setProgress)
     let fileName = `${index}_${new Date().toJSON()}.csv`
     downloadCSV(fileName, csv)
     setExporting(false)
     setRequestExport(false)
     setProgress(0)
-    //   countMount = 0;
-    // } else if (countMount === 0) {
-    //   countMount++;
-    // }
   }
 
   return (
@@ -149,4 +143,4 @@ const ExportButton = ({ index, filters, columns, defaultQuery = { match_all: {} 
   )
 }
 
-export default React.memo(ExportButton)
+export default memo(ExportButton)
