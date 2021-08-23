@@ -1,5 +1,5 @@
+const got = require("got");
 const config = require("config");
-const request = require("requestretry");
 const mailRules = require("./mail.rules");
 const { Transactional } = require("../model");
 
@@ -26,15 +26,12 @@ module.exports = () => {
           "content-type": "application/json",
           "api-key": config.sendinblue.apikey,
         },
-        body: body,
-        json: true,
-        maxAttempts: 8,
-        retryDelay: 5000,
-        retryStrategy: request.RetryStrategies.HTTPOrNetworkError,
+        json: body,
+        retry: 10,
       };
 
       try {
-        const result = await request(options);
+        const result = await got(options);
         return result;
       } catch (error) {
         throw new Error("Sendmail ERROR :", error);
@@ -99,7 +96,7 @@ module.exports = () => {
       };
 
       try {
-        const result = await request(body);
+        const result = await got(body);
         const { events } = await JSON.parse(result.body);
         return events;
       } catch (error) {
@@ -123,7 +120,7 @@ module.exports = () => {
           "Content-Type": "application/json",
           "api-key": config.sendinblue.apikey,
         },
-        body: JSON.stringify({
+        json: JSON.stringify({
           attributes: { ...attributes },
           listIds,
           email,
@@ -131,12 +128,10 @@ module.exports = () => {
           emailBlacklisted: false,
           smsBlacklisted: false,
         }),
-        maxAttempts: 10,
-        retryDelay: 5000,
-        retryStrategy: request.RetryStrategies.HTTPOrNetworkError,
+        retry: 10,
       };
 
-      const res = await request(payload);
+      const res = await got(payload);
       return res;
     },
     updateContact: async ({ email, attributes, listIds }) => {
@@ -156,20 +151,18 @@ module.exports = () => {
           "content-type": "application/json",
           "api-key": config.sendinblue.apikey,
         },
-        body: JSON.stringify({
+        json: JSON.stringify({
           attributes: { ...attributes },
           listIds,
           updateEnabled: true,
           emailBlacklisted: false,
           smsBlacklisted: false,
         }),
-        maxAttempts: 10,
-        retryDelay: 5000,
-        retryStrategy: request.RetryStrategies.HTTPOrNetworkError,
+        retry: 10,
       };
 
       try {
-        const res = await request(options);
+        const res = await got(options);
         if (res.statusCode === 204) {
           console.log(`contact ${email} updated — attemps: ${res.attempts}`);
         } else {
