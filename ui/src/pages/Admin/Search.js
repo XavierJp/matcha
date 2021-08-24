@@ -24,6 +24,7 @@ import constants from './admin.constants'
 import Facet from '../../components/Facet/Facet'
 
 import './search.css'
+
 import { ArrowRightLine } from '../../theme/components/icons'
 import { AiOutlineRight } from 'react-icons/ai'
 import useAuth from '../../common/hooks/useAuth'
@@ -47,7 +48,7 @@ const ListeOffres = ({ offres }) => {
 }
 
 export default memo(() => {
-  const { filters, facetDefinition, dataSearchDefinition, exportableColumns } = constants
+  const { filters, facetDefinition, dataSearchDefinition, exportableColumns, excludedFields } = constants
   const [auth] = useAuth()
 
   const queryFilter = () => {
@@ -121,6 +122,7 @@ export default memo(() => {
                       showSearch={f.showSearch}
                       showCount={f.showCount}
                       defaultQuery={queryFilter}
+                      excludeFields={excludedFields}
                     />
                   )
                 })}
@@ -131,13 +133,13 @@ export default memo(() => {
                   componentId='resultsFormulaire'
                   dataField='_id'
                   pagination={true}
-                  infiniteScroll={true}
                   innerClass={{ pagination: 'search-pagination' }}
                   loader='Chargement des résultats..'
                   size={5}
                   react={{
                     and: filters,
                   }}
+                  excludeFields={excludedFields}
                   defaultQuery={queryFilter}
                   renderResultStats={(stats) => {
                     return (
@@ -155,6 +157,7 @@ export default memo(() => {
                         <ExportButton
                           index='formulaires'
                           filters={filters}
+                          defaultQuery={queryFilter}
                           columns={exportableColumns
                             .filter((c) => c.exportable)
                             .map((c) => ({ header: c.Header, fieldName: c.accessor, formatter: c.formatter }))}
