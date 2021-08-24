@@ -3,6 +3,7 @@ import { CloseCircleLine, SearchLine } from '../../theme/components/icons'
 import moment from 'moment'
 
 const filters = ['searchFormulaire', 'statutFilter', 'siretFilter', 'libelleFilter', 'origineFilter', 'niveauFilter']
+const excludedFields = ['events', 'mailing', 'offres.romes']
 
 const exportableColumns = [
   {
@@ -53,13 +54,20 @@ const exportableColumns = [
     Header: 'Offres',
     accessor: 'offres',
     exportable: true,
+    // work on all other cases
+
+    // formatter: (value) => escapeDiacritics(value),
+
+    // only works if filters on statut/metier/niveaux
     formatter: (values) => {
       return values.map((x, i) => {
         return {
           Statut: escapeDiacritics(x.statut),
           Metier: escapeDiacritics(x.libelle),
           Niveau: escapeDiacritics(x.niveau),
-          Date_debut_apprentissage: moment(x.date_debut_apprentissage).format('YYYY-MM-DD'),
+          Date_debut_apprentissage: x.date_debut_apprentissage
+            ? moment(x.date_debut_apprentissage).format('YYYY-MM-DD')
+            : 'NA',
           Date_expiration: moment(x.date_expiration).format('YYYY-MM-DD'),
         }
       })
@@ -67,23 +75,27 @@ const exportableColumns = [
   },
   {
     Header: 'Metier',
-    accessor: 'libelle',
+    accessor: 'offres.libelle',
     exportable: true,
+    formatter: (value) => escapeDiacritics(value),
   },
   {
     Header: 'Niveau',
     accessor: 'offres.niveau',
     exportable: true,
+    formatter: (value) => escapeDiacritics(value),
   },
   {
     Header: "Date de debut d'apprentissage",
     accessor: 'offres.date_debut_apprentissage',
     exportable: true,
+    formatter: (value) => moment(value).format('YYYY-MM-DD'),
   },
   {
     Header: "Date d'expiration",
     accessor: 'offres.date_expiration',
     exportable: true,
+    formatter: (value) => moment(value).format('YYYY-MM-DD'),
   },
 ]
 
@@ -145,14 +157,15 @@ const facetDefinition = [
 
 const dataSearchDefinition = {
   componentId: 'searchFormulaire',
-  dataField: ['raison_sociale', 'siret', 'nom', 'prenom', 'email'],
-  fieldWeights: [4, 1, 2, 2, 3],
-  // URLParams: true,
+  dataField: ['raison_sociale', 'siret', 'email'],
+  fieldWeights: [4, 2, 2],
+  excludeFields: excludedFields,
   queryFormat: 'and',
   placeholder: "Rechercher par nom d'entreprise, siret, nom, prénom ou email",
   showClear: true,
   clearIcon: <CloseCircleLine boxSize={4} />,
   icon: <SearchLine color='bluefrance.500' boxSize={5} />,
+  debounce: 1000,
 }
 
-export default { filters, facetDefinition, dataSearchDefinition, exportableColumns }
+export default { filters, facetDefinition, dataSearchDefinition, exportableColumns, excludedFields }
