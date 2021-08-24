@@ -12,6 +12,8 @@ const serializeObject = (columns, obj) => {
   columns.forEach((c) => {
     let value = c.fieldName.split('.').reduce((acc, curr) => acc[curr], obj)
 
+    console.log(obj)
+
     if (!value) {
       value = ''
     } else if (Array.isArray(value)) {
@@ -28,8 +30,8 @@ const serializeObject = (columns, obj) => {
       } else {
         value = value.join(',')
       }
-    } else if (typeof value === 'object') {
-      value = JSON.stringify(value)
+      // } else if (typeof value === 'object') {
+      //   value = JSON.stringify(value)
     } else if (typeof c.formatter === 'function') {
       value = c.formatter(value, obj)
     } else {
@@ -67,6 +69,21 @@ let scroll = (index, scrollId) => {
   )
 }
 
+let duplicateFromByOffer = (data) => {
+  let buffer = []
+  data.map((form) => {
+    if (form.offres.length > 1) {
+      form.offres.forEach((offre) => {
+        buffer.push({ ...form, offres: offre })
+      })
+    } else {
+      buffer.push(form)
+    }
+  })
+
+  return buffer
+}
+
 let getDataAsCSV = async (searchUrl, query, columns, setProgress) => {
   let data = []
   let pushAll = (hits) => {
@@ -76,6 +93,8 @@ let getDataAsCSV = async (searchUrl, query, columns, setProgress) => {
   }
 
   let { hits, _scroll_id } = await search(searchUrl, query)
+
+  console.log(hits)
   pushAll(hits)
 
   while (data.length < hits.total.value) {
@@ -83,13 +102,15 @@ let getDataAsCSV = async (searchUrl, query, columns, setProgress) => {
     pushAll(hits)
   }
 
+  data = duplicateFromByOffer(data)
+
   let headers = columns.map((c) => c.header).join(CSV_SEPARATOR) + '\n'
   let lines = data.map((obj) => serializeObject(columns, obj)).join('\n')
   setProgress(100)
   return `${headers}${lines}`
 }
 
-const ExportButton = ({ index, filters, columns, defaultQuery = { match_all: {} } }) => {
+const ExportButton = ({ index, filters, columns, defaultQuery = { query: { match_all: {} } } }) => {
   const [requestExport, setRequestExport] = useState(false)
   const [exporting, setExporting] = useState(false)
   const [progress, setProgress] = useState(0)
@@ -111,6 +132,7 @@ const ExportButton = ({ index, filters, columns, defaultQuery = { match_all: {} 
   }
 
   const onQueryChange = async (prevQuery, nextQuery) => {
+    console.log(prevQuery, nextQuery)
     let csv = await getDataAsCSV(index, nextQuery, columns, setProgress)
     let fileName = `${index}_${new Date().toJSON()}.csv`
     downloadCSV(fileName, csv)
@@ -124,11 +146,7 @@ const ExportButton = ({ index, filters, columns, defaultQuery = { match_all: {} 
       componentId={`${index}-export`}
       react={{ and: filters }}
       onQueryChange={onQueryChange}
-      defaultQuery={() => {
-        return {
-          query: defaultQuery,
-        }
-      }}
+      defaultQuery={defaultQuery}
       render={() => {
         if (exporting) {
           return (

@@ -18,6 +18,7 @@ const Facet = ({
   title,
   showSearch,
   showCount,
+  excludedFields,
 }) => {
   return (
     <Accordion allowMultiple bg='white' my={3}>
@@ -48,6 +49,7 @@ const Facet = ({
                 transformData={transformData}
                 customQuery={customQuery}
                 showCount={showCount}
+                excludeFields={excludedFields}
                 queryFormat='or'
                 missingLabel='(Vide)'
                 showCheckbox={true}
