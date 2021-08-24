@@ -30,7 +30,7 @@ module.exports = () => {
               path: (req.baseUrl || "") + (req.path || ""),
               parameters: withoutSensibleFields(req.query),
             },
-            body: withoutSensibleFields(req.body),
+            body: req.path.includes("es") ? req.body : withoutSensibleFields(req.body),
           },
           response: {
             statusCode,
