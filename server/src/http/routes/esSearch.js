@@ -1,8 +1,11 @@
 const express = require("express");
-const tryCatch = require("../middlewares/tryCatchMiddleware");
-const logger = require("../../common/logger");
-const { getElasticInstance } = require("../../common/esClient");
 const Boom = require("boom");
+const { isEmpty } = require("lodash");
+
+const logger = require("../../common/logger");
+const tryCatch = require("../middlewares/tryCatchMiddleware");
+const { getElasticInstance } = require("../../common/esClient");
+const { getNestedQueryFilter } = require("../../common/utils/esUtils");
 
 const esClient = getElasticInstance();
 
@@ -14,9 +17,56 @@ module.exports = () => {
     tryCatch(async (req, res) => {
       const { index } = req.params;
       logger.info(`Es search ${index}`);
+
       const result = await esClient.search({ index, ...req.query, body: req.body });
 
-      return res.json(result.body);
+      const filters = getNestedQueryFilter(req.body);
+
+      /**
+       * Offres array facet filters need to be re-applied to correctly filter the results returned
+       * this provide a exact export of data
+       *
+       * current facet filter :
+       * "offres.statut.keyword": ["Annulée"],
+       * "offres.libelle.keyword": ["Mécanique, maintenance industrielle"],
+       * "offres.niveau.keyword": ["DEUG, BTS, DUT, DEUST"]
+       */
+
+      if (filters.length === 0 || isEmpty(filters)) {
+        return res.json(result.body);
+      } else {
+        result.body.hits.hits.forEach((x) => {
+          let offres = [];
+
+          if (x._source.offres.length === 0) {
+            return;
+          }
+
+          x._source.mailing = undefined;
+          x._source.events = undefined;
+
+          let filterKeys = Object.keys(filters).map((x) => x.split(".")[1]);
+
+          let copy = x._source.offres;
+
+          if (filterKeys.includes("statut")) {
+            copy = copy.filter(({ statut }) => filters["offres.statut.keyword"].some((f) => statut === f));
+          }
+
+          if (filterKeys.includes("libelle")) {
+            copy = copy.filter(({ libelle }) => filters["offres.libelle.keyword"].some((f) => libelle === f));
+          }
+
+          if (filterKeys.includes("niveau")) {
+            copy = copy.filter(({ niveau }) => filters["offres.niveau.keyword"].some((f) => niveau === f));
+          }
+
+          offres.push(...copy);
+          x._source.offres = offres;
+        });
+
+        return res.json(result.body);
+      }
     })
   );
 

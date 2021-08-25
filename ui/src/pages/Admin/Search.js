@@ -10,8 +10,6 @@ import {
   GridItem,
   Text,
   HStack,
-  Accordion,
-  AccordionItem,
   Button,
   Link,
   Breadcrumb,
@@ -19,35 +17,19 @@ import {
   BreadcrumbLink,
 } from '@chakra-ui/react'
 import { NavLink } from 'react-router-dom'
-import moment from 'moment'
+
 import constants from './admin.constants'
 import Facet from '../../components/Facet/Facet'
 
 import './search.css'
+
 import { ArrowRightLine } from '../../theme/components/icons'
 import { AiOutlineRight } from 'react-icons/ai'
 import useAuth from '../../common/hooks/useAuth'
 import ExportButton from '../../components/ExportButton/ExportButton'
 
-const ListeOffres = ({ offres }) => {
-  return (
-    <Accordion>
-      {offres.map((offre) => {
-        let debut = moment(offre.date_debut_apprentissage).format('DD/MM/YYYY')
-        return (
-          <AccordionItem key={offre._id}>
-            <Box flex='1' textAlign='left'>
-              {offre.libelle} - {offre.niveau} - {debut}
-            </Box>
-          </AccordionItem>
-        )
-      })}
-    </Accordion>
-  )
-}
-
 export default memo(() => {
-  const { filters, facetDefinition, dataSearchDefinition, exportableColumns } = constants
+  const { filters, facetDefinition, dataSearchDefinition, exportableColumns, excludedFields } = constants
   const [auth] = useAuth()
 
   const queryFilter = () => {
@@ -64,7 +46,7 @@ export default memo(() => {
     // return {
     //   query: {
     //     regexp: {
-    //       origine: { value: auth.scope, flags: 'ALL', case_insensitive: true },
+    //       origine: { value: `${auth.scope}*`, flags: 'ALL', case_insensitive: true, max_determinized_states: 100000 },
     //     },
     //   },
     // }
@@ -121,6 +103,7 @@ export default memo(() => {
                       showSearch={f.showSearch}
                       showCount={f.showCount}
                       defaultQuery={queryFilter}
+                      excludeFields={excludedFields}
                     />
                   )
                 })}
@@ -131,13 +114,13 @@ export default memo(() => {
                   componentId='resultsFormulaire'
                   dataField='_id'
                   pagination={true}
-                  infiniteScroll={true}
                   innerClass={{ pagination: 'search-pagination' }}
                   loader='Chargement des résultats..'
                   size={5}
                   react={{
                     and: filters,
                   }}
+                  excludeFields={excludedFields}
                   defaultQuery={queryFilter}
                   renderResultStats={(stats) => {
                     return (
@@ -155,6 +138,7 @@ export default memo(() => {
                         <ExportButton
                           index='formulaires'
                           filters={filters}
+                          defaultQuery={queryFilter}
                           columns={exportableColumns
                             .filter((c) => c.exportable)
                             .map((c) => ({ header: c.Header, fieldName: c.accessor, formatter: c.formatter }))}
