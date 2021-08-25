@@ -10,8 +10,6 @@ import {
   GridItem,
   Text,
   HStack,
-  Accordion,
-  AccordionItem,
   Button,
   Link,
   Breadcrumb,
@@ -19,7 +17,7 @@ import {
   BreadcrumbLink,
 } from '@chakra-ui/react'
 import { NavLink } from 'react-router-dom'
-import moment from 'moment'
+
 import constants from './admin.constants'
 import Facet from '../../components/Facet/Facet'
 
@@ -29,23 +27,6 @@ import { ArrowRightLine } from '../../theme/components/icons'
 import { AiOutlineRight } from 'react-icons/ai'
 import useAuth from '../../common/hooks/useAuth'
 import ExportButton from '../../components/ExportButton/ExportButton'
-
-const ListeOffres = ({ offres }) => {
-  return (
-    <Accordion>
-      {offres.map((offre) => {
-        let debut = moment(offre.date_debut_apprentissage).format('DD/MM/YYYY')
-        return (
-          <AccordionItem key={offre._id}>
-            <Box flex='1' textAlign='left'>
-              {offre.libelle} - {offre.niveau} - {debut}
-            </Box>
-          </AccordionItem>
-        )
-      })}
-    </Accordion>
-  )
-}
 
 export default memo(() => {
   const { filters, facetDefinition, dataSearchDefinition, exportableColumns, excludedFields } = constants

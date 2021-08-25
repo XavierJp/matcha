@@ -12,9 +12,6 @@ const serializeObject = (columns, obj) => {
   columns.forEach((c) => {
     let value = c.fieldName.split('.').reduce((acc, curr) => acc[curr], obj)
 
-    console.log(obj)
-    console.log('VALUE', value)
-
     if (!value) {
       value = ''
     } else if (Array.isArray(value)) {
@@ -27,12 +24,9 @@ const serializeObject = (columns, obj) => {
           res.push(`${x}`.trim().replace(/"/g, "'").replace(/;/g, ',').replace(/\n/g, '').replace(/\r/g, ''))
         })
         return
-        // value = JSON.stringify(values)
       } else {
         value = value.join(',')
       }
-      // } else if (typeof value === 'object') {
-      //   value = JSON.stringify(value)
     } else if (typeof c.formatter === 'function') {
       value = c.formatter(value, obj)
     } else {
@@ -101,11 +95,8 @@ let getDataAsCSV = async (searchUrl, query, columns, setProgress) => {
     let { hits } = await scroll(searchUrl, _scroll_id)
     pushAll(hits)
   }
-  console.log('AVANT', data)
 
   data = duplicateFromByOffer(data)
-
-  console.log('APRES', data)
 
   let headers = columns.map((c) => c.header).join(CSV_SEPARATOR) + '\n'
   let lines = data.map((obj) => serializeObject(columns, obj)).join('\n')
@@ -135,7 +126,6 @@ const ExportButton = ({ index, filters, columns, defaultQuery = { query: { match
   }
 
   const onQueryChange = async (prevQuery, nextQuery) => {
-    console.log(prevQuery, nextQuery)
     let csv = await getDataAsCSV(index, nextQuery, columns, setProgress)
     let fileName = `${index}_${new Date().toJSON()}.csv`
     downloadCSV(fileName, csv)

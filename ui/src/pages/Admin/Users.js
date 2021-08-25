@@ -29,7 +29,6 @@ import { createUser, deleteUser, getUsers, updateUser } from '../../api'
 import AjouterUtilisateur from './AjouterUtilisateur'
 
 const MyTable = ({ users, editUser, removeUser }) => {
-  console.log(users)
   if (users.length < 0) return <div>Chargement en cours</div>
 
   return (

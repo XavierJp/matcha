@@ -28,8 +28,6 @@ export default (props) => {
   const initialRef = useRef()
   const finalRef = useRef()
 
-  console.log(props)
-
   return (
     <Formik
       enableReinitialize={true}
