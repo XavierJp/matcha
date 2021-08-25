@@ -3,7 +3,7 @@ import { CloseCircleLine, SearchLine } from '../../theme/components/icons'
 import moment from 'moment'
 
 const filters = ['searchFormulaire', 'statutFilter', 'siretFilter', 'libelleFilter', 'origineFilter', 'niveauFilter']
-const excludedFields = ['events', 'mailing', 'offres.romes']
+const excludedFields = ['events', 'mailing']
 
 const exportableColumns = [
   {
@@ -51,14 +51,9 @@ const exportableColumns = [
     exportable: true,
   },
   {
-    Header: 'Offres',
+    Header: 'Statut',
     accessor: 'offres',
     exportable: true,
-    // work on all other cases
-
-    // formatter: (value) => escapeDiacritics(value),
-
-    // only works if filters on statut/metier/niveaux
     formatter: (values) => {
       return values.map((x, i) => {
         return {

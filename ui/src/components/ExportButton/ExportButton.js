@@ -13,6 +13,7 @@ const serializeObject = (columns, obj) => {
     let value = c.fieldName.split('.').reduce((acc, curr) => acc[curr], obj)
 
     console.log(obj)
+    console.log('VALUE', value)
 
     if (!value) {
       value = ''
@@ -74,7 +75,7 @@ let duplicateFromByOffer = (data) => {
   data.map((form) => {
     if (form.offres.length > 1) {
       form.offres.forEach((offre) => {
-        buffer.push({ ...form, offres: offre })
+        buffer.push({ ...form, offres: [offre] })
       })
     } else {
       buffer.push(form)
@@ -94,15 +95,17 @@ let getDataAsCSV = async (searchUrl, query, columns, setProgress) => {
 
   let { hits, _scroll_id } = await search(searchUrl, query)
 
-  console.log(hits)
   pushAll(hits)
 
   while (data.length < hits.total.value) {
     let { hits } = await scroll(searchUrl, _scroll_id)
     pushAll(hits)
   }
+  console.log('AVANT', data)
 
   data = duplicateFromByOffer(data)
+
+  console.log('APRES', data)
 
   let headers = columns.map((c) => c.header).join(CSV_SEPARATOR) + '\n'
   let lines = data.map((obj) => serializeObject(columns, obj)).join('\n')
