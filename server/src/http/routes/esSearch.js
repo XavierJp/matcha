@@ -1,26 +1,13 @@
 const express = require("express");
-const tryCatch = require("../middlewares/tryCatchMiddleware");
-const logger = require("../../common/logger");
-const { getElasticInstance } = require("../../common/esClient");
 const Boom = require("boom");
 const { isEmpty } = require("lodash");
 
+const logger = require("../../common/logger");
+const tryCatch = require("../middlewares/tryCatchMiddleware");
+const { getElasticInstance } = require("../../common/esClient");
+const { getNestedQueryFilter } = require("../../common/utils/esUtils");
+
 const esClient = getElasticInstance();
-
-const getNestedQueryFilter = (nested) => {
-  const filters = nested.query.bool.must[0].bool.must;
-
-  let filt = filters
-    .map((item) => {
-      if (item.nested) {
-        return item.nested.query.bool.should[0].terms;
-      }
-    })
-    .filter((x) => x !== undefined)
-    .reduce((a, b) => Object.assign(a, b), {});
-
-  return filt;
-};
 
 module.exports = () => {
   const router = express.Router();
@@ -30,15 +17,20 @@ module.exports = () => {
     tryCatch(async (req, res) => {
       const { index } = req.params;
       logger.info(`Es search ${index}`);
-      console.log("QUERY", getNestedQueryFilter(req.body));
+
       const result = await esClient.search({ index, ...req.query, body: req.body });
 
       const filters = getNestedQueryFilter(req.body);
 
-      // const QUERY = {
-      //   "offres.statut.keyword": ["Annulée"],
-      //   "offres.libelle.keyword": ["Mécanique, maintenance industrielle"],
-      // };
+      /**
+       * Offres array facet filters need to be re-applied to correctly filter the results returned
+       * this provide a exact export of data
+       *
+       * current facet filter :
+       * "offres.statut.keyword": ["Annulée"],
+       * "offres.libelle.keyword": ["Mécanique, maintenance industrielle"],
+       * "offres.niveau.keyword": ["DEUG, BTS, DUT, DEUST"]
+       */
 
       if (filters.length === 0 || isEmpty(filters)) {
         return res.json(result.body);
@@ -55,22 +47,26 @@ module.exports = () => {
 
           let filterKeys = Object.keys(filters).map((x) => x.split(".")[1]);
 
-          if (filterKeys.includes("statut")) {
-            let filteredOffers = x._source.offres.filter(({ statut }) =>
-              filters["offres.statut.keyword"].some((f) => statut === f)
-            );
+          let copy = x._source.offres;
 
-            offres.push(...filteredOffers);
+          if (filterKeys.includes("statut")) {
+            copy = copy.filter(({ statut }) => filters["offres.statut.keyword"].some((f) => statut === f));
           }
+
+          if (filterKeys.includes("libelle")) {
+            copy = copy.filter(({ libelle }) => filters["offres.libelle.keyword"].some((f) => libelle === f));
+          }
+
+          if (filterKeys.includes("niveau")) {
+            copy = copy.filter(({ niveau }) => filters["offres.niveau.keyword"].some((f) => niveau === f));
+          }
+
+          offres.push(...copy);
           x._source.offres = offres;
         });
 
-        // console.log(result.body);
-
         return res.json(result.body);
       }
-
-      // return res.json(result.body);
     })
   );
 
