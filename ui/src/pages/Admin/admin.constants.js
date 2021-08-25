@@ -156,7 +156,7 @@ const dataSearchDefinition = {
   fieldWeights: [4, 2, 2],
   excludeFields: excludedFields,
   queryFormat: 'and',
-  placeholder: "Rechercher par nom d'entreprise, siret, nom, prénom ou email",
+  placeholder: "Rechercher par nom d'entreprise, siret ou email",
   showClear: true,
   clearIcon: <CloseCircleLine boxSize={4} />,
   icon: <SearchLine color='bluefrance.500' boxSize={5} />,
