@@ -61,8 +61,8 @@ const relanceFormulaire = async (mail) => {
     };
 
     const payload = mail.getEmailBody(mailBody);
-
-    const { body: result } = await mail.sendmail(payload);
+    const response = await mail.sendmail(payload);
+    const result = JSON.parse(response.body);
 
     const message = {
       campagne: "matcha-relance-expiration",
