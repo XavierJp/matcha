@@ -64,7 +64,7 @@ module.exports = () => {
         },
         to: [
           {
-            name: `${senderName}`,
+            name: senderName.split("").length > 70 ? `${senderName.substring(0, 70)}` : `${senderName}`,
             email: `${email}`,
           },
         ],
