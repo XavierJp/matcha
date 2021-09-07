@@ -52,7 +52,7 @@ const Hero = () => {
             afficher sur le site <strong>La Bonne Alternance</strong>
           </Text>
           <Button variant='primary' rightIcon={<IoIosArrowForward />} px={6} onClick={() => history.push('/matcha/')}>
-            Je cherche un.e alternant.e
+            Je poste mon offre
           </Button>
         </Box>
         <Image src={illustrationHero} display={['none', 'flex']} />
@@ -69,12 +69,12 @@ export const Mission = () => (
       </GridItem>
       <GridItem>
         <Text pb={4}>
-          De nombreux jeunes cherchent actuellement un contrat d'apprentissage. Ils et elles sont motivé.e.s et
+          De nombreux jeunes cherchent actuellement un contrat d'apprentissage. Ils et elles sont motivées et
           disponibles tout de suite, et peuvent correspondre à vos besoins immédiats de recrutement.
         </Text>
         <Text pb={4}>
-          Recruter un.e apprenti.e, c'est la garantie de transmettre votre savoir-faire et d'embaucher un.e futur.e
-          collaborateur.ice tout en bénéficiant du soutien de l'État.
+          L'apprentissage, c'est la garantie de transmettre votre savoir-faire et d'embaucher une future recrue tout en
+          bénéficiant du soutien de l'État.
         </Text>
         <Stack direction={['column', 'row']} spacing={[5, 10]}>
           <Link href='https://mission-apprentissage.gitbook.io/general/' isExternal>
@@ -112,7 +112,7 @@ export const Footer = () => (
       Sauf mention contraire, tous les textes de ce site sont sous{' '}
       <Link href='https://www.etalab.gouv.fr/wp-content/uploads/2017/04/ETALAB-Licence-Ouverte-v2.0.pdf' isExternal>
         <Text as='u'>
-          licence etatlab-2.0 <Icon as={FiExternalLink} mx={1} />
+          licence Etatlab-2.0 <Icon as={FiExternalLink} mx={1} />
         </Text>
       </Link>
     </Text>
