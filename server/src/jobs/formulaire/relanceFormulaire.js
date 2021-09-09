@@ -52,11 +52,13 @@ const relanceFormulaire = async (mail) => {
 
     // Send mail with action links to manage offers
     const mailBody = {
-      subject: "Vos offres vont expirer prochainement",
       email,
-      raison_sociale,
-      id_form,
+      senderName: raison_sociale,
       templateId: 182,
+      params: {
+        URL: `${config.publicUrl}/formulaire/${id_form}`,
+      },
+      subject: "Vos offres vont expirer prochainement",
       tags: ["matcha-relance-expiration"],
     };
 
