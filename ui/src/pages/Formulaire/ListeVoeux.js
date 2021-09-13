@@ -59,7 +59,6 @@ export default (props) => {
                   </Text>
                 </Flex>
                 <Spacer />
-
                 <Flex alignItems='center' display={['none', 'block']}>
                   <Link
                     color='bluefrance.500'
@@ -75,9 +74,18 @@ export default (props) => {
                 <Heading textStyle='h3' size='md'>
                   {item.libelle}
                 </Heading>
-                <Text fontSize='md' fontWeight='400'>
-                  {item.niveau}
-                </Text>
+                <Flex direction={['column', 'row']}>
+                  <Text fontSize='md' fontWeight='400' pr={1}>
+                    Niveau:
+                  </Text>
+                  <Text fontWeight='600'>{item.niveau}</Text>
+                </Flex>
+                <Flex direction={['column', 'row']}>
+                  <Text fontSize='md' fontWeight='400' pr={1}>
+                    Type de contrat:
+                  </Text>
+                  <Text fontWeight='600'>{item.type}</Text>
+                </Flex>
                 {item.date_debut_apprentissage && (
                   <Flex direction={['column', 'row']}>
                     <Text fontSize='md' fontWeight='400' pr={1}>

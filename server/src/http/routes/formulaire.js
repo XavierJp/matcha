@@ -172,6 +172,7 @@ module.exports = ({ mail, formulaire }) => {
         date_creation,
         date_expiration,
         statut,
+        type,
       } = req.body;
 
       const result = await Formulaire.findOneAndUpdate(
@@ -186,6 +187,7 @@ module.exports = ({ mail, formulaire }) => {
             "offres.$.date_creation": date_creation,
             "offres.$.date_expiration": date_expiration,
             "offres.$.statut": statut,
+            "offres.$.type": type,
           },
         },
         { new: true }
