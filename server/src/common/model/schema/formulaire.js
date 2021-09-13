@@ -45,6 +45,12 @@ const offresSchema = new Schema({
     enum: ["Active", "Annulée", "Pourvue"],
     description: "Statut de l'offre",
   },
+  type: {
+    type: String,
+    default: "Apprentissage",
+    enum: ["Apprentissage", "Professionnalisation"],
+    description: "Type de contrat",
+  },
 });
 
 module.exports = new Schema(
