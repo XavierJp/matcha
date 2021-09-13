@@ -22,7 +22,6 @@
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "axios": "^0.21.1",
-    "browserslist": "^4.17.0",
     "downshift": "^6.1.0",
     "formik": "^2.2.6",
     "framer-motion": "^4",
