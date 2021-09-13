@@ -2,7 +2,15 @@ import { escapeDiacritics } from '../../common/utils/downloadUtils'
 import { CloseCircleLine, SearchLine } from '../../theme/components/icons'
 import moment from 'moment'
 
-const filters = ['searchFormulaire', 'statutFilter', 'siretFilter', 'libelleFilter', 'origineFilter', 'niveauFilter']
+const filters = [
+  'searchFormulaire',
+  'statutFilter',
+  'siretFilter',
+  'libelleFilter',
+  'origineFilter',
+  'niveauFilter',
+  'contratFilter',
+]
 const excludedFields = ['events', 'mailing']
 
 const exportableColumns = [
@@ -58,6 +66,7 @@ const exportableColumns = [
       return values.map((x, i) => {
         return {
           Statut: escapeDiacritics(x.statut),
+          Type: escapeDiacritics(x.type),
           Metier: escapeDiacritics(x.libelle),
           Niveau: escapeDiacritics(x.niveau),
           Date_debut_apprentissage: x.date_debut_apprentissage
@@ -67,6 +76,12 @@ const exportableColumns = [
         }
       })
     },
+  },
+  {
+    Header: 'Type de contrat',
+    accessor: 'offres.type',
+    exportable: true,
+    formatter: (value) => escapeDiacritics(value),
   },
   {
     Header: 'Metier',
@@ -133,6 +148,17 @@ const facetDefinition = [
     nestedField: 'offres',
     title: 'Niveau(x)',
     filterLabel: 'Niveau(x)',
+    sortBy: 'asc',
+    helpTextSection: '',
+    showSearch: false,
+    showCount: true,
+  },
+  {
+    componentId: `contratFilter`,
+    dataField: 'offres.type.keyword',
+    nestedField: 'offres',
+    title: 'Type(s) de contrat',
+    filterLabel: 'Type(s) de contrat',
     sortBy: 'asc',
     helpTextSection: '',
     showSearch: false,
