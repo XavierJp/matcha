@@ -9,6 +9,7 @@ import {
   ModalOverlay,
   FormControl,
   FormLabel,
+  FormHelperText,
   Select,
   Textarea,
   FormErrorMessage,
@@ -16,6 +17,11 @@ import {
   Text,
   Heading,
   Flex,
+  Radio,
+  RadioGroup,
+  Stack,
+  Link,
+  ExternalLinkIcon,
 } from '@chakra-ui/react'
 import { Formik } from 'formik'
 import moment from 'moment'
@@ -24,7 +30,7 @@ import * as Yup from 'yup'
 import 'moment/locale/fr'
 
 import { DropdownCombobox } from '../../components'
-import { ArrowRightLine, Close } from '../../theme/components/icons/'
+import { ArrowRightLine, Close, ExternalLinkLine } from '../../theme/components/icons/'
 
 const DATE_FORMAT = 'YYYY-MM-DD'
 
@@ -64,12 +70,14 @@ export default (props) => {
         date_creation: props.date_creation ?? moment().format(DATE_FORMAT),
         date_expiration: props.date_expiration ?? moment().add(1, 'months').format(DATE_FORMAT),
         statut: props.statut ?? 'Active',
+        type: props.type ?? 'Apprentissage',
       }}
       validationSchema={Yup.object().shape({
         libelle: Yup.string().required('Champ obligatoire'),
-        niveau: Yup.string(),
+        niveau: Yup.string().required('Champ obligatoire'),
         date_debut_apprentissage: Yup.date(),
         description: Yup.string(),
+        type: Yup.string().required('Champ obligatoire'),
       })}
       onSubmit={async (values, { resetForm }) => {
         await handleSave(values)
@@ -143,7 +151,7 @@ export default (props) => {
                   {errors.libelle && touched.libelle && <FormErrorMessage>{errors.libelle}</FormErrorMessage>}
                 </FormControl>
 
-                <FormControl mt={4}>
+                <FormControl mt={4} isRequired>
                   <FormLabel>Formation minimum attendue</FormLabel>
                   <Select size='lg' name='niveau' defaultValue={values.niveau} onChange={handleChange}>
                     <option value='' hidden>
@@ -169,6 +177,26 @@ export default (props) => {
                     defaultValue={values.date_debut_apprentissage}
                     onChange={handleChange}
                   />
+                </FormControl>
+
+                <FormControl mt={4}>
+                  <FormLabel>Type de contrat</FormLabel>
+                  <RadioGroup
+                    onChange={(value) => {
+                      setFieldValue('type', value)
+                    }}
+                    value={values.type}
+                  >
+                    <Stack direction='row' spacing={5}>
+                      <Radio value='Apprentissage'>Apprentissage</Radio>
+                      <Radio value='Professionnalisation'>Professionnalisation</Radio>
+                    </Stack>
+                  </RadioGroup>
+                  <FormHelperText>
+                    <Link href='https://www.service-public.fr/professionnels-entreprises/vosdroits/F31704' isExternal>
+                      voir plus d'informations sur les types de contrat <ExternalLinkLine mb='2px' />
+                    </Link>
+                  </FormHelperText>
                 </FormControl>
 
                 {values.description && (
