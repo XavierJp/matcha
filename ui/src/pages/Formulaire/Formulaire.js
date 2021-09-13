@@ -344,21 +344,23 @@ const Formulaire = (props) => {
             setOffersList={setOffersList}
           />
           <Container maxW='container.xl' pb={16}>
-            <Box pt={3}>
-              <Breadcrumb separator={<ArrowDropRightLine color='grey.600' />} textStyle='xs'>
-                <BreadcrumbItem>
-                  <BreadcrumbLink textDecoration='underline' as={Link} to='/' textStyle='xs'>
-                    Accueil
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
+            {!props.widget && (
+              <Box pt={3}>
+                <Breadcrumb separator={<ArrowDropRightLine color='grey.600' />} textStyle='xs'>
+                  <BreadcrumbItem>
+                    <BreadcrumbLink textDecoration='underline' as={Link} to='/' textStyle='xs'>
+                      Accueil
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
 
-                <BreadcrumbItem isCurrentPage>
-                  <BreadcrumbLink href='#' textStyle='xs'>
-                    {formState._id ? 'Consulter vos offres en cours' : "Nouveau dépot d'offre"}
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-              </Breadcrumb>
-            </Box>
+                  <BreadcrumbItem isCurrentPage>
+                    <BreadcrumbLink href='#' textStyle='xs'>
+                      {formState._id ? 'Consulter vos offres en cours' : "Nouveau dépot d'offre"}
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                </Breadcrumb>
+              </Box>
+            )}
 
             {readOnlyMode ? (
               <FormulaireLectureSeul formState={formState} buttonSize={buttonSize} setEditionMode={setReadOnlyMode} />
