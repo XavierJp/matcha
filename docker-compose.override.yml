@@ -10,6 +10,7 @@ services:
     build:
       context: ui
       dockerfile: Dockerfile.dev
+    env_file: ./ui/.env
     volumes:
       - ./ui:/app #Allows source folders to be watched
 
