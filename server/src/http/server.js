@@ -18,6 +18,7 @@ const esSearch = require("./routes/esSearch");
 const password = require("./routes/password");
 const formulaire = require("./routes/formulaire");
 const entreprise = require("./routes/entreprise");
+const externalAPI = require("./routes/api");
 
 const swaggerOptions = {
   definition: {
@@ -37,7 +38,7 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: `${config.publicUrl}/api/v1`,
+        url: `${config.publicUrl}/api/v1/formulaire`,
       },
     ],
   },
@@ -76,6 +77,7 @@ module.exports = async (components) => {
   app.use("/api/formulaire", formulaire(components));
   app.use("/api/entreprise", entreprise());
   app.use("/api/es/search", esSearch());
+  app.use("/api/v1/formulaire", externalAPI(components));
 
   app.get(
     "/api",

@@ -2,7 +2,7 @@ const { Formulaire } = require("../model");
 
 module.exports = () => {
   return {
-    getFormulaire: async (query, { page, limit }) => {
+    getFormulaires: async (query, { page, limit }) => {
       const response = await Formulaire.paginate(query, { page, limit, lean: true });
       return {
         data: response.docs,
@@ -13,6 +13,10 @@ module.exports = () => {
           total: response.total,
         },
       };
+    },
+    getFormulaire: async (id_form) => {
+      const form = await Formulaire.findOne({ id_form });
+      return form;
     },
     createFormulaire: async (payload) => {
       const form = await Formulaire.create(payload);
