@@ -1,19 +1,61 @@
-const express = require("express");
 const config = require("config");
-const logger = require("../common/logger");
+const express = require("express");
 const bodyParser = require("body-parser");
+const swaggerDoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
+
+const logger = require("../common/logger");
+const packageJson = require("../../package.json");
+const swaggerSchema = require("../common/model/swaggerSchema");
 const logMiddleware = require("./middlewares/logMiddleware");
-const errorMiddleware = require("./middlewares/errorMiddleware");
 const tryCatch = require("./middlewares/tryCatchMiddleware");
 const corsMiddleware = require("./middlewares/corsMiddleware");
-const packageJson = require("../../package.json");
+const errorMiddleware = require("./middlewares/errorMiddleware");
 
-const login = require("./routes/login");
 const user = require("./routes/user");
+const login = require("./routes/login");
+const esSearch = require("./routes/esSearch");
 const password = require("./routes/password");
 const formulaire = require("./routes/formulaire");
 const entreprise = require("./routes/entreprise");
-const esSearch = require("./routes/esSearch");
+
+const swaggerOptions = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Matcha",
+      version: "1.0.0",
+      description: `Vous trouverez ici la définition de l'api Matcha<br/><br/>
+      <h3><strong>${config.publicUrl}/api/v1</strong></h3><br/>
+      Contact:
+      `,
+      contact: {
+        name: "Mission Nationale pour l'apprentissage",
+        url: "https://mission-apprentissage.gitbook.io/general/",
+        email: "matcha@apprentissage.beta.gouv.fr",
+      },
+    },
+    servers: [
+      {
+        url: `${config.publicUrl}/api/v1`,
+      },
+    ],
+  },
+  apis: ["./src/http/routes/api.js"],
+};
+
+const swaggerSpecification = swaggerDoc(swaggerOptions);
+
+swaggerSpecification.components = {
+  schemas: swaggerSchema,
+  securitySchemes: {
+    bearerAuth: {
+      type: "http",
+      scheme: "bearer",
+      bearerFormat: "api-key",
+    },
+  },
+};
 
 module.exports = async (components) => {
   const { db } = components;
@@ -25,6 +67,8 @@ module.exports = async (components) => {
 
   app.use(corsMiddleware());
   app.use(logMiddleware());
+
+  app.use("/api/v1/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpecification));
 
   app.use("/api/user", user(components));
   app.use("/api/login", login(components));
