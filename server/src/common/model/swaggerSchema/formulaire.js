@@ -49,36 +49,42 @@ module.exports = {
         required: true,
         description: "Email du contact",
       },
-      // mailing: {
-      //   type: array,
-      //   description: "Liste des évènements MAIL",
-      //   properties: {
-      //     campagne: {
-      //       type: "string",
-      //       default: "string",
-      //       description: "Identifiant de campagne",
-      //     },
-      //     messageId: {
-      //       type: "string",
-      //       default: "string",
-      //       description: "Identifiant sendinblue",
-      //     },
-      //     code: {
-      //       type: "string",
-      //       default: "string",
-      //       description: "Code erreur sendinblue",
-      //     },
-      //     message: {
-      //       type: "string",
-      //       default: "string",
-      //       description: "Message erreur sendinblue",
-      //     },
-      //   },
-      // },
-      // events: {
-      //   type: "array",
-      //   description: "Liste des évènements sendinblue",
-      // },
+      mailing: {
+        type: "array",
+        description: "Liste des évènements MAIL récupéré par le serveur",
+        required: false,
+        items: {
+          type: "object",
+          required: false,
+          properties: {
+            campagne: {
+              type: "string",
+              default: "string",
+              description: "Identifiant de campagne",
+            },
+            messageId: {
+              type: "string",
+              default: "string",
+              description: "Identifiant sendinblue",
+            },
+            code: {
+              type: "string",
+              default: "string",
+              description: "Code erreur sendinblue",
+            },
+            message: {
+              type: "string",
+              default: "string",
+              description: "Message erreur sendinblue",
+            },
+          },
+        },
+      },
+      events: {
+        type: "array",
+        description: "Liste des évènements sendinblue géré par le serveur",
+        required: false,
+      },
       origine: {
         type: "string",
         default: "user based setup",
