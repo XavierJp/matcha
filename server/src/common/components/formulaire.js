@@ -48,7 +48,7 @@ module.exports = () => {
       return form;
     },
     provideOffre: async (id_offre) => {
-      const form = await Formulaire.findOneAndUpdate(
+      await Formulaire.findOneAndUpdate(
         { "offres._id": id_offre },
         {
           $set: {
@@ -57,10 +57,10 @@ module.exports = () => {
         },
         { new: true }
       );
-      return form;
+      return true;
     },
     cancelOffre: async (id_offre) => {
-      const form = await Formulaire.findOneAndUpdate(
+      await Formulaire.findOneAndUpdate(
         { "offres._id": id_offre },
         {
           $set: {
@@ -69,7 +69,7 @@ module.exports = () => {
         },
         { new: true }
       );
-      return form;
+      return true;
     },
   };
 };

@@ -118,9 +118,7 @@ module.exports = ({ formulaire }) => {
   router.get(
     "/:formulaireId",
     tryCatch(async (req, res) => {
-      const formulaireId = req.params;
-
-      const response = await formulaire.getFormulaire(formulaireId);
+      const response = await formulaire.getFormulaire(req.params.formulaireId);
       return res.json(response);
     })
   );
@@ -155,9 +153,7 @@ module.exports = ({ formulaire }) => {
   router.get(
     "/offre/:offreId",
     tryCatch(async (req, res) => {
-      const offreId = req.params;
-
-      const response = await formulaire.getOffre(offreId);
+      const response = await formulaire.getOffre(req.params.offreId);
       return res.json(response);
     })
   );
@@ -187,9 +183,11 @@ module.exports = ({ formulaire }) => {
     "/",
     tryCatch(async (req, res) => {
       const { error } = formulaireValidationSchema.validate(req.body);
+
       if (error) {
-        return res.status(400).json({ status: "INVALID_INPUT", message: error.message });
+        return res.status(400).json({ status: "INPUT_VALIDATION_ERROR", message: error.message });
       }
+
       const response = await formulaire.updateFormulaire(req.body);
       return res.json(response);
     })
@@ -203,7 +201,7 @@ module.exports = ({ formulaire }) => {
    *    tags:
    *     - Offre
    *    requestBody:
-   *       description: L'objet JSON **doit** contenir les clés **username** et **password**.
+   *       description: L'objet JSON de l'offre
    *       required: true
    *       content:
    *         application/json:
@@ -220,21 +218,20 @@ module.exports = ({ formulaire }) => {
   router.post(
     "/:formulaireId/offre",
     tryCatch(async (req, res) => {
-      const formulaireId = req.params;
-
-      const exist = await formulaire.getFormulaire(formulaireId);
+      const exist = await formulaire.getFormulaire(req.params.formulaireId);
 
       if (!exist) {
-        return res.status(400).json({ status: "INVALID_RESSOURCE", message: "Formulaire does not exist" });
+        return res.status(400).json({ status: "INVALID_RESSOURCE", message: "Form does not exist" });
       }
 
       const { error } = offreValidationSchema.validate(req.body);
 
       if (error) {
-        return res.status(400).json({ status: "INVALID_INPUT", message: error.message });
+        return res.status(400).json({ status: "INPUT_VALIDATION_ERROR", message: error.message });
       }
 
-      const response = await formulaire.createOffre(formulaireId, req.body);
+      const response = await formulaire.createOffre(req.params.formulaireId, req.body);
+
       return res.json(response);
     })
   );
@@ -242,12 +239,12 @@ module.exports = ({ formulaire }) => {
   /**
    * @swagger
    * "/:formulaireId":
-   *  post:
+   *  patch:
    *    summary: Permet de modifier un formulaire
    *    tags:
-   *     - Offre
+   *     - Formulaire
    *    requestBody:
-   *       description: L'objet JSON **doit** contenir les clés **username** et **password**.
+   *       description: L'objet JSON du formulaire
    *       required: true
    *       content:
    *         application/json:
@@ -255,7 +252,7 @@ module.exports = ({ formulaire }) => {
    *           $ref: "#/components/schemas/formulaire"
    *    responses:
    *      200:
-   *        description: un objet contenant le formulaire dont l'offre a été créé
+   *        description: un objet contenant le formulaire modifié
    *        content:
    *          application/json:
    *            schema:
@@ -264,19 +261,32 @@ module.exports = ({ formulaire }) => {
   router.patch(
     "/:formulaireId",
     tryCatch(async (req, res) => {
-      const { body } = req;
-      return res.json(body);
+      const exist = await formulaire.getFormulaire(req.params.formulaireId);
+
+      if (!exist) {
+        return res.status(400).json({ status: "INVALID_RESSOURCE", message: "Formulaire does not exist" });
+      }
+
+      const { error } = formulaireValidationSchema.validate(req.body);
+
+      if (error) {
+        return res.status(400).json({ status: "INPUT_VALIDATION_ERROR", message: error.message });
+      }
+
+      const response = formulaire.updateFormulaire(req.params.formulaireId, req.body);
+
+      return res.json(response);
     })
   );
   /**
    * @swagger
    * "/:formulaireId/offre/:offreId":
-   *  post:
+   *  patch:
    *    summary: Permet de modifier une offre pour un formulaire donné
    *    tags:
    *     - Offre
    *    requestBody:
-   *       description: L'objet JSON **doit** contenir les clés **username** et **password**.
+   *       description: L'objet JSON de l'offre
    *       required: true
    *       content:
    *         application/json:
@@ -284,7 +294,7 @@ module.exports = ({ formulaire }) => {
    *           $ref: "#/components/schemas/offre"
    *    responses:
    *      200:
-   *        description: un objet contenant le formulaire dont l'offre a été créé
+   *        description: un objet contenant le formulaire dont l'offre a été modifié
    *        content:
    *          application/json:
    *            schema:
@@ -293,68 +303,79 @@ module.exports = ({ formulaire }) => {
   router.patch(
     "/:formulaireId/offre/:offreId",
     tryCatch(async (req, res) => {
-      const { body } = req;
-      return res.json(body);
+      const checkFormulaire = await formulaire.getFormulaire(req.params.formulaireId);
+
+      if (!checkFormulaire) {
+        return res.status(400).json({ status: "INVALID_RESSOURCE", message: "Form does not exist" });
+      }
+
+      const checkOffre = await formulaire.getOffre(req.params.offreId);
+
+      if (!checkOffre) {
+        return res.status(400).json({ status: "INVALID_RESSOURCE", message: "Offer does not exist" });
+      }
+
+      const { error } = formulaireValidationSchema.validate(req.body);
+
+      if (error) {
+        return res.status(400).json({ status: "INPUT_VALIDATION_ERROR", message: error.message });
+      }
+
+      const response = formulaire.updateOffre(req.params.offreId, req.body);
+
+      return res.json(response);
     })
   );
 
   /**
    * @swagger
    * "/offre/:offreId/cancel":
-   *  post:
+   *  put:
    *    summary: Permet de mettre à jour une offre au statut **Annulée**
    *    tags:
    *     - Offre
-   *    requestBody:
-   *       description: L'objet JSON **doit** contenir les clés **username** et **password**.
-   *       required: true
-   *       content:
-   *         application/json:
-   *          schema:
-   *           $ref: "#/components/schemas/offre"
    *    responses:
    *      200:
-   *        description: un objet contenant le formulaire dont l'offre a été créé
-   *        content:
-   *          application/json:
-   *            schema:
-   *              $ref: "#/components/schemas/formulaire"
+   *        description: le statut 200 (Success)
    */
   router.put(
     "/offre/:offreId/cancel",
     tryCatch(async (req, res) => {
-      const { body } = req;
-      return res.json(body);
+      const exist = formulaire.getOffre(req.params.offreId);
+
+      if (!exist) {
+        return res.status(400).json({ status: "INVALID_RESSOURCE", message: "Offre does not exist" });
+      }
+
+      await formulaire.cancelOffre(req.params.offreId);
+
+      return res.sendStatus(200);
     })
   );
 
   /**
    * @swagger
    * "/offre/:offreId/provided":
-   *  post:
+   *  put:
    *    summary: Permet de mettre à jour une offre au statut **Pourvue**
    *    tags:
    *     - Offre
-   *    requestBody:
-   *       description: L'objet JSON **doit** contenir les clés **username** et **password**.
-   *       required: true
-   *       content:
-   *         application/json:
-   *          schema:
-   *           $ref: "#/components/schemas/offre"
    *    responses:
    *      200:
-   *        description: un objet contenant le formulaire dont l'offre a été créé
-   *        content:
-   *          application/json:
-   *            schema:
-   *              $ref: "#/components/schemas/formulaire"
+   *        description: le statut 200 (Success)
    */
   router.put(
     "/offre/:offreId/provided",
     tryCatch(async (req, res) => {
-      const { body } = req;
-      return res.json(body);
+      const exist = formulaire.getOffre(req.params.offreId);
+
+      if (!exist) {
+        return res.status(400).json({ status: "INVALID_RESSOURCE", message: "Offre does not exist" });
+      }
+
+      await formulaire.provideOffre(req.params.offreId);
+
+      return res.sendStatus(200);
     })
   );
 
