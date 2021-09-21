@@ -2,6 +2,7 @@ const { program: cli } = require("commander");
 const { runScript } = require("./jobs/scriptWrapper");
 const { createUser } = require("./jobs/formulaire/createUser");
 const { getAllEvents } = require("./jobs/formulaire/getAllEvents");
+const { createUserApi } = require("./jobs/api/generator");
 const { resetPassword } = require("./jobs/formulaire/resetPassword");
 const { generateIndexes } = require("./jobs/indexes/generateIndexes");
 const { annuleFormulaire } = require("./jobs/formulaire/annuleFormulaire");
@@ -21,6 +22,13 @@ cli
   .description("Permet de créer un accès utilisateur à l'espace partenaire")
   .action((email, username, organization, scope, isAdmin) => {
     runScript(({ users }) => createUser(users, email, username, organization, scope, isAdmin));
+  });
+
+cli
+  .command("create-api-user <nom> <prenom> <email> <organization> <scope>")
+  .description("Permet de créer un accès utilisateur à l'espace partenaire")
+  .action((nom, prenom, email, organization, scope) => {
+    runScript(() => createUserApi(nom, prenom, email, organization, scope));
   });
 
 cli

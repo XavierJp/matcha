@@ -24,5 +24,6 @@ module.exports = {
     paginate: true,
   }),
   User: createModel("users", schema.usersSchema),
+  Credential: createModel("credentials", schema.credentialsSchema),
   Log: createModel("logs", schema.logSchema),
 };

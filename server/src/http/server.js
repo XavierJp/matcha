@@ -11,6 +11,7 @@ const logMiddleware = require("./middlewares/logMiddleware");
 const tryCatch = require("./middlewares/tryCatchMiddleware");
 const corsMiddleware = require("./middlewares/corsMiddleware");
 const errorMiddleware = require("./middlewares/errorMiddleware");
+const apiMiddleware = require("./middlewares/apiKeyAuthMiddleware");
 
 const user = require("./routes/user");
 const login = require("./routes/login");
@@ -77,7 +78,7 @@ module.exports = async (components) => {
   app.use("/api/formulaire", formulaire(components));
   app.use("/api/entreprise", entreprise());
   app.use("/api/es/search", esSearch());
-  app.use("/api/v1/formulaire", externalAPI(components));
+  app.use("/api/v1/formulaire", apiMiddleware, externalAPI(components));
 
   app.get(
     "/api",

@@ -1,9 +1,11 @@
-const config = require("config");
+const { Credential } = require("../../common/model");
 
-module.exports = (req, res, next) => {
+module.exports = async (req, res, next) => {
   const apiKey = req.get("API-Key");
-  if (!apiKey || apiKey !== config.apiKey) {
-    res.status(401).json({ error: "Unauthorized API Key" });
+  const exist = await Credential.exists({ apiKey });
+
+  if (!exist) {
+    res.status(401).json({ error: "Unauthorized" });
   } else {
     next();
   }
