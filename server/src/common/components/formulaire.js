@@ -1,4 +1,5 @@
 const { Formulaire } = require("../model");
+const { POURVUE, ANNULEE } = require("../constants");
 
 module.exports = () => {
   return {
@@ -36,7 +37,7 @@ module.exports = () => {
         { "offres._id": id_offre },
         {
           $set: {
-            "offres.$.statut": "Pourvue",
+            "offres.$.statut": POURVUE,
           },
         }
       );
@@ -47,7 +48,7 @@ module.exports = () => {
         { "offres._id": id_offre },
         {
           $set: {
-            "offres.$.statut": "Annulée",
+            "offres.$.statut": ANNULEE,
           },
         }
       );

@@ -1,16 +1,6 @@
 const generator = require("generate-password");
+const { KEY_GENERATOR_PARAMS } = require("../../constants");
 const { Schema } = require("mongoose");
-
-const parameters = {
-  length: 50,
-  strict: true,
-  numbers: true,
-  symbols: true,
-  lowercase: true,
-  uppercase: false,
-  exclude: '!"_%£$€*¨^=+~ß(){}[]§;,./:`@#&|<>?"',
-  excludeSimilarCharacters: true,
-};
 
 module.exports = new Schema(
   {
@@ -36,9 +26,13 @@ module.exports = new Schema(
     },
     apiKey: {
       type: String,
-      default: () => `mna-${generator.generate(parameters)}`,
+      default: () => `mna-${generator.generate(KEY_GENERATOR_PARAMS)}`,
       index: true,
       required: true,
+    },
+    actif: {
+      type: Boolean,
+      default: true,
     },
   },
   { timestamps: true }
