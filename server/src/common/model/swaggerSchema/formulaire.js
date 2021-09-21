@@ -91,7 +91,7 @@ module.exports = {
         description: "Origine/organisme lié au formulaire",
         required: true,
       },
-      offres: { required: false, ...offre },
+      offres: { ...offre, description: "Liste de(s) offre(s) rattachée(s)" },
     },
   },
 };

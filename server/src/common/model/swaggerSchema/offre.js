@@ -1,7 +1,7 @@
 module.exports = {
   offre: {
     type: "array",
-    required: true,
+    default: [],
     items: {
       type: "object",
       properties: {
@@ -52,6 +52,12 @@ module.exports = {
           default: "Active",
           enum: ["Active", "Annulée", "Pourvue"],
           description: "Statut de l'offre",
+        },
+        type: {
+          type: "string",
+          default: "Apprentissage",
+          enum: ["Apprentissage", "Professionnalisation"],
+          description: "Type de contrat",
         },
       },
     },
