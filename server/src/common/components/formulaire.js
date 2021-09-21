@@ -14,14 +14,14 @@ module.exports = () => {
         },
       };
     },
-    getFormulaire: async (id_form) => Formulaire.findOne({ id_form }),
-    createFormulaire: async (payload) => Formulaire.create(payload),
-    updateFormulaire: async (id_form, payload) => Formulaire.updateOne({ id_form }, payload, { new: true }),
-    deleteFormulaire: async (id_form) => Formulaire.deleteOne({ id_form }),
-    getOffre: async (id) => Formulaire.findOne({ "offres._id": id }),
-    createOffre: async (id_form, payload) =>
+    getFormulaire: (id_form) => Formulaire.findOne({ id_form }),
+    createFormulaire: (payload) => Formulaire.create(payload),
+    updateFormulaire: (id_form, payload) => Formulaire.updateOne({ id_form }, payload, { new: true }),
+    deleteFormulaire: (id_form) => Formulaire.deleteOne({ id_form }),
+    getOffre: (id) => Formulaire.findOne({ "offres._id": id }),
+    createOffre: (id_form, payload) =>
       Formulaire.findOneAndUpdate({ id_form }, { $push: { offres: payload } }, { new: true }),
-    updateOffre: async (id_offre, payload) =>
+    updateOffre: (id_offre, payload) =>
       Formulaire.findOneAndUpdate(
         { "offres._id": id_offre },
         {
