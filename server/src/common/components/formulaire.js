@@ -14,29 +14,15 @@ module.exports = () => {
         },
       };
     },
-    getFormulaire: async (id_form) => {
-      const form = await Formulaire.findOne({ id_form });
-      return form;
-    },
-    createFormulaire: async (payload) => {
-      const form = await Formulaire.create(payload);
-      return form;
-    },
-    updateFormulaire: async (id_form, payload) => {
-      const form = await Formulaire.updateOne({ id_form }, payload, { new: true });
-      return form;
-    },
-    deleteFormulaire: async (id_form) => await Formulaire.deleteOne({ id_form }),
-    getOffre: async (id) => {
-      const form = Formulaire.findOne({ "offres._id": id });
-      return form;
-    },
-    createOffre: async (id_form, payload) => {
-      const form = await Formulaire.findOneAndUpdate({ id_form }, { $push: { offres: payload } }, { new: true });
-      return form;
-    },
-    updateOffre: async (id_offre, payload) => {
-      const form = await Formulaire.findOneAndUpdate(
+    getFormulaire: async (id_form) => Formulaire.findOne({ id_form }),
+    createFormulaire: async (payload) => Formulaire.create(payload),
+    updateFormulaire: async (id_form, payload) => Formulaire.updateOne({ id_form }, payload, { new: true }),
+    deleteFormulaire: async (id_form) => Formulaire.deleteOne({ id_form }),
+    getOffre: async (id) => Formulaire.findOne({ "offres._id": id }),
+    createOffre: async (id_form, payload) =>
+      Formulaire.findOneAndUpdate({ id_form }, { $push: { offres: payload } }, { new: true }),
+    updateOffre: async (id_offre, payload) =>
+      Formulaire.findOneAndUpdate(
         { "offres._id": id_offre },
         {
           $set: {
@@ -44,9 +30,7 @@ module.exports = () => {
           },
         },
         { new: true }
-      );
-      return form;
-    },
+      ),
     provideOffre: async (id_offre) => {
       await Formulaire.findOneAndUpdate(
         { "offres._id": id_offre },
@@ -54,8 +38,7 @@ module.exports = () => {
           $set: {
             "offres.$.statut": "Pourvue",
           },
-        },
-        { new: true }
+        }
       );
       return true;
     },
@@ -66,8 +49,7 @@ module.exports = () => {
           $set: {
             "offres.$.statut": "Annulée",
           },
-        },
-        { new: true }
+        }
       );
       return true;
     },

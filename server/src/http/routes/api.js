@@ -18,6 +18,15 @@ DELETE /api/v1/:formulaireId/:offreId
 module.exports = ({ formulaire }) => {
   const router = express.Router();
 
+  const searchValidationSchema = Joi.object({
+    raison_sociale: Joi.string(),
+    siret: Joi.string().length(14),
+    adresse: Joi.string(),
+    nom: Joi.string(),
+    prenom: Joi.string(),
+    email: Joi.string().email(),
+  });
+
   const formulaireValidationSchema = Joi.object({
     raison_sociale: Joi.string().required(),
     siret: Joi.string().length(14).required(),
@@ -77,6 +86,12 @@ module.exports = ({ formulaire }) => {
   router.get(
     "/",
     tryCatch(async (req, res) => {
+      const { error } = searchValidationSchema.validate(req.query, { abortEarly: false });
+
+      if (error) {
+        return res.status(400).json({ status: "INPUT_VALIDATION_ERROR", message: error.message });
+      }
+
       let qs = req.query;
       const query = qs && qs.query ? JSON.parse(qs.query) : {};
       const page = qs && qs.page ? qs.page : 1;
@@ -182,7 +197,7 @@ module.exports = ({ formulaire }) => {
   router.post(
     "/",
     tryCatch(async (req, res) => {
-      const { error } = formulaireValidationSchema.validate(req.body);
+      const { error } = formulaireValidationSchema.validate(req.body, { abortEarly: false });
 
       if (error) {
         return res.status(400).json({ status: "INPUT_VALIDATION_ERROR", message: error.message });
@@ -224,7 +239,7 @@ module.exports = ({ formulaire }) => {
         return res.status(400).json({ status: "INVALID_RESSOURCE", message: "Form does not exist" });
       }
 
-      const { error } = offreValidationSchema.validate(req.body);
+      const { error } = offreValidationSchema.validate(req.body, { abortEarly: false });
 
       if (error) {
         return res.status(400).json({ status: "INPUT_VALIDATION_ERROR", message: error.message });
@@ -239,7 +254,7 @@ module.exports = ({ formulaire }) => {
   /**
    * @swagger
    * "/:formulaireId":
-   *  patch:
+   *  put:
    *    summary: Permet de modifier un formulaire
    *    tags:
    *     - Formulaire
@@ -258,7 +273,7 @@ module.exports = ({ formulaire }) => {
    *            schema:
    *              $ref: "#/components/schemas/formulaire"
    */
-  router.patch(
+  router.put(
     "/:formulaireId",
     tryCatch(async (req, res) => {
       const exist = await formulaire.getFormulaire(req.params.formulaireId);
@@ -267,7 +282,7 @@ module.exports = ({ formulaire }) => {
         return res.status(400).json({ status: "INVALID_RESSOURCE", message: "Formulaire does not exist" });
       }
 
-      const { error } = formulaireValidationSchema.validate(req.body);
+      const { error } = formulaireValidationSchema.validate(req.body, { abortEarly: false });
 
       if (error) {
         return res.status(400).json({ status: "INPUT_VALIDATION_ERROR", message: error.message });
@@ -281,7 +296,7 @@ module.exports = ({ formulaire }) => {
   /**
    * @swagger
    * "/:formulaireId/offre/:offreId":
-   *  patch:
+   *  put:
    *    summary: Permet de modifier une offre pour un formulaire donné
    *    tags:
    *     - Offre
@@ -300,7 +315,7 @@ module.exports = ({ formulaire }) => {
    *            schema:
    *              $ref: "#/components/schemas/formulaire"
    */
-  router.patch(
+  router.put(
     "/:formulaireId/offre/:offreId",
     tryCatch(async (req, res) => {
       const checkFormulaire = await formulaire.getFormulaire(req.params.formulaireId);
@@ -315,7 +330,7 @@ module.exports = ({ formulaire }) => {
         return res.status(400).json({ status: "INVALID_RESSOURCE", message: "Offer does not exist" });
       }
 
-      const { error } = formulaireValidationSchema.validate(req.body);
+      const { error } = formulaireValidationSchema.validate(req.body, { abortEarly: false });
 
       if (error) {
         return res.status(400).json({ status: "INPUT_VALIDATION_ERROR", message: error.message });
