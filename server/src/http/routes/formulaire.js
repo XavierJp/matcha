@@ -64,11 +64,9 @@ module.exports = ({ mail, formulaire }) => {
   router.post(
     "/",
     tryCatch(async (req, res) => {
-      const form = req.body;
+      const response = await formulaire.createFormulaire(req.body);
 
-      const newFormulaire = await formulaire.createForm(form);
-
-      let { _id, id_form, raison_sociale, email } = newFormulaire;
+      let { _id, id_form, raison_sociale, email } = response;
 
       const mailBody = {
         id_form,
@@ -99,7 +97,7 @@ module.exports = ({ mail, formulaire }) => {
 
       await Formulaire.findByIdAndUpdate(_id, { $push: { mailing: message } });
 
-      return res.json(newFormulaire);
+      return res.json(response);
     })
   );
 
