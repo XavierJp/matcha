@@ -20,7 +20,7 @@ module.exports = ({ formulaire }) => {
 
   const searchValidationSchema = Joi.object({
     raison_sociale: Joi.string(),
-    siret: Joi.string().length(14),
+    siret: Joi.string().pattern(/^([0-9]{9}|[0-9]{14})$/),
     adresse: Joi.string(),
     nom: Joi.string(),
     prenom: Joi.string(),
@@ -29,7 +29,9 @@ module.exports = ({ formulaire }) => {
 
   const formulaireValidationSchema = Joi.object({
     raison_sociale: Joi.string().required(),
-    siret: Joi.string().length(14).required(),
+    siret: Joi.string()
+      .pattern(/^([0-9]{9}|[0-9]{14})$/)
+      .required(),
     adresse: Joi.string().required(),
     coordonnees_geo: Joi.string()
       .regex(/^(-?\d+(\.\d+)?),\s*(-?\d+(\.\d+)?)$/)
