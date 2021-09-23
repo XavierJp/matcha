@@ -82,7 +82,9 @@ module.exports = ({ mail, formulaire }) => {
 
       const payload = mail.getEmailBody(mailBody);
 
-      const { body: result } = await mail.sendmail(payload);
+      const { body } = await mail.sendmail(payload);
+
+      const result = JSON.parse(body);
 
       const message = {
         campagne: "matcha-nouveau-formulaire",
