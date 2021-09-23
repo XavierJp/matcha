@@ -33,6 +33,7 @@ import {
   Link as ChakraLink,
   AlertIcon,
   Alert,
+  AlertDescription,
 } from '@chakra-ui/react'
 
 import { getFormulaire, postFormulaire, postOffre, putFormulaire, putOffre } from '../../api'
@@ -360,6 +361,15 @@ const Formulaire = (props) => {
                   </BreadcrumbItem>
                 </Breadcrumb>
               </Box>
+            )}
+
+            {formState._id && formState?.origine?.includes('akto') && (
+              <Alert variant='akto' mt={5}>
+                <AlertIcon />
+                <AlertDescription>
+                  Ce service vous est proposé en partenariat avec AKTO, votre opérateur de compétences.
+                </AlertDescription>
+              </Alert>
             )}
 
             {readOnlyMode ? (
