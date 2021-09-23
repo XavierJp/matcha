@@ -1,7 +1,7 @@
 const got = require("got");
 const config = require("config");
 const mailRules = require("./mail.rules");
-const { Transactional } = require("../model");
+const { Transactional, Formulaire } = require("../model");
 
 module.exports = () => {
   return {
@@ -173,5 +173,7 @@ module.exports = () => {
       }
     },
     getRulesFromEvent: (event) => mailRules.find((rule) => rule.event === event),
+    logMail: ({ code, message, messageId }, campagne, _id) =>
+      Formulaire.findByIdAndUpdate(_id, { $push: { mailing: { campagne, code, message, messageId } } }),
   };
 };

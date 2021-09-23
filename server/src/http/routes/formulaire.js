@@ -2,7 +2,6 @@ const express = require("express");
 const { Formulaire } = require("../../common/model");
 const tryCatch = require("../middlewares/tryCatchMiddleware");
 const { getElasticInstance } = require("../../common/esClient");
-const logger = require("../../common/logger");
 const config = require("config");
 
 const esClient = getElasticInstance();
@@ -86,18 +85,8 @@ module.exports = ({ mail, formulaire }) => {
 
       const result = JSON.parse(body);
 
-      const message = {
-        campagne: "matcha-nouveau-formulaire",
-        code: result.code ?? null,
-        message: result.message ?? null,
-        messageId: result.messageId ?? null,
-      };
-
-      if (!result.messageId) {
-        logger.info(`error : ${message.code} —— ${message.message} — ${email}`);
-      }
-
-      await Formulaire.findByIdAndUpdate(_id, { $push: { mailing: message } });
+      let campagne = "matcha-nouveau-formulaire";
+      await mail.logMail(result, campagne, _id);
 
       return res.json(response);
     })

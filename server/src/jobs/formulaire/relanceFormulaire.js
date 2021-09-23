@@ -63,22 +63,12 @@ const relanceFormulaire = async (mail) => {
     };
 
     const payload = mail.getEmailBody(mailBody);
-    const response = await mail.sendmail(payload);
-    const result = JSON.parse(response.body);
+    const { body } = await mail.sendmail(payload);
 
-    const message = {
-      campagne: "matcha-relance-expiration",
-      code: result.code ?? null,
-      message: result.message ?? null,
-      messageId: result.messageId ?? null,
-    };
+    const result = JSON.parse(body);
 
-    if (!result.messageId) {
-      logger.info(`error : ${message.code} —— ${message.message} — ${email}`);
-      return;
-    }
-
-    await Formulaire.findByIdAndUpdate(_id, { $push: { mailing: message } });
+    let campagne = "matcha-relance-expiration";
+    await mail.logMail(result, campagne, _id);
 
     await asyncForEach(formulaire.offres, async (offre) => {
       // update record using MongoDB API to avoid timestamp automatic update
