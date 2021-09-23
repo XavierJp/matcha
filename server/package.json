@@ -57,7 +57,10 @@
     "passport-http": "0.3.0",
     "passport-jwt": "4.0.0",
     "passport-local": "1.0.0",
+    "require-all": "3.0.0",
     "sha512crypt-node": "0.1.0",
+    "swagger-jsdoc": "6.1.0",
+    "swagger-ui-express": "4.1.6",
     "xlsx": "0.16.1"
   },
   "engines": {

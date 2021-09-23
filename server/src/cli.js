@@ -2,6 +2,9 @@ const { program: cli } = require("commander");
 const { runScript } = require("./jobs/scriptWrapper");
 const { createUser } = require("./jobs/formulaire/createUser");
 const { getAllEvents } = require("./jobs/formulaire/getAllEvents");
+const { createApiUser } = require("./jobs/api/createApiUser");
+const { resetApiKey } = require("./jobs/api/resetApiKey");
+const { disableApiUser } = require("./jobs/api/disableApiUser");
 const { resetPassword } = require("./jobs/formulaire/resetPassword");
 const { generateIndexes } = require("./jobs/indexes/generateIndexes");
 const { annuleFormulaire } = require("./jobs/formulaire/annuleFormulaire");
@@ -21,6 +24,27 @@ cli
   .description("Permet de créer un accès utilisateur à l'espace partenaire")
   .action((email, username, organization, scope, isAdmin) => {
     runScript(({ users }) => createUser(users, email, username, organization, scope, isAdmin));
+  });
+
+cli
+  .command("create-api-user <nom> <prenom> <email> <organization> <scope>")
+  .description("Permet de créer un utilisateur ayant accès à l'API")
+  .action((nom, prenom, email, organization, scope) => {
+    runScript(() => createApiUser(nom, prenom, email, organization, scope));
+  });
+
+cli
+  .command("reset-api-user <email>")
+  .description("Permet de réinitialiser la clé API d'un utilisateur")
+  .action((email) => {
+    runScript(({ users }) => resetApiKey(users, email));
+  });
+
+cli
+  .command("disable-api-user <email> [state]")
+  .description("Permet de d'activer/désactiver l'accès d'un utilisateur à l'API")
+  .action((email, state) => {
+    runScript(() => disableApiUser(email, state));
   });
 
 cli
