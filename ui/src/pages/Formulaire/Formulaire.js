@@ -138,7 +138,7 @@ const FormulaireLectureSeul = ({ formState, buttonSize, setEditionMode }) => {
         </GridItem>
         <GridItem>
           <Heading size='md' pb={6}>
-            Information de contact
+            Informations de contact
           </Heading>
           <Grid templateRows='repeat(4, 1fr)' gap={4}>
             <Flex direction={['column', 'row']}>
