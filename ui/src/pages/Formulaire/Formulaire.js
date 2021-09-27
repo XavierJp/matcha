@@ -35,7 +35,7 @@ import {
 
 import { getFormulaire, postFormulaire, postOffre, putFormulaire, putOffre } from '../../api'
 import { Layout, AdresseAutocomplete, AnimationContainer } from '../../components'
-import { ArrowDropRightLine } from '../../theme/components/icons/'
+import { ArrowDropRightLine } from '../../theme/components/icons'
 import addOfferImage from '../../assets/images/add-offer.svg'
 
 import ConfirmationSuppression from './components/ConfirmationSuppression'

@@ -23,10 +23,10 @@ import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai'
 import { IoIosAddCircleOutline } from 'react-icons/io'
 
 import { Layout } from '../../components'
-import { ArrowDropRightLine } from '../../theme/components/icons/'
+import { ArrowDropRightLine } from '../../theme/components/icons'
 import { useEffect, useState } from 'react'
 import { createUser, deleteUser, getUsers, updateUser } from '../../api'
-import AjouterUtilisateur from './AjouterUtilisateur'
+import AjouterUtilisateur from './components/AjouterUtilisateur'
 
 const MyTable = ({ users, editUser, removeUser }) => {
   if (users.length < 0) return <div>Chargement en cours</div>

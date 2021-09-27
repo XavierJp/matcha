@@ -14,8 +14,8 @@ import {
   Text,
 } from '@chakra-ui/react'
 
-import useAuth from '../../common/hooks/useAuth'
-import { _post } from '../../common/httpClient'
+import useAuth from '../../../common/hooks/useAuth'
+import { _post } from '../../../common/httpClient'
 
 const LoginPage = () => {
   const [, setAuth] = useAuth()
