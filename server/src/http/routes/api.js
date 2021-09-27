@@ -114,7 +114,7 @@ module.exports = ({ formulaire }) => {
    *     - Formulaire
    *    parameters:
    *       - in: id_form
-   *         name: id_form
+   *         name: formulaireId
    *         required: true
    *         schema:
    *           type: string
@@ -144,12 +144,12 @@ module.exports = ({ formulaire }) => {
    * @swagger
    * "/offre/:offreId":
    *  get:
-   *    summary: Permet de récupérer une offre à partir de son identifiant mongoDB
+   *    summary: Permet de récupérer le formulaire contant l'offre recherché à partir de son identifiant mongoDB
    *    tags:
    *     - Offre
    *    parameters:
-   *       - in: id
-   *         name: id
+   *       - in: _id
+   *         name: offreId
    *         required: true
    *         schema:
    *           type: string
@@ -217,6 +217,10 @@ module.exports = ({ formulaire }) => {
    *    summary: Permet de créer une offre pour un formulaire donné
    *    tags:
    *     - Offre
+   *    parameters:
+   *       - in: id_form
+   *         name: formulaireId
+   *         required: true
    *    requestBody:
    *       description: L'objet JSON de l'offre
    *       required: true
@@ -260,6 +264,10 @@ module.exports = ({ formulaire }) => {
    *    summary: Permet de modifier un formulaire
    *    tags:
    *     - Formulaire
+   *    parameters:
+   *       - in: id_form
+   *         name: formulaireId
+   *         required: true
    *    requestBody:
    *       description: L'objet JSON du formulaire
    *       required: true
@@ -302,6 +310,10 @@ module.exports = ({ formulaire }) => {
    *    summary: Permet de modifier une offre pour un formulaire donné
    *    tags:
    *     - Offre
+   *    parameters:
+   *       - in: _id
+   *         name: offreId
+   *         required: true
    *    requestBody:
    *       description: L'objet JSON de l'offre
    *       required: true
@@ -351,6 +363,10 @@ module.exports = ({ formulaire }) => {
    *    summary: Permet de mettre à jour une offre au statut **Annulée**
    *    tags:
    *     - Offre
+   *    parameters:
+   *       - in: _id
+   *         name: offreId
+   *         required: true
    *    responses:
    *      200:
    *        description: le statut 200 (Success)
@@ -377,6 +393,10 @@ module.exports = ({ formulaire }) => {
    *    summary: Permet de mettre à jour une offre au statut **Pourvue**
    *    tags:
    *     - Offre
+   *    parameters:
+   *       - in: _id
+   *         name: offreId
+   *         required: true
    *    responses:
    *      200:
    *        description: le statut 200 (Success)
@@ -391,6 +411,36 @@ module.exports = ({ formulaire }) => {
       }
 
       await formulaire.provideOffre(req.params.offreId);
+
+      return res.sendStatus(200);
+    })
+  );
+
+  /**
+   * @swagger
+   * "/offre/:offreId/extend":
+   *  put:
+   *    summary: Permet de prolonger la visibilité d'une offre d'un mois
+   *    tags:
+   *     - Offre
+   *    parameters:
+   *       - in: _id
+   *         name: offreId
+   *         required: true
+   *    responses:
+   *      200:
+   *        description: le statut 200 (Success)
+   */
+  router.put(
+    "/offre/:offreId/extend",
+    tryCatch(async (req, res) => {
+      const exist = formulaire.getOffre(req.params.offreId);
+
+      if (!exist) {
+        return res.status(400).json({ status: "INVALID_RESSOURCE", message: "Offre does not exist" });
+      }
+
+      await formulaire.extendOffre(req.params.offreId);
 
       return res.sendStatus(200);
     })

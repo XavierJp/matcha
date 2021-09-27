@@ -1,5 +1,6 @@
 const { Formulaire } = require("../model");
 const { POURVUE, ANNULEE } = require("../constants");
+const moment = require("moment");
 
 module.exports = () => {
   return {
@@ -49,6 +50,17 @@ module.exports = () => {
         {
           $set: {
             "offres.$.statut": ANNULEE,
+          },
+        }
+      );
+      return true;
+    },
+    extendOffre: async (id_offre) => {
+      await Formulaire.findOneAndUpdate(
+        { "offres._id": id_offre },
+        {
+          $set: {
+            "offres.$.date_expiration": moment().add(1, "months").format("YYYY-MM-DD"),
           },
         }
       );
