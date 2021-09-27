@@ -19,10 +19,14 @@ import { RiAccountCircleLine } from 'react-icons/ri'
 
 import logo from '../assets/images/logo.svg'
 import logoMinistere from '../assets/images/logo-ministere.svg'
+import LogoAkto from '../assets/images/akto'
 import useAuth from '../common/hooks/useAuth'
 import { useHistory } from 'react-router'
+import { useContext } from 'react'
+import { LogoContext } from '../contextLogo'
 
 export default () => {
+  const { organisation } = useContext(LogoContext)
   const [auth, setAuth] = useAuth()
   const history = useHistory()
 
@@ -36,9 +40,9 @@ export default () => {
       )}
       <Container maxW='container.xl'>
         <Flex justifyContent='flex-start' alignItems='center'>
-          <Image src={logoMinistere} alt='logo ministere' />
-          <Box pr={10} />
-          <Image display={['none', 'flex']} src={logo} alt='logo matcha' />
+          <Image src={logoMinistere} alt='logo ministere' mr={5} />
+          <Image display={['none', 'flex']} src={logo} alt='logo matcha' mr={5} />
+          {organisation?.includes('akto') && <LogoAkto display={['none', 'flex']} w='100px' h={6} />}
           <Spacer />
           {history.location.pathname === '/' && auth.sub === 'anonymous' && (
             <Button

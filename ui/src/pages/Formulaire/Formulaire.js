@@ -2,7 +2,7 @@ import { useParams, useHistory } from 'react-router-dom'
 import { IoIosAddCircleOutline } from 'react-icons/io'
 import { Formik, Form, useField, Field } from 'formik'
 import { AiOutlineEdit } from 'react-icons/ai'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import * as Yup from 'yup'
 import {
@@ -28,6 +28,7 @@ import {
   useToast,
   useBreakpointValue,
   Image,
+  Icon,
   Badge,
   Center,
   Link as ChakraLink,
@@ -43,6 +44,7 @@ import ConfirmationSuppression from './ConfirmationSuppression'
 import addOfferImage from '../../assets/images/add-offer.svg'
 import AjouterVoeux from './AjouterVoeux'
 import ListeVoeux from './ListeVoeux'
+import { LogoContext } from '../../contextLogo'
 
 const CustomInput = (props) => {
   const [field, meta] = useField(props)
@@ -183,6 +185,7 @@ const Formulaire = (props) => {
   const { id_form, origine } = useParams()
   const toast = useToast()
   const history = useHistory()
+  const { setOrganisation } = useContext(LogoContext)
 
   const hasActiveOffers = offersList.filter((x) => x.statut === 'Active')
 
@@ -193,6 +196,7 @@ const Formulaire = (props) => {
       getFormulaire(id_form)
         .then((result) => {
           setFormState(result.data)
+          setOrganisation(result.data.origine)
           setOffersList(result.data.offres)
         })
         .catch(() => {
@@ -361,15 +365,6 @@ const Formulaire = (props) => {
                   </BreadcrumbItem>
                 </Breadcrumb>
               </Box>
-            )}
-
-            {formState._id && formState?.origine?.includes('akto') && (
-              <Alert variant='akto' mt={5}>
-                <AlertIcon />
-                <AlertDescription>
-                  Ce service vous est proposé en partenariat avec AKTO, votre opérateur de compétences.
-                </AlertDescription>
-              </Alert>
             )}
 
             {readOnlyMode ? (
