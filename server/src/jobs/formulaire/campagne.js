@@ -21,6 +21,7 @@ const launch = async (mail) => {
       const params = {
         URL: `${config.publicUrl}/formulaire/${id_form}`,
       };
+
       const body = {
         sender: {
           name: "Ministère du Travail",
@@ -42,19 +43,11 @@ const launch = async (mail) => {
         params: params,
       };
 
-      const { body: result } = await mail.sendmail(body);
-      const message = {
-        campagne,
-        code: result.code ?? null,
-        message: result.message ?? null,
-        messageId: result.messageId ?? null,
-      };
+      const { body: res } = await mail.sendmail(body);
 
-      if (!result.messageId) {
-        logger.info(`error : ${message.code} —— ${message.message} — ${email}`);
-      }
+      const result = JSON.parse(res);
 
-      await Formulaire.findByIdAndUpdate(_id, { $push: { mailing: message } });
+      await mail.logMail(result, campagne, _id);
     }
   );
 };

@@ -59,6 +59,7 @@ module.exports = new Schema(
       type: String,
       default: () => nanoid(),
       description: "Identifiant de formulaire unique",
+      index: true,
     },
     raison_sociale: {
       type: String,

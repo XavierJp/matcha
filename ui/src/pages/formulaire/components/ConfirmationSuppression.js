@@ -14,8 +14,8 @@ import {
 
 import 'moment/locale/fr'
 
-import { ArrowRightLine, Close } from '../../theme/components/icons'
-import { putOffre } from '../../api'
+import { ArrowRightLine, Close } from '../../../theme/components/icons'
+import { putOffre } from '../../../api'
 
 export default (props) => {
   let { isOpen, onClose, currentOffer, setOffersList } = props

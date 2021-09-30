@@ -1,8 +1,6 @@
 const express = require("express");
-const { Formulaire } = require("../../common/model");
 const tryCatch = require("../middlewares/tryCatchMiddleware");
 const { getElasticInstance } = require("../../common/esClient");
-const logger = require("../../common/logger");
 const config = require("config");
 
 const esClient = getElasticInstance();
@@ -21,23 +19,9 @@ module.exports = ({ mail, formulaire }) => {
       const page = qs && qs.page ? qs.page : 1;
       const limit = qs && qs.limit ? parseInt(qs.limit, 10) : 100;
 
-      const result = await Formulaire.paginate(query, { page, limit, lean: true });
+      const result = await formulaire.getFormulaires(query, { page, limit });
 
-      const stats = {
-        nbFormulaires: result.total,
-        nbOffres: result.docs.reduce((acc, form) => (acc += form.offres.length), 0),
-      };
-
-      return res.json({
-        stats,
-        data: result.docs,
-        pagination: {
-          page: result.page,
-          result_per_page: limit,
-          number_of_page: result.pages,
-          total: result.total,
-        },
-      });
+      return res.json(result);
     })
   );
 
@@ -47,8 +31,7 @@ module.exports = ({ mail, formulaire }) => {
   router.get(
     "/:id_form",
     tryCatch(async (req, res) => {
-      const { id_form } = req.params;
-      let result = await Formulaire.findOne({ id_form }).lean();
+      let result = await formulaire.getFormulaire(req.params.id_form);
 
       if (!result) {
         return res.sendStatus(401);
@@ -64,11 +47,8 @@ module.exports = ({ mail, formulaire }) => {
   router.post(
     "/",
     tryCatch(async (req, res) => {
-      const form = req.body;
-
-      const newFormulaire = await formulaire.createForm(form);
-
-      let { _id, id_form, raison_sociale, email } = newFormulaire;
+      const response = await formulaire.createFormulaire(req.body);
+      let { _id, id_form, raison_sociale, email } = response;
 
       const mailBody = {
         email,
@@ -83,22 +63,14 @@ module.exports = ({ mail, formulaire }) => {
 
       const payload = mail.getEmailBody(mailBody);
 
-      const { body: result } = await mail.sendmail(payload);
+      const { body } = await mail.sendmail(payload);
 
-      const message = {
-        campagne: "matcha-nouveau-formulaire",
-        code: result.code ?? null,
-        message: result.message ?? null,
-        messageId: result.messageId ?? null,
-      };
+      const result = JSON.parse(body);
 
-      if (!result.messageId) {
-        logger.info(`error : ${message.code} —— ${message.message} — ${email}`);
-      }
+      let campagne = "matcha-nouveau-formulaire";
+      await mail.logMail(result, campagne, _id);
 
-      await Formulaire.findByIdAndUpdate(_id, { $push: { mailing: message } });
-
-      return res.json(newFormulaire);
+      return res.json(response);
     })
   );
 
@@ -108,11 +80,7 @@ module.exports = ({ mail, formulaire }) => {
   router.put(
     "/:id_form",
     tryCatch(async (req, res) => {
-      const { id_form } = req.params;
-      const form = req.body;
-
-      const result = await Formulaire.findOneAndUpdate({ id_form }, form, { new: true });
-
+      const result = await formulaire.updateFormulaire(req.params.id_form, req.body);
       return res.json(result);
     })
   );
@@ -123,14 +91,13 @@ module.exports = ({ mail, formulaire }) => {
   router.get(
     "/offre/:id_offre",
     tryCatch(async (req, res) => {
-      const { id_offre } = req.params;
-      let result = await Formulaire.findOne({ "offres._id": id_offre });
+      let result = await formulaire.getOffre(req.params.id_offre);
 
       if (!result) {
         return res.status(400).json({ error: true, message: "Not found" });
       }
 
-      result.offres = result.offres.filter((x) => x._id == id_offre);
+      result.offres = result.offres.filter((x) => x._id == req.params.id_offre);
 
       result.events = undefined;
       result.mailing = undefined;
@@ -146,11 +113,7 @@ module.exports = ({ mail, formulaire }) => {
   router.post(
     "/:id_form/offre",
     tryCatch(async (req, res) => {
-      const { id_form } = req.params;
-      const offre = req.body;
-
-      const result = await Formulaire.findOneAndUpdate({ id_form }, { $push: { offres: offre } }, { new: true });
-
+      const result = await formulaire.createOffre(req.params.id_form, req.body);
       return res.json(result);
     })
   );
@@ -161,37 +124,7 @@ module.exports = ({ mail, formulaire }) => {
   router.put(
     "/offre/:id_offre",
     tryCatch(async (req, res) => {
-      const { id_offre } = req.params;
-      const {
-        libelle,
-        romes,
-        niveau,
-        date_debut_apprentissage,
-        description,
-        date_creation,
-        date_expiration,
-        statut,
-        type,
-      } = req.body;
-
-      const result = await Formulaire.findOneAndUpdate(
-        { "offres._id": id_offre },
-        {
-          $set: {
-            "offres.$.libelle": libelle,
-            "offres.$.romes": romes,
-            "offres.$.niveau": niveau,
-            "offres.$.date_debut_apprentissage": date_debut_apprentissage,
-            "offres.$.description": description,
-            "offres.$.date_creation": date_creation,
-            "offres.$.date_expiration": date_expiration,
-            "offres.$.statut": statut,
-            "offres.$.type": type,
-          },
-        },
-        { new: true }
-      );
-
+      const result = await formulaire.updateOffre(req.params.id_offre, req.body);
       return res.json(result);
     })
   );

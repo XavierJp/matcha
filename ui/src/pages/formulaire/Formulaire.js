@@ -2,13 +2,12 @@ import { useParams, useHistory } from 'react-router-dom'
 import { IoIosAddCircleOutline } from 'react-icons/io'
 import { Formik, Form, useField, Field } from 'formik'
 import { AiOutlineEdit } from 'react-icons/ai'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import * as Yup from 'yup'
 import {
   Button,
   Box,
-  Input,
   FormLabel,
   FormControl,
   FormHelperText,
@@ -28,7 +27,6 @@ import {
   useToast,
   useBreakpointValue,
   Image,
-  Badge,
   Center,
   Link as ChakraLink,
   AlertIcon,
@@ -37,139 +35,18 @@ import {
 
 import { getFormulaire, postFormulaire, postOffre, putFormulaire, putOffre } from '../../api'
 import { Layout, AdresseAutocomplete, AnimationContainer } from '../../components'
-import { ArrowDropRightLine } from '../../theme/components/icons/'
-import ConfirmationSuppression from './ConfirmationSuppression'
+import { ArrowDropRightLine } from '../../theme/components/icons'
 import addOfferImage from '../../assets/images/add-offer.svg'
-import AjouterVoeux from './AjouterVoeux'
-import ListeVoeux from './ListeVoeux'
 
-const CustomInput = (props) => {
-  const [field, meta] = useField(props)
-  return (
-    <Box pb='5'>
-      <FormControl isInvalid={meta.error && meta.touched} isRequired>
-        <FormLabel>{props.label}</FormLabel>
-        <Input {...field} {...props} />
-        {props.helper && <FormHelperText>{props.helper}</FormHelperText>}
-        <FormErrorMessage>{meta.error}</FormErrorMessage>
-      </FormControl>
-    </Box>
-  )
-}
+import ConfirmationSuppression from './components/ConfirmationSuppression'
+import FormulaireLectureSeul from './components/FormulaireLectureSeul'
+import AjouterVoeux from './components/AjouterVoeux'
+import CustomInput from './components/CustomInput'
+import ListeVoeux from './components/ListeVoeux'
 
-const FormulaireLectureSeul = ({ formState, buttonSize, setEditionMode }) => {
-  const gridTemplate = useBreakpointValue(['1fr', formState.mandataire ? 'repeat(3, 1fr)' : 'repeat(2, 1fr)'])
-  return (
-    <>
-      <Flex py={6} alignItems='center'>
-        <Box as='h2' fontSize={['sm', '3xl']} fontWeight='700' color='grey.800' maxW={[100, 'none']}>
-          {formState.raison_sociale}
-        </Box>
-        <Spacer />
-        <Button
-          type='submit'
-          size={buttonSize}
-          variant='primary'
-          leftIcon={<AiOutlineEdit />}
-          onClick={() => setEditionMode.toggle(false)}
-        >
-          Editer les informations
-        </Button>
-      </Flex>
-      <Grid
-        templateColumns={gridTemplate}
-        py={6}
-        p={8}
-        bg='white'
-        border='1px solid'
-        borderColor='bluefrance.500'
-        gap={[6, 0]}
-      >
-        {formState.mandataire && (
-          <GridItem>
-            <Heading size='md' pb={6}>
-              Renseignements Mandataire
-            </Heading>
-            <Grid templateRows='repeat(3, 1fr)' gap={4}>
-              <Flex>
-                <Text pr={3}>Nom de l'etablissement :</Text>
-                <Badge variant='readOnly'>{formState.raison_sociale_mandataire}</Badge>
-              </Flex>
-              <Flex>
-                <Text pr={3}>SIRET :</Text>
-                <Badge variant='readOnly'>{formState.siret_mandataire}</Badge>
-              </Flex>
-              <Flex>
-                <Text pr={3} isTruncated>
-                  Adresse :
-                </Text>
-                <Badge variant='readOnly'>{formState.adresse_mandataire}</Badge>
-              </Flex>
-            </Grid>
-          </GridItem>
-        )}
-        <GridItem>
-          <Heading size='md' pb={6}>
-            Renseignements Entreprise
-          </Heading>
-          <Grid templateRows='repeat(3, 1fr)' gap={4}>
-            <Flex direction={['column', 'row']}>
-              <Text pr={3} pb={[3, 0]}>
-                Nom de l'enseigne :
-              </Text>
-              <Badge variant='readOnly'>{formState.raison_sociale}</Badge>
-            </Flex>
-            <Flex direction={['column', 'row']}>
-              <Text pr={3} pb={[3, 0]}>
-                SIRET :
-              </Text>
-              <Badge variant='readOnly'>{formState.siret}</Badge>
-            </Flex>
-            <Flex direction={['column', 'row']}>
-              <Text pr={3} pb={[3, 0]}>
-                Adresse :
-              </Text>
-              <Badge variant='readOnly'>{formState.adresse}</Badge>
-            </Flex>
-          </Grid>
-        </GridItem>
-        <GridItem>
-          <Heading size='md' pb={6}>
-            Information de contact
-          </Heading>
-          <Grid templateRows='repeat(4, 1fr)' gap={4}>
-            <Flex direction={['column', 'row']}>
-              <Text pr={3} pb={[3, 0]}>
-                Nom :
-              </Text>
-              <Badge variant='readOnly'>{formState.nom}</Badge>
-            </Flex>
-            <Flex direction={['column', 'row']}>
-              <Text pr={3} pb={[3, 0]}>
-                Prénom :
-              </Text>
-              <Badge variant='readOnly'>{formState.prenom}</Badge>
-            </Flex>
-            <Flex direction={['column', 'row']}>
-              <Text pr={3} pb={[3, 0]}>
-                Téléphone :
-              </Text>
-              <Badge variant='readOnly'>{formState.telephone}</Badge>
-            </Flex>
-            <Flex direction={['column', 'row']}>
-              <Text pr={3} pb={[3, 0]}>
-                Email :
-              </Text>
-              <Badge variant='readOnly'>{formState.email}</Badge>
-            </Flex>
-          </Grid>
-        </GridItem>
-      </Grid>
-    </>
-  )
-}
+import { LogoContext } from '../../contextLogo'
 
-const Formulaire = (props) => {
+export default (props) => {
   const [formState, setFormState] = useState({})
   const [offersList, setOffersList] = useState([])
   const [currentOffer, setCurrentOffer] = useState({})
@@ -182,6 +59,7 @@ const Formulaire = (props) => {
   const { id_form, origine } = useParams()
   const toast = useToast()
   const history = useHistory()
+  const { setOrganisation } = useContext(LogoContext)
 
   const hasActiveOffers = offersList.filter((x) => x.statut === 'Active')
 
@@ -192,6 +70,7 @@ const Formulaire = (props) => {
       getFormulaire(id_form)
         .then((result) => {
           setFormState(result.data)
+          setOrganisation(result.data.origine)
           setOffersList(result.data.offres)
         })
         .catch(() => {
@@ -547,5 +426,3 @@ const Formulaire = (props) => {
     </>
   )
 }
-
-export default Formulaire

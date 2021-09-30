@@ -19,7 +19,7 @@ import {
   Radio,
   FormHelperText,
 } from '@chakra-ui/react'
-import { ArrowRightLine, Close } from '../../theme/components/icons/'
+import { ArrowRightLine, Close } from '../../../theme/components/icons'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 

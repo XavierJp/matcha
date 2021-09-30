@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Center, VStack, Image, Text, Button } from '@chakra-ui/react'
-import logo from '../assets/images/logo.svg'
+import logo from '../../assets/images/logo.svg'
 
 export default () => {
   const history = useHistory()

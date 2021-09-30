@@ -21,7 +21,6 @@ import {
   RadioGroup,
   Stack,
   Link,
-  ExternalLinkIcon,
 } from '@chakra-ui/react'
 import { Formik } from 'formik'
 import moment from 'moment'
@@ -29,8 +28,8 @@ import * as Yup from 'yup'
 
 import 'moment/locale/fr'
 
-import { DropdownCombobox } from '../../components'
-import { ArrowRightLine, Close, ExternalLinkLine } from '../../theme/components/icons/'
+import { DropdownCombobox } from '../../../components'
+import { ArrowRightLine, Close, ExternalLinkLine } from '../../../theme/components/icons'
 
 const DATE_FORMAT = 'YYYY-MM-DD'
 

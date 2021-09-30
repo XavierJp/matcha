@@ -1,5 +1,6 @@
 import { Box, Container, Divider, Spacer, Flex } from '@chakra-ui/react'
-import { Footer, Mission } from '../pages/HomePage'
+import Mission from '../pages/accueil/components/Mission'
+import Footer from '../pages/accueil/components/Footer'
 import Navbar from './Navbar'
 
 export default ({ children, background, widget }) => {

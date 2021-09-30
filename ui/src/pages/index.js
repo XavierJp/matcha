@@ -1,6 +1,6 @@
-import HomePage from './HomePage'
-import NotFound from './NotFound'
-import { Login, List, Users, Search } from './Admin'
-import { Formulaire } from './Formulaire'
+import { NonTrouve } from './non-trouvé'
+import { Accueil } from './accueil'
+import { Formulaire } from './formulaire'
+import { Login, Users, Search } from './admin'
 
-export { Formulaire, HomePage, NotFound, Login, List, Users, Search }
+export { Formulaire, Accueil, NonTrouve, Login, Users, Search }
