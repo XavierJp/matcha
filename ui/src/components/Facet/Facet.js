@@ -19,6 +19,7 @@ const Facet = ({
   showSearch,
   showCount,
   excludedFields,
+  selectAllLabel,
 }) => {
   return (
     <Accordion allowMultiple bg='white' my={3}>
@@ -44,6 +45,7 @@ const Facet = ({
                 dataField={dataField}
                 nestedField={nestedField}
                 filterLabel={filterLabel}
+                selectAllLabel={selectAllLabel}
                 react={{ and: filters.filter((e) => e !== componentId) }}
                 defaultQuery={defaultQuery}
                 transformData={transformData}

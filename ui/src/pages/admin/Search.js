@@ -122,6 +122,7 @@ export default memo(() => {
                   }}
                   excludeFields={excludedFields}
                   defaultQuery={queryFilter}
+                  scrollOnChange={false}
                   renderResultStats={(stats) => {
                     return (
                       <div

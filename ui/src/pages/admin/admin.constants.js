@@ -169,6 +169,7 @@ const facetDefinition = [
     dataField: 'origine.keyword',
     title: 'Origine(s)',
     filterLabel: 'Origine(s)',
+    selectAllLabel: 'Toutes',
     sortBy: 'asc',
     helpTextSection: '',
     showSearch: true,
