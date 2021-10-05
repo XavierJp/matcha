@@ -22,6 +22,7 @@ const colors = {
     400: '#cecece',
     300: '#e7e7e7',
     200: '#f0f0f0',
+    150: '#fafafc',
     100: '#f8f8f8',
   },
   greenwarm: {

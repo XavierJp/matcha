@@ -9,8 +9,10 @@ const commonButtonStyle = {
 
 const Button = {
   variants: {
-    unstyled: {
+    greyed: {
       ...commonButtonStyle,
+      bg: 'grey.200',
+      color: 'grey.600',
     },
     secondary: {
       ...commonButtonStyle,

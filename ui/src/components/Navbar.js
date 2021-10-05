@@ -47,7 +47,7 @@ export default () => {
           {history.location.pathname === '/' && auth.sub === 'anonymous' && (
             <Button
               display={['none', 'flex']}
-              onClick={() => history.push('/login')}
+              onClick={() => history.push('/authentification')}
               fontWeight='normal'
               variant='link'
               color='bluefrance.500'
