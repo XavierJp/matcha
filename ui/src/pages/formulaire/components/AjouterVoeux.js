@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useContext } from 'react'
 import {
   Button,
   Modal,
@@ -30,6 +30,7 @@ import 'moment/locale/fr'
 
 import { DropdownCombobox } from '../../../components'
 import { ArrowRightLine, Close, ExternalLinkLine } from '../../../theme/components/icons'
+import { LogoContext } from '../../../contextLogo'
 
 const DATE_FORMAT = 'YYYY-MM-DD'
 
@@ -39,6 +40,7 @@ export default (props) => {
   const initialRef = useRef()
   const finalRef = useRef()
   const minDate = moment().format(DATE_FORMAT)
+  const { organisation } = useContext(LogoContext)
 
   const handleJobSearch = async (search) => {
     if (search) {
@@ -198,10 +200,14 @@ export default (props) => {
                   </FormHelperText>
                 </FormControl>
 
-                {values.description && (
+                {(values.description || organisation.includes('akto')) && (
                   <FormControl mt={4}>
                     <FormLabel>Description</FormLabel>
                     <Textarea rows='6' name='description' defaultValue={values.description} onChange={handleChange} />
+                    <FormHelperText>
+                      Insérer ici une description de l'offre d'apprentissage, un lien vers la fiche de poste ou tout
+                      élément permettant de présenter le poste à pourvoir.
+                    </FormHelperText>
                   </FormControl>
                 )}
               </ModalBody>
