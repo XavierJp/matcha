@@ -29,7 +29,7 @@ const CreationCompte = () => {
   }
 
   return (
-    <Box p={['2', '8']}>
+    <Box p={['4', '8']}>
       <Heading size='lg' as='h2' mb={2}>
         Créez votre compte sur Matcha
       </Heading>
@@ -87,7 +87,7 @@ const ConnexionCompte = () => {
   const submitEmail = () => {}
 
   return (
-    <Box bg='grey.150' p={['2', '8']} mb={['4', '0']}>
+    <Box bg='grey.150' p={['4', '8']} mb={['4', '0']}>
       <Heading size='lg' as='h2' mb={2}>
         Vous avez déjà un compte ?
       </Heading>

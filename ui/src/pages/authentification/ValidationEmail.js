@@ -20,8 +20,10 @@ export default (props) => {
   return (
     <AuthentificationLayout>
       <Box pt={['6w', '12w']}>
-        <Heading as='h1'>Mail vérifié</Heading>
-        <Text fontSize='xl'>
+        <Heading fontSize={['32px', '40px']} as='h1'>
+          Mail vérifié
+        </Heading>
+        <Text fontSize={['16px', '22px']}>
           Votre email eao@artisanat-aquitaine.fr a bien été validé, vous pouvez maintenant vous connecter.
         </Text>
       </Box>

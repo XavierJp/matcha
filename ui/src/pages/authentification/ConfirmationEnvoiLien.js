@@ -5,30 +5,32 @@ import { IoMail } from 'react-icons/io5'
 export default (props) => {
   return (
     <AuthentificationLayout>
-      <Box pt={['6w', '12w']}>
-        <Heading fontSize='40px' as='h1'>
-          Vérfier votre messagerie
-        </Heading>
-        <Box fontSize='xl'>
-          <Text>
-            Nous vous avons envoyé un email à <strong> `{props.email}`</strong> avec un lien de confirmation.
-          </Text>
-          <Text>Celui-ci sera valide pour les 30 prochaines minutes.</Text>
+      <Box px={['4', '0']}>
+        <Box pt={['6w', '12w']}>
+          <Heading fontSize={['32px', '40px']} as='h1'>
+            Vérifier votre messagerie
+          </Heading>
+          <Box fontSize={['16px', '22px']}>
+            <Text>
+              Nous vous avons envoyé un email à <strong> `{props.email}`</strong> avec un lien de confirmation.
+            </Text>
+            <Text>Celui-ci sera valide pour les 30 prochaines minutes.</Text>
+          </Box>
         </Box>
-      </Box>
 
-      <Divider my={6} w='20%' />
+        <Divider my={6} w='20%' />
 
-      <Box>
-        <Heading fontSize='32px' as='h2' pb={3}>
-          Vous n'avez rien reçu ?
-        </Heading>
-        <Flex alignItems='center'>
-          <IoMail />
-          <Link pl={2} href='mailto:matcha@apprentissage.beta.gouv.fr' textDecoration='underline'>
-            Contacter l'équipe de Matcha
-          </Link>
-        </Flex>
+        <Box>
+          <Heading fontSize={['18px', '32px']} as='h2' pb={3}>
+            Vous n'avez rien reçu ?
+          </Heading>
+          <Flex alignItems='center'>
+            <IoMail />
+            <Link pl={2} href='mailto:matcha@apprentissage.beta.gouv.fr' textDecoration='underline'>
+              Contacter l'équipe de Matcha
+            </Link>
+          </Flex>
+        </Box>
       </Box>
     </AuthentificationLayout>
   )
