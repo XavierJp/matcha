@@ -1,5 +1,5 @@
 import Authentification from './Authentification'
 import ValidationEmail from './ValidationEmail'
-import EmailVerified from './EmailVerified'
+import ConfirmationEnvoiLien from './ConfirmationEnvoiLien'
 
-export { Authentification, ValidationEmail, EmailVerified }
+export { Authentification, ValidationEmail, ConfirmationEnvoiLien }

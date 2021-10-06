@@ -10,7 +10,7 @@ import {
   Search,
   Authentification,
   ValidationEmail,
-  EmailVerified,
+  ConfirmationEnvoiLien,
 } from './pages'
 import useAuth from './common/hooks/useAuth'
 
@@ -39,8 +39,8 @@ const App = () => {
         </PrivateRoute>
         <Route exact path='/' component={Accueil} />
         <Route exact path='/authentification' component={Authentification} />
+        <Route exact path='/authentification/confirmation' component={ConfirmationEnvoiLien} />
         <Route exact path='/validation-email/' component={ValidationEmail} />
-        <Route exact path='/email-verifie/' component={EmailVerified} />
         <Route
           exact
           path='/formulaire/:id_form'
