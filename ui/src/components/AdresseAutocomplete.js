@@ -1,25 +1,7 @@
-import { useState, useEffect } from 'react'
-import styled from 'styled-components'
+import { useState } from 'react'
 import { useCombobox } from 'downshift'
 
 import { Input, Box } from '@chakra-ui/react'
-
-const Wrapper = styled.ul`
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  z-index: 1;
-  position: absolute;
-  list-style: none;
-  background: #fff;
-  overflow: auto;
-  box-shadow: 0px 1px 8px rgba(8, 67, 85, 0.24);
-  border-radius: 4px;
-  li {
-    width: 100%;
-    padding: 0.5rem;
-  }
-`
 
 export default (props) => {
   const [items, setItems] = useState([])
@@ -73,18 +55,36 @@ export default (props) => {
           {...getInputProps()}
         />
       </div>
-      <Wrapper {...getMenuProps()}>
+      <Box
+        sx={{
+          width: '100%',
+          margin: 0,
+          marginTop: '2px',
+          padding: 0,
+          zIndex: 1,
+          position: 'absolute',
+          listStyle: 'none',
+          background: '#fff',
+          overflow: 'auto',
+          boxShadow: '0px 1px 8px rgba(8, 67, 85, 0.24)',
+        }}
+        {...getMenuProps()}
+      >
         {isOpen &&
           items.map((item, index) => (
             <li
-              style={highlightedIndex === index ? { backgroundColor: 'lightGrey' } : {}}
+              style={
+                highlightedIndex === index
+                  ? { backgroundColor: 'lightGrey', width: '100%', padding: '0.5rem' }
+                  : { width: '100%', padding: '0.5rem' }
+              }
               key={`${item}${index}`}
               {...getItemProps({ item, index })}
             >
               {item.name}
             </li>
           ))}
-      </Wrapper>
+      </Box>
     </Box>
   )
 }
