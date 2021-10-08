@@ -1,8 +1,11 @@
 import { Switch, Route, Redirect } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
+import dayjs from 'dayjs'
 
 import { Formulaire, NonTrouve, Login, Accueil, Users, Search } from './pages'
 import useAuth from './common/hooks/useAuth'
+
+dayjs.locale('fr')
 
 function PrivateRoute({ children, ...rest }) {
   let [auth] = useAuth()
