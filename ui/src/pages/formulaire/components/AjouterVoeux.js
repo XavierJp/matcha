@@ -27,8 +27,6 @@ import { Formik } from 'formik'
 import * as Yup from 'yup'
 import dayjs from 'dayjs'
 
-import 'dayjs/locale/fr'
-
 import { DropdownCombobox } from '../../../components'
 import { ArrowRightLine, Close, ExternalLinkLine } from '../../../theme/components/icons'
 import { LogoContext } from '../../../contextLogo'
