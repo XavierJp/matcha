@@ -12,8 +12,6 @@ import {
   useToast,
 } from '@chakra-ui/react'
 
-import 'moment/locale/fr'
-
 import { ArrowRightLine, Close } from '../../../theme/components/icons'
 import { putOffre } from '../../../api'
 

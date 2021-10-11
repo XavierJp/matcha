@@ -165,6 +165,8 @@ export default (props) => {
       // create form
       postFormulaire(values).then((result) => {
         setFormState(result.data)
+        // enable description for AKTO (temporary)
+        setOrganisation(result.data.origine)
         history.push(`/formulaire/${result.data.id_form}`)
         toast({
           title: 'Formulaire créé !',
