@@ -71,7 +71,7 @@ export default (props) => {
           : '',
         description: props.description ?? '',
         date_creation: props.date_creation ?? dayjs().format(DATE_FORMAT),
-        date_expiration: props.date_expiration ?? dayjs().add(1, 'months').format(DATE_FORMAT),
+        date_expiration: props.date_expiration ?? dayjs().add(1, 'month').format(DATE_FORMAT),
         statut: props.statut ?? 'Active',
         type: props.type ?? 'Apprentissage',
       }}

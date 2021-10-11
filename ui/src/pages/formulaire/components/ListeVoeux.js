@@ -120,7 +120,7 @@ export default (props) => {
                       onClick={() =>
                         props.extendOffer(item._id, {
                           ...item,
-                          date_expiration: dayjs().add(1, 'months').format('YYYY-MM-DD'),
+                          date_expiration: dayjs().add(1, 'month').format('YYYY-MM-DD'),
                         })
                       }
                     >
