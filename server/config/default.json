@@ -25,6 +25,10 @@
     "password": {
       "jwtSecret": "91011",
       "expiresIn": "1h"
+    },
+    "magiclink": {
+      "jwtSecret": "121314",
+      "expiresIn": "1h"
     }
   },
   "log": {
