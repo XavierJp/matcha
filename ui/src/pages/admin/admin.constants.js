@@ -1,6 +1,6 @@
 import { escapeDiacritics } from '../../common/utils/downloadUtils'
 import { CloseCircleLine, SearchLine } from '../../theme/components/icons'
-import moment from 'moment'
+import dayjs from 'dayjs'
 
 const filters = [
   'searchFormulaire',
@@ -70,9 +70,9 @@ const exportableColumns = [
           Metier: escapeDiacritics(x.libelle),
           Niveau: escapeDiacritics(x.niveau),
           Date_debut_apprentissage: x.date_debut_apprentissage
-            ? moment(x.date_debut_apprentissage).format('YYYY-MM-DD')
+            ? dayjs(x.date_debut_apprentissage).format('YYYY-MM-DD')
             : 'NA',
-          Date_expiration: moment(x.date_expiration).format('YYYY-MM-DD'),
+          Date_expiration: dayjs(x.date_expiration).format('YYYY-MM-DD'),
         }
       })
     },
@@ -99,13 +99,13 @@ const exportableColumns = [
     Header: "Date de debut d'apprentissage",
     accessor: 'offres.date_debut_apprentissage',
     exportable: true,
-    formatter: (value) => moment(value).format('YYYY-MM-DD'),
+    formatter: (value) => dayjs(value).format('YYYY-MM-DD'),
   },
   {
     Header: "Date d'expiration",
     accessor: 'offres.date_expiration',
     exportable: true,
-    formatter: (value) => moment(value).format('YYYY-MM-DD'),
+    formatter: (value) => dayjs(value).format('YYYY-MM-DD'),
   },
 ]
 
@@ -169,6 +169,7 @@ const facetDefinition = [
     dataField: 'origine.keyword',
     title: 'Origine(s)',
     filterLabel: 'Origine(s)',
+    selectAllLabel: 'Toutes',
     sortBy: 'asc',
     helpTextSection: '',
     showSearch: true,

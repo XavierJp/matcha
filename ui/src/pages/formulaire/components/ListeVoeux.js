@@ -6,8 +6,9 @@ import {
   AiOutlineArrowRight,
   AiOutlineRetweet,
 } from 'react-icons/ai'
-import moment from 'moment'
-import 'moment/locale/fr'
+
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
 
 const getStatusBadge = (status) => {
   let [statut] = Object.keys(status).filter((x) => status[x])
@@ -26,6 +27,8 @@ const getStatusBadge = (status) => {
 }
 
 export default (props) => {
+  dayjs.extend(relativeTime)
+
   if (!props.data) {
     return <div />
   }
@@ -37,11 +40,13 @@ export default (props) => {
       {props.data
         .filter((x) => x.statut === 'Active')
         .map((item) => {
+          console.log({ expire: item.date_expiration, expireDayjs: dayjs().to(item.date_expiration, true) })
+
           let remainingDays = () => {
-            if (moment().to(item.date_expiration, true) === 'un mois') {
+            if (dayjs().to(item.date_expiration, true) === 'un mois') {
               return 30
             }
-            return moment().to(item.date_expiration, true)
+            return dayjs().to(item.date_expiration, true)
           }
           let remainingDaysAsNumber = parseFloat(remainingDays(), 2)
           let isExtendable = remainingDaysAsNumber > 7 ? false : true
@@ -50,12 +55,12 @@ export default (props) => {
             <Box bg='white' p={8} border='1px solid' borderColor='bluefrance.500'>
               <Flex alignItems='flex-start'>
                 <Text fontSize='sm' pr={9} pb={[3, 0]}>
-                  Postée le {moment(item.date_creation).format('DD/MM/YYYY')}
+                  Postée le {dayjs(item.date_creation).format('DD/MM/YYYY')}
                 </Text>
                 <Flex alignItems='center' pb={[3, 0]}>
                   <Icon as={AiOutlineExclamationCircle} color='bluefrance.500' w={5} h={5} />
                   <Text fontSize='sm' pl={3}>
-                    Expire {moment().to(item.date_expiration)}
+                    Expire {dayjs().to(item.date_expiration)}
                   </Text>
                 </Flex>
                 <Spacer />
@@ -91,7 +96,7 @@ export default (props) => {
                     <Text fontSize='md' fontWeight='400' pr={1}>
                       Date de début du contrat:
                     </Text>
-                    <Text fontWeight='600'>{moment(item.date_debut_apprentissage).format('DD/MM/YYYY')}</Text>
+                    <Text fontWeight='600'>{dayjs(item.date_debut_apprentissage).format('DD/MM/YYYY')}</Text>
                   </Flex>
                 )}
               </VStack>
@@ -115,7 +120,7 @@ export default (props) => {
                       onClick={() =>
                         props.extendOffer(item._id, {
                           ...item,
-                          date_expiration: moment().add(1, 'months').format('YYYY-MM-DD'),
+                          date_expiration: dayjs().add(1, 'month').format('YYYY-MM-DD'),
                         })
                       }
                     >

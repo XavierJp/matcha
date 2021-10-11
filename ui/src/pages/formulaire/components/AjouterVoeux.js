@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useContext } from 'react'
 import {
   Button,
   Modal,
@@ -23,13 +23,13 @@ import {
   Link,
 } from '@chakra-ui/react'
 import { Formik } from 'formik'
-import moment from 'moment'
-import * as Yup from 'yup'
 
-import 'moment/locale/fr'
+import * as Yup from 'yup'
+import dayjs from 'dayjs'
 
 import { DropdownCombobox } from '../../../components'
 import { ArrowRightLine, Close, ExternalLinkLine } from '../../../theme/components/icons'
+import { LogoContext } from '../../../contextLogo'
 
 const DATE_FORMAT = 'YYYY-MM-DD'
 
@@ -38,7 +38,9 @@ export default (props) => {
   const [inputJobItems, setInputJobItems] = useState([])
   const initialRef = useRef()
   const finalRef = useRef()
-  const minDate = moment().format(DATE_FORMAT)
+
+  const minDate = dayjs().format(DATE_FORMAT)
+  const { organisation } = useContext(LogoContext)
 
   const handleJobSearch = async (search) => {
     if (search) {
@@ -63,11 +65,11 @@ export default (props) => {
         romes: props.romes ?? [],
         niveau: props.niveau ?? '',
         date_debut_apprentissage: props.date_debut_apprentissage
-          ? moment(props.date_debut_apprentissage).format(DATE_FORMAT)
+          ? dayjs(props.date_debut_apprentissage).format(DATE_FORMAT)
           : '',
         description: props.description ?? '',
-        date_creation: props.date_creation ?? moment().format(DATE_FORMAT),
-        date_expiration: props.date_expiration ?? moment().add(1, 'months').format(DATE_FORMAT),
+        date_creation: props.date_creation ?? dayjs().format(DATE_FORMAT),
+        date_expiration: props.date_expiration ?? dayjs().add(1, 'month').format(DATE_FORMAT),
         statut: props.statut ?? 'Active',
         type: props.type ?? 'Apprentissage',
       }}
@@ -198,10 +200,14 @@ export default (props) => {
                   </FormHelperText>
                 </FormControl>
 
-                {values.description && (
+                {(values.description || organisation.includes('akto')) && (
                   <FormControl mt={4}>
                     <FormLabel>Description</FormLabel>
                     <Textarea rows='6' name='description' defaultValue={values.description} onChange={handleChange} />
+                    <FormHelperText>
+                      Insérer ici une description de l'offre d'apprentissage, un lien vers la fiche de poste ou tout
+                      élément permettant de présenter le poste à pourvoir.
+                    </FormHelperText>
                   </FormControl>
                 )}
               </ModalBody>

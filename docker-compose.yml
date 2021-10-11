@@ -45,6 +45,7 @@ services:
     image: mongo:4.2.13-bionic
     container_name: matcha_mongodb
     restart: unless-stopped
+    mem_limit: 3g
     networks:
       - matcha_network
 
@@ -64,6 +65,7 @@ services:
   kibana:
     image: docker.elastic.co/kibana/kibana-oss:7.10.2
     container_name: matcha_kibana
+    mem_limit: 1g
     depends_on:
       - elasticsearch
     networks:

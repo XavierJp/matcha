@@ -1,22 +1,5 @@
-import styled from 'styled-components'
 import { useCombobox } from 'downshift'
-import { Input } from '@chakra-ui/react'
-
-const Wrapper = styled.ul`
-  margin: 0;
-  padding: 0;
-  z-index: 1;
-  position: absolute;
-  list-style: none;
-  background: #fff;
-  overflow: auto;
-  box-shadow: 0px 1px 8px rgba(8, 67, 85, 0.24);
-  border-radius: 4px;
-  li {
-    width: 100%;
-    padding: 0.5rem;
-  }
-`
+import { Input, Box } from '@chakra-ui/react'
 
 export default (props) => {
   let { saveSelectedItem, setInputItems, handleSearch, value, placeholder, inputItems, name } = props
@@ -38,18 +21,36 @@ export default (props) => {
       <div {...getComboboxProps()}>
         <Input mb='0' name={name} placeholder={placeholder || 'sélectionner un métier'} {...getInputProps()} />
       </div>
-      <Wrapper {...getMenuProps()}>
+      <Box
+        sx={{
+          width: '100%',
+          margin: 0,
+          marginTop: '2px',
+          padding: 0,
+          zIndex: 1,
+          position: 'absolute',
+          listStyle: 'none',
+          background: '#fff',
+          overflow: 'auto',
+          boxShadow: '0px 1px 8px rgba(8, 67, 85, 0.24)',
+        }}
+        {...getMenuProps()}
+      >
         {isOpen &&
           inputItems.map((item, index) => (
             <li
-              style={highlightedIndex === index ? { backgroundColor: 'lightGrey' } : {}}
+              style={
+                highlightedIndex === index
+                  ? { backgroundColor: 'lightGrey', width: '100%', padding: '0.5rem' }
+                  : { width: '100%', padding: '0.5rem' }
+              }
               key={`${item}${index}`}
               {...getItemProps({ item, index })}
             >
               {item.label}
             </li>
           ))}
-      </Wrapper>
+      </Box>
     </div>
   )
 }
