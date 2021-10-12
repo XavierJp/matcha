@@ -31,6 +31,8 @@ export const createUser = async (user) => await API.post('/user', user).catch(er
 export const updateUser = async (userId, user) => await API.put(`user/${userId}`, user).catch(errorHandler)
 export const deleteUser = async (userId) => await API.delete(`/user/${userId}`).catch(errorHandler)
 
+export const validateToken = async (token) => await API.post(`/login/magiclink/${token}`).catch(errorHandler)
+
 export const getSiretInfo = async (siret) => await API.get(`/entreprise/${siret}`).catch(errorHandler)
 export const getWithQS = (payload) =>
   API.get('/formulaire', { params: { query: JSON.stringify(payload.query), ...payload } })

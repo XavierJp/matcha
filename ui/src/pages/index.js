@@ -2,9 +2,10 @@ import { NonTrouve } from './non-trouvé'
 import { Accueil } from './accueil'
 import { Formulaire } from './formulaire'
 import { Login, Users, Search } from './admin'
-import { Authentification, ConfirmationEnvoiLien, ValidationEmail } from './authentification'
+import { Authentification, ConfirmationEnvoiLien, ValidationEmail, ValidationToken } from './authentification'
 
 export {
+  ValidationToken,
   ValidationEmail,
   ConfirmationEnvoiLien,
   Authentification,
