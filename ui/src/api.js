@@ -32,6 +32,7 @@ export const updateUser = async (userId, user) => await API.put(`user/${userId}`
 export const deleteUser = async (userId) => await API.delete(`/user/${userId}`).catch(errorHandler)
 
 export const validateToken = async (token) => await API.post(`/login/verification`, token).catch(errorHandler)
+export const sendMagiclink = async (email) => await API.post(`/login/magiclink`, email)
 
 export const getSiretInfo = async (siret) => await API.get(`/entreprise/${siret}`).catch(errorHandler)
 export const getWithQS = (payload) =>

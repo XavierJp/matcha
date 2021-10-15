@@ -13,13 +13,14 @@ import {
 } from '@chakra-ui/react'
 
 import { useHistory } from 'react-router-dom'
-import { Formik } from 'formik'
+import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 
 import { Close, SearchLine, ArrowRightLine } from '../../theme/components/icons'
 import CustomInput from '../formulaire/components/CustomInput'
 import logo from '../../assets/images/logo.svg'
 import Informations from './components/Informations'
+import { sendMagiclink } from '../../api'
 
 const CreationCompte = () => {
   const [validSIRET, setValidSIRET] = useBoolean(false)
@@ -83,8 +84,19 @@ const CreationCompte = () => {
 
 const ConnexionCompte = () => {
   const buttonSize = useBreakpointValue(['sm', 'md'])
+  const history = useHistory()
 
-  const submitEmail = () => {}
+  const submitEmail = (values, { setFieldError, setSubmitting }) => {
+    sendMagiclink(values)
+      .then(() => {
+        history.push('/authentification/confirmation', { email: values.email })
+        setSubmitting(false)
+      })
+      .catch(() => {
+        setFieldError('email', "L'adresse renseigné n'existe pas")
+        setSubmitting(false)
+      })
+  }
 
   return (
     <Box bg='grey.150' p={['4', '8']} mb={['4', '0']}>
@@ -94,35 +106,29 @@ const ConnexionCompte = () => {
       <Text>Veuillez indiquer ci-dessous l’e-mail avec lequel vous avez créé votre compte.</Text>
       <Box pt={12} mr={4}>
         <Formik
-          initialValues={{ email: undefined }}
+          enableReinitialize
+          initialValues={{ email: '' }}
           validationSchema={Yup.object().shape({
             email: Yup.string().email('Insérez un email valide').required('champ obligatoire'),
           })}
           onSubmit={submitEmail}
         >
-          {({ values, isValid, isSubmitting }) => {
+          {({ values, isValid, isSubmitting, dirty }) => {
             return (
-              <>
-                <CustomInput
-                  required={false}
-                  name='siret'
-                  label='E-mail professionnel'
-                  type='text'
-                  value={values.email}
-                  maxLength='14'
-                  mb={5}
-                />
+              <Form autoComplete='off'>
+                <CustomInput name='email' label='E-mail professionnel' type='text' value={values.email} />
                 <Button
+                  mt={5}
                   type='submit'
                   size={buttonSize}
-                  variant='greyed'
+                  variant='primary'
                   leftIcon={<ArrowRightLine width={5} />}
                   isActive={isValid}
-                  disabled={!isValid || isSubmitting}
+                  disabled={(!isValid && dirty) || isSubmitting}
                 >
                   Je me connecte
                 </Button>
-              </>
+              </Form>
             )
           }}
         </Formik>

@@ -14,9 +14,8 @@ export default () => {
     }
 
     // send token to back office
-    validateToken(token).then((response) => {
-      console.log(response)
-      setAuth(response?.data?.token)
+    validateToken({ token }).then(({ data }) => {
+      setAuth(data?.token)
       history.push('/admin')
     })
   })

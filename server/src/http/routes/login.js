@@ -8,7 +8,7 @@ const { createUserToken, createMagicLinkToken } = require("../../common/utils/jw
 
 const checkToken = (users) => {
   passport.use(
-    "jwt-password",
+    "jwt",
     new Strategy(
       {
         jwtFromRequest: ExtractJwt.fromBodyField("token"),
@@ -28,7 +28,7 @@ const checkToken = (users) => {
     )
   );
 
-  return passport.authenticate("jwt-password", { session: false, failWithError: true });
+  return passport.authenticate("jwt", { session: false, failWithError: true });
 };
 
 module.exports = ({ users, mail }) => {
@@ -44,7 +44,7 @@ module.exports = ({ users, mail }) => {
       const user = await users.getUser(email);
 
       if (!user) {
-        return res.sendStatus(401);
+        return res.status(400).send("KO");
       }
 
       const magiclink = `${config.publicUrl}/verification/${createMagicLinkToken(email)}`;

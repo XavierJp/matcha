@@ -1,8 +1,17 @@
 import { Heading, Text, Box, Flex, Link, Divider } from '@chakra-ui/react'
 import AuthentificationLayout from './components/Authentification-layout'
 import { IoMail } from 'react-icons/io5'
+import { useLocation } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 
 export default (props) => {
+  const location = useLocation()
+  const [email, setEmail] = useState('')
+
+  useEffect(() => {
+    setEmail(location.state.email)
+  })
+
   return (
     <AuthentificationLayout>
       <Box px={['4', '0']}>
@@ -12,7 +21,7 @@ export default (props) => {
           </Heading>
           <Box fontSize={['16px', '22px']}>
             <Text>
-              Nous vous avons envoyé un email à <strong> `{props.email}`</strong> avec un lien de confirmation.
+              Nous vous avons envoyé un email à <strong>{email}</strong> avec un lien de confirmation.
             </Text>
             <Text>Celui-ci sera valide pour les 30 prochaines minutes.</Text>
           </Box>
