@@ -2,7 +2,6 @@ const { User } = require("../model");
 const sha512Utils = require("../utils/sha512Utils");
 const passwordGenerator = require("generate-password");
 const { KEY_GENERATOR_PARAMS } = require("../constants");
-const { createMagicLinkToken, verifyToken } = require("../utils/jwtUtils");
 
 const passwordOptions = {
   length: 12,
@@ -16,12 +15,6 @@ const rehashPassword = (user, password) => {
 
 module.exports = async () => {
   return {
-    createMagicLink: (user) => {
-      const expirationDate = new Date();
-      expirationDate.setHours(new Date().getHours() + 1);
-      return createMagicLinkToken(user, { expiresIn: expirationDate });
-    },
-    verifyMagicLink: (token) => verifyToken(token),
     generatePassword: () => passwordGenerator.generate(passwordOptions),
     createApiKey: () => `mna-${passwordGenerator.generate(KEY_GENERATOR_PARAMS)}`,
     authenticate: async (username, password) => {

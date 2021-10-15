@@ -15,11 +15,6 @@ const createToken = (type, subject, options = {}) => {
   });
 };
 
-const verifyToken = (token) => {
-  const secret = config.auth[type];
-  return jwt.verify(token, secret);
-};
-
 module.exports = {
   createActivationToken: (subject, options = {}) => createToken("activation", subject, options),
   createPasswordToken: (subject, options = {}) => createToken("password", subject, options),
@@ -29,5 +24,4 @@ module.exports = {
     return createToken("user", user.username, { payload, ...options });
   },
   createMagicLinkToken: (subject, options = {}) => createToken("magiclink", subject, options),
-  verifyToken,
 };

@@ -1,17 +1,25 @@
 import { useEffect } from 'react'
 import { useParams, useHistory } from 'react-router-dom'
+import { validateToken } from '../../api'
+import useAuth from '../../common/hooks/useAuth'
 
 export default () => {
   let history = useHistory()
-  useEffect(() => {
-    const { token } = useParams()
+  const { token } = useParams()
+  const [, setAuth] = useAuth()
 
+  useEffect(() => {
     if (!token) {
       history.push('/')
     }
 
     // send token to back office
-
-    // redirect to confirmation page
+    validateToken(token).then((response) => {
+      console.log(response)
+      setAuth(response?.data?.token)
+      history.push('/admin')
+    })
   })
+
+  return <div></div>
 }
