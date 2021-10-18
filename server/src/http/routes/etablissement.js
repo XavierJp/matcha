@@ -7,25 +7,25 @@ module.exports = ({ etablissement }) => {
   /**
    * Get establishment info from SIRET
    */
-  router.get(
-    "/:siret",
+  router.post(
+    "/",
     tryCatch(async (req, res) => {
-      const siret = req.params.siret;
+      const siret = req.body.siret;
 
       if (!siret) {
         res.status(400).json({ error: true, message: "Le numéro siret est obligatoire" });
       }
 
-      const [tco, referentiel] = await Promise.all([
+      const [catalogue, referentiel] = await Promise.all([
         etablissement.getEtablissementFromTCO(siret),
         etablissement.getEtablissementFromReferentiel(siret),
       ]);
 
       if (!referentiel) {
-        return res.json(tco.data.etablissements);
+        return res.json({ ...etablissement.formatTCOData(catalogue.data.etablissements[0]) });
       }
 
-      return res.json({ referentiel, tco: tco.data });
+      return res.json({ ...etablissement.formatReferentielData(referentiel.data) });
     })
   );
 
