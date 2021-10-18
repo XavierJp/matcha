@@ -26,7 +26,7 @@ module.exports = new Schema(
     },
     apiKey: {
       type: String,
-      default: () => `mna-${generator.generate(KEY_GENERATOR_PARAMS)}`,
+      default: () => `mna-${generator.generate(KEY_GENERATOR_PARAMS())}`,
       index: true,
       required: true,
     },
