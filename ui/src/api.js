@@ -34,6 +34,7 @@ export const deleteUser = async (userId) => await API.delete(`/user/${userId}`).
 export const validateToken = async (token) => await API.post(`/login/verification`, token).catch(errorHandler)
 export const sendMagiclink = async (email) => await API.post(`/login/magiclink`, email)
 
-export const getSiretInfo = async (siret) => await API.get(`/entreprise/${siret}`).catch(errorHandler)
+export const getSiretInformation = async (siret) => await API.post(`/etablissement/`, siret)
+
 export const getWithQS = (payload) =>
   API.get('/formulaire', { params: { query: JSON.stringify(payload.query), ...payload } })

@@ -11,6 +11,7 @@ import {
   useBreakpointValue,
   useBoolean,
 } from '@chakra-ui/react'
+import { useState } from 'react'
 
 import { useHistory } from 'react-router-dom'
 import { Formik, Form } from 'formik'
@@ -20,14 +21,11 @@ import { Close, SearchLine, ArrowRightLine } from '../../theme/components/icons'
 import CustomInput from '../formulaire/components/CustomInput'
 import logo from '../../assets/images/logo.svg'
 import Informations from './components/Informations'
-import { sendMagiclink } from '../../api'
+import { getSiretInformation, sendMagiclink, validateToken } from '../../api'
+import AnimationContainer from '../../components/AnimationContainer'
 
-const CreationCompte = () => {
-  const [validSIRET, setValidSIRET] = useBoolean(false)
+const CreationCompte = ({ submitSiret, validSIRET, siretInformation }) => {
   const buttonSize = useBreakpointValue(['sm', 'md'])
-  const submitSiret = (values, formikBag) => {
-    // validate SIRET
-  }
 
   return (
     <Box p={['4', '8']}>
@@ -37,7 +35,7 @@ const CreationCompte = () => {
       <Text>Nous avons besoin du numéro de SIRET de votre centre de formation afin de vous identifier.</Text>
       <Box pt={12} mr={4}>
         <Formik
-          initialValues={{ siret: undefined }}
+          initialValues={{ siret: '19693654600015' }}
           validationSchema={Yup.object().shape({
             siret: Yup.string()
               .matches(/^[0-9]+$/, 'Le siret est composé uniquement de chiffres')
@@ -49,9 +47,10 @@ const CreationCompte = () => {
         >
           {({ values, isValid, isSubmitting }) => {
             return (
-              <>
+              <Form>
                 <CustomInput
                   required={false}
+                  isDisabled={validSIRET}
                   name='siret'
                   label='SIRET'
                   type='text'
@@ -59,8 +58,10 @@ const CreationCompte = () => {
                   maxLength='14'
                   mb={5}
                 />
-                {validSIRET ? (
-                  <Informations />
+                {validSIRET && siretInformation ? (
+                  <AnimationContainer>
+                    <Informations {...siretInformation} />
+                  </AnimationContainer>
                 ) : (
                   <Button
                     type='submit'
@@ -73,7 +74,7 @@ const CreationCompte = () => {
                     Chercher
                   </Button>
                 )}
-              </>
+              </Form>
             )
           }}
         </Formik>
@@ -139,6 +140,22 @@ const ConnexionCompte = () => {
 
 export default () => {
   const history = useHistory()
+  const [validSIRET, setValidSIRET] = useBoolean()
+  const [siretInformation, setSiretInformation] = useState({})
+
+  const submitSiret = (values, { setSubmitting, setFieldError }) => {
+    // validate SIRET
+    getSiretInformation(values)
+      .then(({ data }) => {
+        setSiretInformation(data)
+        setValidSIRET.on()
+        setSubmitting(false)
+      })
+      .catch((error) => {
+        setFieldError('siret', "Le numéro siret n'est pas référencé comme centre de formation")
+        setSubmitting(false)
+      })
+  }
 
   return (
     <Container maxW='container.xl' p={['0', '5']} h='100vh'>
@@ -159,11 +176,13 @@ export default () => {
 
         <SimpleGrid columns={['1', '2']} gap={5} flex='1' alignItems='center'>
           <GridItem>
-            <CreationCompte />
+            <CreationCompte submitSiret={submitSiret} validSIRET={validSIRET} siretInformation={siretInformation} />
           </GridItem>
-          <GridItem bg='grey.150'>
-            <ConnexionCompte />
-          </GridItem>
+          {!validSIRET && (
+            <GridItem bg='grey.150'>
+              <ConnexionCompte />
+            </GridItem>
+          )}
         </SimpleGrid>
       </Flex>
     </Container>
