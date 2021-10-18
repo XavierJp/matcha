@@ -18,6 +18,26 @@ module.exports = new Schema(
       default: null,
       description: "Organisme de l'utilisateur",
     },
+    siret: {
+      type: String,
+      description: "Siret de l'établissement",
+    },
+    adresse: {
+      type: String,
+      description: "Adresse de l'établissement",
+    },
+    uai: {
+      type: String,
+      description: "Numéro uai de l'établissement",
+    },
+    geo_coordonnees: {
+      type: String,
+      description: "Géo-coordonnées de l'adresse de l'établissement",
+    },
+    telephone: {
+      type: String,
+      description: "Téléphone de l'établissement",
+    },
     email: {
       type: String,
       default: null,

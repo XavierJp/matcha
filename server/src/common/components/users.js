@@ -16,7 +16,7 @@ const rehashPassword = (user, password) => {
 module.exports = async () => {
   return {
     generatePassword: () => passwordGenerator.generate(passwordOptions),
-    createApiKey: () => `mna-${passwordGenerator.generate(KEY_GENERATOR_PARAMS)}`,
+    createApiKey: () => `mna-${passwordGenerator.generate(KEY_GENERATOR_PARAMS())}`,
     authenticate: async (username, password) => {
       const user = await User.findOne({ username });
       if (!user) {
@@ -33,10 +33,32 @@ module.exports = async () => {
       return null;
     },
     getUser: (email) => User.findOne({ email }),
-    createUser: async ({ nom, prenom, username, organization, password, email, scope, isAdmin = false }) => {
-      if (!scope) {
+    createUser: async ({
+      nom,
+      prenom,
+      username,
+      organization,
+      password,
+      email,
+      scope,
+      isAdmin = false,
+      siret,
+      uai,
+      raison_sociale,
+      telephone,
+      adresse,
+      geo_coordonnees,
+      userType = "basic",
+    }) => {
+      if (userType === "basic" && !scope) {
         throw new Error("scope is mandatory");
       }
+
+      let key = passwordGenerator.generate(
+        KEY_GENERATOR_PARAMS({ length: 5, symbols: false, numbers: true, letters: false })
+      );
+      // generate user scope
+      scope = `cfa-${key}`;
 
       let hash;
       if (!password) {
@@ -51,6 +73,12 @@ module.exports = async () => {
         prenom,
         username,
         email,
+        siret,
+        adresse,
+        telephone,
+        uai,
+        raison_sociale,
+        geo_coordonnees,
         organization,
         password: hash,
         isAdmin: isAdmin,
