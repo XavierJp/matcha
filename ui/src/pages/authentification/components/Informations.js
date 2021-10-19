@@ -1,8 +1,9 @@
 import { Heading, Text, Flex, useBreakpointValue, Button, Link as ChakraLink } from '@chakra-ui/react'
-import { Formik } from 'formik'
-import { useEffect, useState } from 'react'
+import { Form, Formik } from 'formik'
+import { useHistory } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import * as Yup from 'yup'
+import { createPartenaire, createUser } from '../../../api'
 
 import { ArrowRightLine, InfoCircle } from '../../../theme/components/icons'
 import CustomInput from '../../formulaire/components/CustomInput'
@@ -20,9 +21,9 @@ const ContactField = ({ values }) => {
           <>
             Il s’agit de l’adresse qui vous permettra de vous connecter à Matcha. Si vous souhaitez ajouter, corriger ou
             modifier celles-ci,{' '}
-            <Link href='mailto:contact@matcha.apprentissage.beta.gouv.fr' textDecoration='underline'>
+            <ChakraLink href='mailto:contact@matcha.apprentissage.beta.gouv.fr' textDecoration='underline'>
               contactez l’équipe ici
-            </Link>
+            </ChakraLink>
           </>
         }
       >
@@ -43,7 +44,7 @@ const ContactField = ({ values }) => {
         label='Email'
         type='email'
         value={values.email}
-        info='Il s’agit de l’adresse qui vous permettra de vous connecter à Matcha. Vérifiez qu’elle soit correct ou bien modifiez-le'
+        info='Il s’agit de l’adresse qui vous permettra de vous connecter à Matcha. Vérifiez qu’elle soit correcte ou bien modifiez-la'
       />
     )
   }
@@ -62,8 +63,19 @@ const ContactField = ({ values }) => {
 
 export default ({ raison_sociale, uai, adresse, contacts, siret }) => {
   const buttonSize = useBreakpointValue(['sm', 'md'])
-  const submitForm = (values, formikBag) => {
+  let history = useHistory()
+
+  const submitForm = (values, { setSubmitting }) => {
     // save info if not trusted from source
+    createPartenaire(values)
+      .then(({ data }) => {
+        history.push('/authentification/confirmation', { email: data.email })
+        setSubmitting(false)
+      })
+      .catch((error) => {
+        console.log(error, error.message, error.status)
+        setSubmitting(false)
+      })
   }
 
   return (
@@ -82,6 +94,7 @@ export default ({ raison_sociale, uai, adresse, contacts, siret }) => {
           contacts: contacts ?? undefined,
           siret: siret,
           email: contacts.length === 1 ? contacts[0].email : undefined,
+          userType: 'partenaire',
         }}
         validationSchema={Yup.object().shape({
           raison_sociale: Yup.string().required('champs obligatoire'),
@@ -95,27 +108,34 @@ export default ({ raison_sociale, uai, adresse, contacts, siret }) => {
         })}
         onSubmit={submitForm}
       >
-        {({ values, isValid, isSubmitting }) => {
+        {(informationForm) => {
           return (
-            <>
+            <Form>
               <CustomInput
                 required={false}
                 isDisabled={true}
                 name='raison_sociale'
                 label='Raison sociale'
                 type='text'
-                value={values.raison_sociale}
+                value={informationForm.values.raison_sociale}
               />
-              <CustomInput required={false} isDisabled={true} name='uai' label='UAI' type='text' value={values.uai} />
+              <CustomInput
+                required={false}
+                isDisabled={true}
+                name='uai'
+                label='UAI'
+                type='text'
+                value={informationForm.values.uai}
+              />
               <CustomInput
                 required={false}
                 isDisabled={true}
                 name='adresse'
                 label='Adresse'
                 type='text'
-                value={values.adresse}
+                value={informationForm.values.adresse}
               />
-              <ContactField values={values} />
+              <ContactField values={informationForm.values} />
               <Flex justifyContent='flex-end' alignItems='center'>
                 <ChakraLink as={Link} size={buttonSize} variant='secondary' mr={5} to='/'>
                   Annuler
@@ -125,13 +145,13 @@ export default ({ raison_sociale, uai, adresse, contacts, siret }) => {
                   size={buttonSize}
                   variant='primary'
                   leftIcon={<ArrowRightLine width={5} />}
-                  isActive={isValid}
-                  isDisabled={!isValid || isSubmitting}
+                  isActive={informationForm.isValid}
+                  isDisabled={!informationForm.isValid || informationForm.isSubmitting}
                 >
                   Suivant
                 </Button>
               </Flex>
-            </>
+            </Form>
           )
         }}
       </Formik>

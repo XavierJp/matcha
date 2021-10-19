@@ -11,8 +11,9 @@ import {
   Search,
   Authentification,
   ValidationEmail,
-  ConfirmationEnvoiLien,
+  ConfirmationCreationCompte,
   ValidationToken,
+  ConfirmationValidationEmail,
 } from './pages'
 import useAuth from './common/hooks/useAuth'
 
@@ -44,8 +45,9 @@ const App = () => {
         <Route exact path='/' component={Accueil} />
         <Route exact path='/authentification' component={Authentification} />
         <Route exact path='/verification/:token' component={ValidationToken} />
-        <Route exact path='/authentification/confirmation' component={ConfirmationEnvoiLien} />
-        <Route exact path='/validation-email/' component={ValidationEmail} />
+        <Route exact path='/authentification/confirmation' component={ConfirmationCreationCompte} />
+        <Route exact path='/authentification/validation/:id' component={ConfirmationValidationEmail} />
+        <Route exact path='/authentification/en-attente' component={ValidationEmail} />
         <Route
           exact
           path='/formulaire/:id_form'

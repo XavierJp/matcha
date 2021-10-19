@@ -1,6 +1,7 @@
 const axios = require("axios");
 const config = require("config");
 const { etat_etablissements } = require("../constants");
+const { User } = require("../model");
 
 const apiParams = {
   token: config.apiEntreprise,
@@ -11,6 +12,19 @@ const apiParams = {
 
 module.exports = () => {
   return {
+    getEtablissement: (siret) => User.findOne({ siret }),
+    getValidationUrl: (_id) => `${config.publicUrl}/authentification/validation/${_id}`,
+    validateEtablissementEmail: async (_id) => {
+      let exist = await User.findById(_id);
+
+      if (!exist) {
+        return false;
+      }
+
+      await User.findByIdAndUpdate(_id, { email_valide: true });
+
+      return true;
+    },
     getEtablissementFromGouv: (siret) =>
       axios.get(`https://entreprise.api.gouv.fr/v2/etablissements/${siret}`, {
         params: apiParams,
@@ -49,7 +63,9 @@ module.exports = () => {
       uai: d.uai,
       raison_sociale: d.entreprise_raison_sociale,
       contacts: [], // les tco n'ont pas d'information de contact, mais conserve un standard pour l'ui
-      adresse: `${d.numero_voie} ${d.type_voie} ${d.nom_voie}, ${d.code_postal} ${d.localite}`,
+      adresse: `${d.numero_voie === null ? "" : d.numero_voie} ${d.type_voie} ${d.nom_voie}, ${d.code_postal} ${
+        d.localite
+      }`,
       geo_coordonnees: d.geo_coordonnees,
     }),
   };

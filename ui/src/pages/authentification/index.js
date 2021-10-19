@@ -1,6 +1,7 @@
 import Authentification from './Authentification'
 import ValidationEmail from './ValidationEmail'
-import ConfirmationEnvoiLien from './ConfirmationEnvoiLien'
+import ConfirmationCreationCompte from './ConfirmationCreationCompte'
 import ValidationToken from './ValidationToken'
+import ConfirmationValidationEmail from './ConfirmationValidationEmail'
 
-export { Authentification, ValidationEmail, ConfirmationEnvoiLien, ValidationToken }
+export { Authentification, ValidationEmail, ConfirmationCreationCompte, ValidationToken, ConfirmationValidationEmail }

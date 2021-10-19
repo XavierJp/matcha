@@ -21,7 +21,7 @@ import { Close, SearchLine, ArrowRightLine } from '../../theme/components/icons'
 import CustomInput from '../formulaire/components/CustomInput'
 import logo from '../../assets/images/logo.svg'
 import Informations from './components/Informations'
-import { getSiretInformation, sendMagiclink, validateToken } from '../../api'
+import { getSiretInformation, sendMagiclink } from '../../api'
 import AnimationContainer from '../../components/AnimationContainer'
 
 const CreationCompte = ({ submitSiret, validSIRET, siretInformation }) => {
@@ -47,34 +47,37 @@ const CreationCompte = ({ submitSiret, validSIRET, siretInformation }) => {
         >
           {({ values, isValid, isSubmitting }) => {
             return (
-              <Form>
-                <CustomInput
-                  required={false}
-                  isDisabled={validSIRET}
-                  name='siret'
-                  label='SIRET'
-                  type='text'
-                  value={values.siret}
-                  maxLength='14'
-                  mb={5}
-                />
+              <>
+                <Form>
+                  <CustomInput
+                    required={false}
+                    isDisabled={validSIRET}
+                    name='siret'
+                    label='SIRET'
+                    type='text'
+                    value={values.siret}
+                    maxLength='14'
+                  />
+                  <Flex justifyContent='flex-end'>
+                    <Button
+                      mt={5}
+                      type='submit'
+                      size={buttonSize}
+                      variant='greyed'
+                      leftIcon={<SearchLine width={5} />}
+                      isActive={isValid}
+                      disabled={!isValid || isSubmitting}
+                    >
+                      Chercher
+                    </Button>
+                  </Flex>
+                </Form>
                 {validSIRET && siretInformation ? (
                   <AnimationContainer>
                     <Informations {...siretInformation} />
                   </AnimationContainer>
-                ) : (
-                  <Button
-                    type='submit'
-                    size={buttonSize}
-                    variant='greyed'
-                    leftIcon={<SearchLine width={5} />}
-                    isActive={isValid}
-                    disabled={!isValid || isSubmitting}
-                  >
-                    Chercher
-                  </Button>
-                )}
-              </Form>
+                ) : null}
+              </>
             )
           }}
         </Formik>
@@ -151,8 +154,8 @@ export default () => {
         setValidSIRET.on()
         setSubmitting(false)
       })
-      .catch((error) => {
-        setFieldError('siret', "Le numéro siret n'est pas référencé comme centre de formation")
+      .catch(({ response }) => {
+        setFieldError('siret', response.data.message)
         setSubmitting(false)
       })
   }

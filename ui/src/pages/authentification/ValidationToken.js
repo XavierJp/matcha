@@ -14,10 +14,14 @@ export default () => {
     }
 
     // send token to back office
-    validateToken({ token }).then(({ data }) => {
-      setAuth(data?.token)
-      history.push('/admin')
-    })
+    validateToken({ token })
+      .then(({ data }) => {
+        setAuth(data?.token)
+        history.push('/admin')
+      })
+      .catch(() => {
+        history.push('/')
+      })
   })
 
   return <div></div>

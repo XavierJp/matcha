@@ -2,12 +2,19 @@ import { NonTrouve } from './non-trouvé'
 import { Accueil } from './accueil'
 import { Formulaire } from './formulaire'
 import { Login, Users, Search } from './admin'
-import { Authentification, ConfirmationEnvoiLien, ValidationEmail, ValidationToken } from './authentification'
+import {
+  Authentification,
+  ConfirmationCreationCompte,
+  ValidationEmail,
+  ValidationToken,
+  ConfirmationValidationEmail,
+} from './authentification'
 
 export {
   ValidationToken,
   ValidationEmail,
-  ConfirmationEnvoiLien,
+  ConfirmationCreationCompte,
+  ConfirmationValidationEmail,
   Authentification,
   Formulaire,
   Accueil,

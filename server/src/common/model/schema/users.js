@@ -11,12 +11,15 @@ module.exports = new Schema(
       type: String,
       default: null,
       description: "L'identifiant de l'utilisateur",
-      unique: true,
     },
     organization: {
       type: String,
       default: null,
       description: "Organisme de l'utilisateur",
+    },
+    raison_sociale: {
+      type: String,
+      description: "Raison social de l'établissement",
     },
     siret: {
       type: String,
@@ -58,6 +61,11 @@ module.exports = new Schema(
       type: String,
       default: null,
       description: "Scope accessible par l'utilisateur",
+    },
+    email_valide: {
+      type: Boolean,
+      default: false,
+      description: "Indicateur de confirmation de l'adresse mail par l'utilisateur",
     },
     mail_sent: {
       type: Boolean,
