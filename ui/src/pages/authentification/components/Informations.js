@@ -65,7 +65,7 @@ export default ({ raison_sociale, uai, adresse, contacts, siret }) => {
   const buttonSize = useBreakpointValue(['sm', 'md'])
   let history = useHistory()
 
-  const submitForm = (values, { setSubmitting }) => {
+  const submitForm = (values, { setSubmitting, setFieldError }) => {
     // save info if not trusted from source
     createPartenaire(values)
       .then(({ data }) => {
@@ -73,7 +73,7 @@ export default ({ raison_sociale, uai, adresse, contacts, siret }) => {
         setSubmitting(false)
       })
       .catch((error) => {
-        console.log(error, error.message, error.status)
+        setFieldError('email', error.response.data.message)
         setSubmitting(false)
       })
   }

@@ -35,7 +35,7 @@ const CreationCompte = ({ submitSiret, validSIRET, siretInformation }) => {
       <Text>Nous avons besoin du numéro de SIRET de votre centre de formation afin de vous identifier.</Text>
       <Box pt={12} mr={4}>
         <Formik
-          initialValues={{ siret: '19693654600015' }}
+          initialValues={{ siret: undefined }}
           validationSchema={Yup.object().shape({
             siret: Yup.string()
               .matches(/^[0-9]+$/, 'Le siret est composé uniquement de chiffres')
