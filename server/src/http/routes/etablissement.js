@@ -50,7 +50,7 @@ module.exports = ({ etablissement, users, mail }) => {
   router.post(
     "/creation",
     tryCatch(async (req, res) => {
-      let exist = users.getUser(req.body.email);
+      let exist = await users.getUser(req.body.email);
 
       if (exist) {
         return res.status(403).json({ error: true, message: "L'adresse mail est déjà associé à un compte Matcha" });
