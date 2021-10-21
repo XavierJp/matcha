@@ -31,9 +31,7 @@ const EmailValide = () => {
         <Heading fontSize={['32px', '40px']} as='h1'>
           Mail vérifié
         </Heading>
-        <Text fontSize={['16px', '22px']}>
-          Votre email eao@artisanat-aquitaine.fr a bien été validé, vous pouvez maintenant vous connecter.
-        </Text>
+        <Text fontSize={['16px', '22px']}>Votre email à bien été validé, vous pouvez maintenant vous connecter.</Text>
       </Box>
       <Divider my={6} w='20%' />
       <Box>
