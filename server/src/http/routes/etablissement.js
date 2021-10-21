@@ -29,7 +29,7 @@ module.exports = ({ etablissement, users, mail }) => {
         etablissement.getEtablissementFromReferentiel(siret),
       ]);
 
-      if (!referentiel && !catalogue) {
+      if (!referentiel && catalogue.data.pagination.total === 0) {
         return res
           .status(400)
           .json({ error: true, message: "Le numéro siret n'est pas référencé comme centre de formation" });
