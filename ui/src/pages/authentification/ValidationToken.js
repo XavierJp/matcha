@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useParams, useHistory, useLocation } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import { validateToken } from '../../api'
 import useAuth from '../../common/hooks/useAuth'
 
