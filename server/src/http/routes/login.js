@@ -47,7 +47,7 @@ module.exports = ({ users, mail }) => {
         return res.status(400).send("KO");
       }
 
-      const magiclink = `${config.publicUrl}/authentification/verification/${createMagicLinkToken(email)}`;
+      const magiclink = `${config.publicUrl}/authentification/verification?token=${createMagicLinkToken(email)}`;
 
       const mailBody = mail.getEmailBody({
         email: user.email,

@@ -21,7 +21,7 @@ dayjs.locale('fr')
 
 function PrivateRoute({ children, ...rest }) {
   let [auth] = useAuth()
-
+  console.log('private route', auth)
   return (
     <Route
       {...rest}
@@ -47,7 +47,7 @@ const App = () => {
         <Route exact path='/authentification/en-attente' component={ValidationEmail} />
         <Route exact path='/authentification/confirmation' component={ConfirmationCreationCompte} />
         <Route exact path='/authentification/validation/:id' component={ConfirmationValidationEmail} />
-        <Route exact path='/authentification/verification/:token' component={ValidationToken} />
+        <Route exact path='/authentification/verification' component={ValidationToken} />
         <Route
           exact
           path='/formulaire/:id_form'

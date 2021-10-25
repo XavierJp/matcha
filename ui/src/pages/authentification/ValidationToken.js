@@ -1,12 +1,15 @@
 import { useEffect } from 'react'
-import { useParams, useHistory } from 'react-router-dom'
+import { useParams, useHistory, useLocation } from 'react-router-dom'
 import { validateToken } from '../../api'
 import useAuth from '../../common/hooks/useAuth'
 
 export default () => {
   let history = useHistory()
-  const { token } = useParams()
+  const { search } = useLocation()
   const [, setAuth] = useAuth()
+
+  let params = new URLSearchParams(search)
+  let token = params.get('token')
 
   useEffect(() => {
     if (!token) {
