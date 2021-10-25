@@ -69,6 +69,7 @@ module.exports = ({ users, mail }) => {
     checkToken(users),
     tryCatch(async (req, res) => {
       const user = req.user;
+      await users.registerUser(user.email);
       return res.json({ token: createUserToken(user) });
     })
   );
