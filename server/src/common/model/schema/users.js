@@ -7,11 +7,6 @@ module.exports = new Schema(
       description: "Nom de l'utilisateur",
     },
     prenom: { type: String, description: "Prénom de l'utilisateur" },
-    username: {
-      type: String,
-      default: null,
-      description: "L'identifiant de l'utilisateur",
-    },
     organization: {
       type: String,
       default: null,
@@ -33,10 +28,6 @@ module.exports = new Schema(
       type: String,
       description: "Numéro uai de l'établissement",
     },
-    geo_coordonnees: {
-      type: String,
-      description: "Géo-coordonnées de l'adresse de l'établissement",
-    },
     telephone: {
       type: String,
       description: "Téléphone de l'établissement",
@@ -46,11 +37,6 @@ module.exports = new Schema(
       default: null,
       description: "L'email de l'utilisateur",
       unique: true,
-    },
-    password: {
-      type: String,
-      default: null,
-      description: "Le mot de passe hashé",
     },
     isAdmin: {
       type: Boolean,

@@ -20,10 +20,27 @@ cli
   });
 
 cli
-  .command("create-user <email> <username> <organization> <scope> [isAdmin]")
+  .command(
+    "create-user <prenom> <nom> <email> <organization> <scope> [uai] [siret] [raison_sociale] [telephone] [adresse]"
+  )
+  .option("-admin [isAdmin]", "utilisateur administrateur", true)
   .description("Permet de créer un accès utilisateur à l'espace partenaire")
-  .action((email, username, organization, scope, isAdmin) => {
-    runScript(({ users }) => createUser(users, email, username, organization, scope, isAdmin));
+  .action((prenom, nom, email, organization, scope, uai, siret, raison_sociale, telephone, adresse, isAdmin) => {
+    runScript(({ users }) =>
+      createUser(users, {
+        prenom,
+        nom,
+        uai,
+        siret,
+        raison_sociale,
+        telephone,
+        adresse,
+        email,
+        organization,
+        scope,
+        isAdmin: isAdmin?.Admin,
+      })
+    );
   });
 
 cli
