@@ -53,11 +53,6 @@ module.exports = new Schema(
       default: false,
       description: "Indicateur de confirmation de l'adresse mail par l'utilisateur",
     },
-    mail_sent: {
-      type: Boolean,
-      default: false,
-      description: "L'utilisateur a reçu ses identifiants de connexion",
-    },
     last_connection: {
       type: Date,
       default: null,
