@@ -94,7 +94,6 @@ export default ({ raison_sociale, uai, adresse, contacts, siret }) => {
           contacts: contacts ?? undefined,
           siret: siret,
           email: contacts.length === 1 ? contacts[0].email : undefined,
-          userType: 'partenaire',
         }}
         validationSchema={Yup.object().shape({
           raison_sociale: Yup.string().required('champs obligatoire'),
