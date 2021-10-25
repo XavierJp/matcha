@@ -21,7 +21,7 @@ dayjs.locale('fr')
 
 function PrivateRoute({ children, ...rest }) {
   let [auth] = useAuth()
-  console.log('private route', auth)
+
   return (
     <Route
       {...rest}
