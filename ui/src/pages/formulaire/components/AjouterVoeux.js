@@ -81,7 +81,7 @@ export default (props) => {
         date_debut_apprentissage: Yup.date().required('Champ obligatoire'),
         description: Yup.string(),
         type: Yup.string().required('Champ obligatoire'),
-        multi_diffuser: Yup.boolean().required('Champ obligatoire'),
+        multi_diffuser: Yup.boolean(),
       })}
       onSubmit={async (values, { resetForm }) => {
         await handleSave(values)
