@@ -53,7 +53,7 @@ const offresSchema = new Schema({
   },
   multi_diffuser: {
     type: Boolean,
-    default: false,
+    default: null,
     description: "Definit si l'offre est diffusé sur d'autre jobboard que Matcha",
   },
 });
