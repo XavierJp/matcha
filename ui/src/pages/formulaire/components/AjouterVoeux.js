@@ -21,8 +21,7 @@ import {
   RadioGroup,
   Stack,
   Link,
-  Switch,
-  Spacer,
+  Box,
 } from '@chakra-ui/react'
 import { Formik } from 'formik'
 
@@ -32,7 +31,7 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/fr'
 
 import { DropdownCombobox } from '../../../components'
-import { ArrowRightLine, Close, ExternalLinkLine } from '../../../theme/components/icons'
+import { ArrowRightLine, Close, ExternalLinkLine, ThumbDown, ThumbUp } from '../../../theme/components/icons'
 import { LogoContext } from '../../../contextLogo'
 
 const DATE_FORMAT = 'YYYY-MM-DD'
@@ -76,7 +75,7 @@ export default (props) => {
         date_expiration: props.date_expiration ?? dayjs().add(1, 'months').format(DATE_FORMAT),
         statut: props.statut ?? 'Active',
         type: props.type ?? 'Apprentissage',
-        multi_diffuser: props.multi_diffuser ?? false,
+        multi_diffuser: props.multi_diffuser ?? undefined,
       }}
       validationSchema={Yup.object().shape({
         libelle: Yup.string().required('Champ obligatoire'),
@@ -226,21 +225,29 @@ export default (props) => {
                 </FormControl>
 
                 <FormControl mt={8}>
-                  <Flex direction='row' spacing={2} alignItems='flex-start'>
-                    <Flex direction='column'>
-                      <Switch
-                        onChange={() => {
-                          setFieldValue('multi_diffuser', !values.multi_diffuser)
-                        }}
-                        isChecked={values.multi_diffuser}
-                      />
-                      <Text color='bluefrance.500' fontSize='xs' fontWeight='400'>
-                        {values.multi_diffuser ? 'Oui' : 'Non'}
-                      </Text>
-                    </Flex>
-                    <Spacer />
-                    <FormLabel>Avez-vous déjà déposé cette offre ailleurs ?</FormLabel>
-                  </Flex>
+                  <Box p={3} bg='beige' borderBottom='4px solid #000091'>
+                    <FormLabel>
+                      Avez-vous déjà déposé cette offre sur une autre plateforme (Pôle Emploi, Indeed ...) ?
+                    </FormLabel>
+                    <Stack align='flex-start' spacing={5} my={5}>
+                      <Button
+                        leftIcon={<ThumbUp />}
+                        variant='secondary'
+                        isActive={values.multi_diffuser === true ? true : false}
+                        onClick={() => setFieldValue('multi_diffuser', true)}
+                      >
+                        Oui, l'offre est également ailleurs
+                      </Button>
+                      <Button
+                        leftIcon={<ThumbDown />}
+                        variant='secondary'
+                        isActive={values.multi_diffuser === false ? true : false}
+                        onClick={() => setFieldValue('multi_diffuser', false)}
+                      >
+                        Non, l'offre est uniquement sur Matcha
+                      </Button>
+                    </Stack>
+                  </Box>
                 </FormControl>
 
                 {(values.description || organisation.includes('akto')) && (
