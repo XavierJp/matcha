@@ -13,7 +13,7 @@ const { relanceFormulaire } = require("./jobs/formulaire/relanceFormulaire");
 cli.addHelpText("after");
 
 cli
-  .command("index formulaire")
+  .command("index")
   .description("Synchronise les index des collections mongo & reconstruit l'index elasticsearch")
   .action(() => {
     runScript(() => generateIndexes());
