@@ -21,6 +21,8 @@ import {
   RadioGroup,
   Stack,
   Link,
+  Switch,
+  Spacer,
 } from '@chakra-ui/react'
 import { Formik } from 'formik'
 
@@ -72,6 +74,7 @@ export default (props) => {
         date_expiration: props.date_expiration ?? dayjs().add(1, 'month').format(DATE_FORMAT),
         statut: props.statut ?? 'Active',
         type: props.type ?? 'Apprentissage',
+        multi_diffuser: props.multi_diffuser ?? false,
       }}
       validationSchema={Yup.object().shape({
         libelle: Yup.string().required('Champ obligatoire'),
@@ -79,6 +82,7 @@ export default (props) => {
         date_debut_apprentissage: Yup.date(),
         description: Yup.string(),
         type: Yup.string().required('Champ obligatoire'),
+        multi_diffuser: Yup.string(),
       })}
       onSubmit={async (values, { resetForm }) => {
         await handleSave(values)
@@ -152,19 +156,58 @@ export default (props) => {
                   {errors.libelle && touched.libelle && <FormErrorMessage>{errors.libelle}</FormErrorMessage>}
                 </FormControl>
 
+                <FormControl mt={4}>
+                  <FormLabel>
+                    <Flex alignItems='flex-end'>
+                      Type de contrat{' '}
+                      <Link
+                        href='https://www.service-public.fr/professionnels-entreprises/vosdroits/F31704'
+                        isExternal
+                        ml={1}
+                      >
+                        <Flex>
+                          <Text fontSize='sm' color='grey.500'>
+                            en savoir plus
+                          </Text>
+                          <ExternalLinkLine color='grey.500' ml='3px' w={3} />
+                        </Flex>
+                      </Link>
+                    </Flex>
+                  </FormLabel>
+                  <RadioGroup
+                    onChange={(value) => {
+                      setFieldValue('type', value)
+                    }}
+                    value={values.type}
+                  >
+                    <Stack direction='row' spacing={5}>
+                      <Radio value='Apprentissage'>Apprentissage</Radio>
+                      <Radio value='Professionnalisation'>Professionnalisation</Radio>
+                    </Stack>
+                  </RadioGroup>
+                </FormControl>
+
                 <FormControl mt={4} isRequired>
                   <FormLabel>Formation minimum attendue</FormLabel>
-                  <Select size='lg' name='niveau' defaultValue={values.niveau} onChange={handleChange}>
+                  <Select size='md' name='niveau' defaultValue={values.niveau} onChange={handleChange}>
                     <option value='' hidden>
                       Choisissez un niveau
                     </option>
-                    <option value='CAP, BEP'>CAP, BEP</option>
-                    <option value='Baccalauréat'>Baccalauréat</option>
-                    <option value='DEUG, BTS, DUT, DEUST'>DEUG, BTS, DUT, DEUST</option>
-                    <option value='Licence, Licence professionnelle'>Licence, Licence professionnelle</option>
-                    <option value='Maitrise, master 1'>Maitrise, master 1</option>
-                    <option value='Master 2, DEA, DESS, Ingénieur'>Master 2, DEA, DESS, Ingénieur</option>
-                    <option value='Doctorat, recherche'>Doctorat, recherche</option>
+                    <option value='Cap, autres formations niveau (Infrabac)'>
+                      Cap, autres formations niveau (Infrabac)
+                    </option>
+                    <option value='BP, Bac, autres formations niveau (Bac)'>
+                      BP, Bac, autres formations niveau (Bac)
+                    </option>
+                    <option value='BTS, DEUST, autres formations niveau (Bac+2)'>
+                      BTS, DEUST, autres formations niveau (Bac+2)
+                    </option>
+                    <option value='Licence, autres formations niveau (Bac+3)'>
+                      Licence, autres formations niveau (Bac+3)
+                    </option>
+                    <option value='Master, titre ingénieur, autres formations niveau (Bac+5)'>
+                      Master, titre ingénieur, autres formations niveau (Bac+5)
+                    </option>
                   </Select>
                   {errors.niveau && touched.niveau && <FormErrorMessage>{errors.niveau}</FormErrorMessage>}
                 </FormControl>
@@ -180,24 +223,22 @@ export default (props) => {
                   />
                 </FormControl>
 
-                <FormControl mt={4}>
-                  <FormLabel>Type de contrat</FormLabel>
-                  <RadioGroup
-                    onChange={(value) => {
-                      setFieldValue('type', value)
-                    }}
-                    value={values.type}
-                  >
-                    <Stack direction='row' spacing={5}>
-                      <Radio value='Apprentissage'>Apprentissage</Radio>
-                      <Radio value='Professionnalisation'>Professionnalisation</Radio>
-                    </Stack>
-                  </RadioGroup>
-                  <FormHelperText>
-                    <Link href='https://www.service-public.fr/professionnels-entreprises/vosdroits/F31704' isExternal>
-                      voir plus d'informations sur les types de contrat <ExternalLinkLine mb='2px' />
-                    </Link>
-                  </FormHelperText>
+                <FormControl mt={8}>
+                  <Flex direction='row' spacing={2} alignItems='flex-start'>
+                    <Flex direction='column'>
+                      <Switch
+                        onChange={() => {
+                          setFieldValue('multi_diffuser', !values.multi_diffuser)
+                        }}
+                        isChecked={values.multi_diffuser}
+                      />
+                      <Text color='bluefrance.500' fontSize='xs' fontWeight='400'>
+                        {values.multi_diffuser ? 'Oui' : 'Non'}
+                      </Text>
+                    </Flex>
+                    <Spacer />
+                    <FormLabel>Avez-vous déjà déposez cette offre ailleurs ?</FormLabel>
+                  </Flex>
                 </FormControl>
 
                 {(values.description || organisation.includes('akto')) && (
