@@ -51,6 +51,11 @@ const offresSchema = new Schema({
     enum: ["Apprentissage", "Professionnalisation"],
     description: "Type de contrat",
   },
+  multi_diffuser: {
+    type: Boolean,
+    default: false,
+    description: "Definit si l'offre est diffusé sur d'autre jobboard que Matcha",
+  },
 });
 
 module.exports = new Schema(
