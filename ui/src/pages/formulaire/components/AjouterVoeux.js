@@ -152,7 +152,7 @@ export default (props) => {
                     }}
                     name='libelle'
                     value={values.libelle}
-                    placeholder="Rechercher un domaine d'activité.."
+                    placeholder='Rechercher un métier..'
                     ref={initialRef}
                   />
                   {errors.libelle && touched.libelle && <FormErrorMessage>{errors.libelle}</FormErrorMessage>}
@@ -190,7 +190,7 @@ export default (props) => {
                 </FormControl>
 
                 <FormControl mt={4} isRequired>
-                  <FormLabel>Formation minimum attendue</FormLabel>
+                  <FormLabel>Niveau de formation</FormLabel>
                   <Select size='md' name='niveau' defaultValue={values.niveau} onChange={handleChange}>
                     <option value='' hidden>
                       Choisissez un niveau
@@ -239,7 +239,7 @@ export default (props) => {
                       </Text>
                     </Flex>
                     <Spacer />
-                    <FormLabel>Avez-vous déjà déposez cette offre ailleurs ?</FormLabel>
+                    <FormLabel>Avez-vous déjà déposé cette offre ailleurs ?</FormLabel>
                   </Flex>
                 </FormControl>
 
