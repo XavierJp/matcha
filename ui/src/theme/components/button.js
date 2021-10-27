@@ -19,12 +19,16 @@ const Button = {
       border: '1px solid',
       borderColor: 'bluefrance.500',
       _hover: { bg: 'grey.200' },
+      _active: {
+        bg: 'bluefrance.500',
+        color: 'white',
+      },
     },
     primary: {
       ...commonButtonStyle,
       bg: 'bluefrance.500',
       color: 'white',
-      _hover: { bg: 'blue.700' },
+      _hover: { bg: 'bluefrance.700', _disabled: { bg: 'bluefrance.300' } },
     },
     pill: {
       ...commonButtonStyle,
