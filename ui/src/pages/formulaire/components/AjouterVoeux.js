@@ -78,10 +78,10 @@ export default (props) => {
       validationSchema={Yup.object().shape({
         libelle: Yup.string().required('Champ obligatoire'),
         niveau: Yup.string().required('Champ obligatoire'),
-        date_debut_apprentissage: Yup.date(),
+        date_debut_apprentissage: Yup.date().required('Champ obligatoire'),
         description: Yup.string(),
         type: Yup.string().required('Champ obligatoire'),
-        multi_diffuser: Yup.string(),
+        multi_diffuser: Yup.boolean().required('Champ obligatoire'),
       })}
       onSubmit={async (values, { resetForm }) => {
         await handleSave(values)
@@ -211,7 +211,7 @@ export default (props) => {
                   {errors.niveau && touched.niveau && <FormErrorMessage>{errors.niveau}</FormErrorMessage>}
                 </FormControl>
 
-                <FormControl mt={4}>
+                <FormControl mt={4} isRequired>
                   <FormLabel>Date de début</FormLabel>
                   <Input
                     type='date'
