@@ -4,6 +4,31 @@ const tryCatch = require("../middlewares/tryCatchMiddleware");
 module.exports = ({ etablissement, users, mail }) => {
   const router = express.Router();
 
+  router.get(
+    "/:siret",
+    tryCatch(async (req, res) => {
+      if (!req.params.siret) {
+        return res.status(400).json({ error: true, message: "Le numéro siret est obligatoire" });
+      }
+
+      const result = await etablissement.getEtablissementFromGouv(req.params.siret);
+
+      if (!result) {
+        return res.status(400).json({ error: true, message: "Le numéro siret est invalide" });
+      }
+
+      let response = {
+        raison_sociale: result.data?.etablissement.adresse.l1,
+        domaine: result.data?.etablissement.libelle_naf,
+        adresse: `${result.data?.etablissement.adresse.l4}, ${result.data?.etablissement.adresse.l6}, ${result.data?.etablissement.adresse.l7}`,
+      };
+
+      response.geo_coordonnees = await etablissement.getGeoCoordinates(response.adresse);
+
+      return res.json(response);
+    })
+  );
+
   /**
    * Récupération des informations de l'établissement à partir du SIRET
    */

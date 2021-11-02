@@ -25,10 +25,16 @@ module.exports = () => {
 
       return true;
     },
-    getEtablissementFromGouv: (siret) =>
-      axios.get(`https://entreprise.api.gouv.fr/v2/etablissements/${siret}`, {
-        params: apiParams,
-      }),
+    getEtablissementFromGouv: async (siret) => {
+      try {
+        let response = await axios.get(`https://entreprise.api.gouv.fr/v2/etablissements/${siret}`, {
+          params: apiParams,
+        });
+        return response;
+      } catch (error) {
+        return false;
+      }
+    },
     getEtablissementFromReferentiel: async (siret) => {
       try {
         const response = await axios.get(
@@ -47,7 +53,11 @@ module.exports = () => {
           query: { siret },
         },
       }),
-
+    getGeoCoordinates: async (adresse) => {
+      const response = await axios.get(`https://api-adresse.data.gouv.fr/search/?q=${adresse}`);
+      const coordinates = response.data.features[0].geometry.coordinates.reverse().join(",");
+      return coordinates;
+    },
     formatReferentielData: (d) => ({
       etat: d.etat_administratif,
       siret: d.siret,
