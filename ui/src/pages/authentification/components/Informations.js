@@ -1,4 +1,5 @@
 import { Heading, Text, Flex, useBreakpointValue, Button, Link as ChakraLink } from '@chakra-ui/react'
+import { memo } from 'react'
 import { Form, Formik } from 'formik'
 import { useHistory } from 'react-router-dom'
 import { Link } from 'react-router-dom'
@@ -9,8 +10,10 @@ import { ArrowRightLine, InfoCircle } from '../../../theme/components/icons'
 import CustomInput from '../../formulaire/components/CustomInput'
 import CustomSelect from '../../formulaire/components/CustomSelect'
 
-const ContactField = ({ values }) => {
-  if (values.contacts.length > 1) {
+const ContactField = memo(({ values }) => {
+  let hasTrusties = Boolean(values.contacts.filter((c) => c.confirmé === true).length)
+
+  if (values.contacts.length > 1 && hasTrusties) {
     return (
       <CustomSelect
         name='email'
@@ -59,7 +62,7 @@ const ContactField = ({ values }) => {
       info='Il s’agit de l’adresse qui vous permettra de vous connecter à Matcha. Privilégiez votre adresse professionnelle'
     />
   )
-}
+})
 
 export default ({ raison_sociale, uai, adresse, contacts, siret }) => {
   const buttonSize = useBreakpointValue(['sm', 'md'])
