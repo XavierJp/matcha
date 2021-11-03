@@ -3,7 +3,7 @@ const Switch = {
   baseStyle: {
     container: {},
     track: {
-      padding: '1px',
+      padding: '0',
       bg: 'white',
       border: '1px solid #000091',
       _checked: {
