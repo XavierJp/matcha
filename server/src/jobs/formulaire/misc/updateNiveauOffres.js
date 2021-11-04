@@ -19,7 +19,7 @@ const getLevel = (level) => {
     case "Doctorat, recherche":
       return "Master, titre ingénieur, autres formations niveau (Bac+5)";
     default:
-      break;
+      return "Cap, autres formations niveau (Infrabac)";
   }
 };
 
