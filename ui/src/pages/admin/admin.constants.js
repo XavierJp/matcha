@@ -69,6 +69,7 @@ const exportableColumns = [
           Type: escapeDiacritics(x.type),
           Metier: escapeDiacritics(x.libelle),
           Niveau: escapeDiacritics(x.niveau),
+          Date_creation: dayjs(x.date_creation).format('YYYY-MM-DD'),
           Date_debut_apprentissage: x.date_debut_apprentissage
             ? dayjs(x.date_debut_apprentissage).format('YYYY-MM-DD')
             : 'NA',
@@ -94,6 +95,12 @@ const exportableColumns = [
     accessor: 'offres.niveau',
     exportable: true,
     formatter: (value) => escapeDiacritics(value),
+  },
+  {
+    Header: "Date de creation de l'offre",
+    accessor: 'offres.date_creation',
+    exportable: true,
+    formatter: (value) => dayjs(value).format('YYYY-MM-DD'),
   },
   {
     Header: "Date de debut d'apprentissage",
