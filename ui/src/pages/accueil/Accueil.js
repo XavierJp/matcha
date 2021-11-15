@@ -10,7 +10,7 @@ export default () => {
       <Navbar />
       <Flex direction='column' height='100vh'>
         <Container maxW='container.xl' my={[5, 10]}>
-          <Stack direction={['column', 'row']} spacing='27px' align='stretch'>
+          <Stack direction={['column', 'row']} spacing='27px' align='stretch' mx={[5, 10]}>
             <Etablissement
               bg='bluefrance.100'
               title='Vous êtes une entreprise'

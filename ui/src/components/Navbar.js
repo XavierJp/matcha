@@ -24,6 +24,7 @@ import useAuth from '../common/hooks/useAuth'
 import { useHistory } from 'react-router'
 import { useContext } from 'react'
 import { LogoContext } from '../contextLogo'
+import { ArrowRightLine, ChevronRight } from '../theme/components/icons'
 
 export default () => {
   const { organisation } = useContext(LogoContext)
@@ -51,9 +52,9 @@ export default () => {
               fontWeight='normal'
               variant='link'
               color='bluefrance.500'
-              leftIcon={<RiAccountCircleLine />}
+              leftIcon={<ChevronRight w={2} />}
             >
-              Espace partenaires
+              Connexion compte
             </Button>
           )}
           {auth.sub !== 'anonymous' && (
