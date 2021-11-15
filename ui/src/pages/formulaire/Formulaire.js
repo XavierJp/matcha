@@ -45,6 +45,7 @@ import CustomInput from './components/CustomInput'
 import ListeVoeux from './components/ListeVoeux'
 
 import { LogoContext } from '../../contextLogo'
+import useAuth from '../../common/hooks/useAuth'
 
 export default (props) => {
   const [formState, setFormState] = useState({})
@@ -60,6 +61,7 @@ export default (props) => {
   const toast = useToast()
   const history = useHistory()
   const { setOrganisation } = useContext(LogoContext)
+  const [auth] = useAuth()
 
   const hasActiveOffers = offersList.filter((x) => x.statut === 'Active')
 
@@ -228,17 +230,35 @@ export default (props) => {
             {!props.widget && (
               <Box pt={3}>
                 <Breadcrumb separator={<ArrowDropRightLine color='grey.600' />} textStyle='xs'>
-                  <BreadcrumbItem>
-                    <BreadcrumbLink textDecoration='underline' as={Link} to='/' textStyle='xs'>
-                      Accueil
-                    </BreadcrumbLink>
-                  </BreadcrumbItem>
-
-                  <BreadcrumbItem isCurrentPage>
-                    <BreadcrumbLink href='#' textStyle='xs'>
-                      {formState._id ? 'Consulter vos offres en cours' : "Nouveau dépot d'offre"}
-                    </BreadcrumbLink>
-                  </BreadcrumbItem>
+                  {auth ? (
+                    <Breadcrumb separator={<ArrowDropRightLine color='grey.600' />} textStyle='xs'>
+                      <BreadcrumbItem>
+                        <BreadcrumbLink textDecoration='underline' as={Link} to='/admin' textStyle='xs'>
+                          Administration des offres
+                        </BreadcrumbLink>
+                      </BreadcrumbItem>
+                      <BreadcrumbItem>
+                        {formState._id ? (
+                          <BreadcrumbLink textStyle='xs'>{formState.raison_sociale}</BreadcrumbLink>
+                        ) : (
+                          <BreadcrumbLink textStyle='xs'>Nouvelle entreprise</BreadcrumbLink>
+                        )}
+                      </BreadcrumbItem>
+                    </Breadcrumb>
+                  ) : (
+                    <Breadcrumb separator={<ArrowDropRightLine color='grey.600' />} textStyle='xs'>
+                      <BreadcrumbItem>
+                        <BreadcrumbLink textDecoration='underline' as={Link} to='/' textStyle='xs'>
+                          Accueil
+                        </BreadcrumbLink>
+                      </BreadcrumbItem>
+                      <BreadcrumbItem isCurrentPage>
+                        <BreadcrumbLink href='#' textStyle='xs'>
+                          {formState._id ? 'Consulter vos offres en cours' : "Nouveau dépot d'offre"}
+                        </BreadcrumbLink>
+                      </BreadcrumbItem>
+                    </Breadcrumb>
+                  )}
                 </Breadcrumb>
               </Box>
             )}

@@ -57,21 +57,15 @@ export default memo(() => {
       <Container maxW='container.xl' py={4}>
         <Flex justifyContent='space-between' alignItems='center'>
           <Breadcrumb spacing='4px' separator={<AiOutlineRight />} textStyle='xs' mb={3}>
-            <BreadcrumbItem>
-              <BreadcrumbLink textDecoration='underline' as={NavLink} to='/' textStyle='xs'>
-                Accueil
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-
             <BreadcrumbItem isCurrentPage>
               <BreadcrumbLink href='#' textStyle='xs'>
                 Administration des offres
               </BreadcrumbLink>
             </BreadcrumbItem>
           </Breadcrumb>
-          <Link as={NavLink} to={`/${auth.scope === 'all' ? 'matcha' : auth.scope}/`} target='_blank'>
+          <Link as={NavLink} to={`/${auth.scope === 'all' ? 'matcha' : auth.scope}/`}>
             <Button variant='primary' size='sm' mr={3}>
-              Nouveau formulaire {auth.scope === 'all' ? 'matcha' : auth.scope}
+              Nouvelle entreprise
             </Button>
           </Link>
         </Flex>
@@ -88,25 +82,47 @@ export default memo(() => {
               </GridItem>
               <GridItem>
                 <Text fontWeight='700'>FILTRER</Text>
-                {facetDefinition.map((f, i) => {
-                  return (
-                    <Facet
-                      key={i}
-                      title={f.title}
-                      filterLabel={f.filterLabel}
-                      filters={filters}
-                      selectAllLabel={f.selectAllLabel}
-                      sortBy={f.sortBy}
-                      componentId={f.componentId}
-                      dataField={f.dataField}
-                      nestedField={f.nestedField}
-                      showSearch={f.showSearch}
-                      showCount={f.showCount}
-                      defaultQuery={queryFilter}
-                      excludeFields={excludedFields}
-                    />
-                  )
-                })}
+                {auth.permissions.isAdmin
+                  ? facetDefinition.map((f, i) => {
+                      return (
+                        <Facet
+                          key={i}
+                          title={f.title}
+                          filterLabel={f.filterLabel}
+                          filters={filters}
+                          selectAllLabel={f.selectAllLabel}
+                          sortBy={f.sortBy}
+                          componentId={f.componentId}
+                          dataField={f.dataField}
+                          nestedField={f.nestedField}
+                          showSearch={f.showSearch}
+                          showCount={f.showCount}
+                          defaultQuery={queryFilter}
+                          excludeFields={excludedFields}
+                        />
+                      )
+                    })
+                  : facetDefinition
+                      .filter((x) => x.componentId !== 'origineFilter')
+                      .map((f, i) => {
+                        return (
+                          <Facet
+                            key={i}
+                            title={f.title}
+                            filterLabel={f.filterLabel}
+                            filters={filters}
+                            selectAllLabel={f.selectAllLabel}
+                            sortBy={f.sortBy}
+                            componentId={f.componentId}
+                            dataField={f.dataField}
+                            nestedField={f.nestedField}
+                            showSearch={f.showSearch}
+                            showCount={f.showCount}
+                            defaultQuery={queryFilter}
+                            excludeFields={excludedFields}
+                          />
+                        )
+                      })}
               </GridItem>
               <GridItem m={3}>
                 <SelectedFilters clearAllLabel='Supprimer tous' />
@@ -151,13 +167,7 @@ export default memo(() => {
                     let active = offres.filter((x) => x.statut === 'Active')
 
                     return (
-                      <Link
-                        as={NavLink}
-                        to={`/formulaire/${formulaire.id_form}`}
-                        variant='card'
-                        target='_blank'
-                        key={formulaire._id}
-                      >
+                      <Link as={NavLink} to={`/formulaire/${formulaire.id_form}`} variant='card' key={formulaire._id}>
                         <Box bg='none' key={formulaire._id}>
                           <Flex
                             key={formulaire._id}
