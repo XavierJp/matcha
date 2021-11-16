@@ -17,11 +17,12 @@ export default (props) => {
       <Box px={['4', '0']}>
         <Box pt={['6w', '12w']}>
           <Heading fontSize={['32px', '40px']} as='h1'>
-            Vérifier votre messagerie
+            Vérification de votre adresse mail
           </Heading>
           <Box fontSize={['16px', '22px']}>
             <Text>
-              Nous vous avons envoyé un email à <strong>{email}</strong> avec un lien de connexion.
+              Afin de nous assurer de l'authenticité de votre adresse, nous venons de vous envoyer un email à{' '}
+              <strong>{email}</strong> avec un lien de connexion.
             </Text>
           </Box>
         </Box>

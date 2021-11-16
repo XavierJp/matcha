@@ -1,4 +1,4 @@
-import { memo } from 'react'
+import { memo, useEffect } from 'react'
 import { ReactiveBase, DataSearch, ReactiveList, SelectedFilters } from '@appbaseio/reactivesearch'
 import { Layout } from '../../components'
 import {
@@ -15,8 +15,9 @@ import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
+  useToast,
 } from '@chakra-ui/react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 
 import constants from './admin.constants'
 import Facet from '../../components/Facet/Facet'
@@ -31,6 +32,21 @@ import ExportButton from '../../components/ExportButton/ExportButton'
 export default memo(() => {
   const { filters, facetDefinition, dataSearchDefinition, exportableColumns, excludedFields } = constants
   const [auth] = useAuth()
+  const location = useLocation()
+  const toast = useToast()
+
+  useEffect(() => {
+    if (location.state?.newUser) {
+      toast({
+        title: 'Vérification réussi',
+        description: 'Votre adresse mail a été validé avec succès.',
+        position: 'top-right',
+        status: 'success',
+        duration: 7000,
+        isClosable: true,
+      })
+    }
+  }, [])
 
   const queryFilter = () => {
     if (auth.scope === 'all') return {}

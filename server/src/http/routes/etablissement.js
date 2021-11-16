@@ -1,5 +1,7 @@
 const express = require("express");
 const tryCatch = require("../middlewares/tryCatchMiddleware");
+const { createUserToken } = require("../../common/utils/jwtUtils");
+const { User } = require("../../common/model");
 
 module.exports = ({ etablissement, users, mail }) => {
   const router = express.Router();
@@ -87,6 +89,7 @@ module.exports = ({ etablissement, users, mail }) => {
         return res.status(400);
       }
 
+      // Validate email
       const validation = await etablissement.validateEtablissementEmail(id);
 
       if (!validation) {
@@ -95,7 +98,12 @@ module.exports = ({ etablissement, users, mail }) => {
           message: "La validation de l'adresse mail à échoué. Merci de contacter le support Matcha",
         });
       }
-      return res.sendStatus(200);
+
+      // Log the user in directly
+      const user = await User.findById(req.body.id);
+      await users.registerUser(user.email);
+
+      return res.json({ token: createUserToken(user) });
     })
   );
 

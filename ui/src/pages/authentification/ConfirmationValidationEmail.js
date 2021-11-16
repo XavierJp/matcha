@@ -1,77 +1,15 @@
-import { Button, Heading, Text, Box, useBreakpointValue, Divider, useBoolean, Link } from '@chakra-ui/react'
+import { Heading, Text, Box, useBoolean, Link } from '@chakra-ui/react'
 import { useEffect } from 'react'
-import { Form, Formik } from 'formik'
-import * as Yup from 'yup'
 
 import AuthentificationLayout from './components/Authentification-layout'
-import CustomInput from '../formulaire/components/CustomInput'
-import { ArrowRightLine } from '../../theme/components/icons'
-import { validationCompte, sendMagiclink } from '../../api'
-import { useHistory, useParams } from 'react-router'
+import { validationCompte } from '../../api'
+import { useHistory, useParams } from 'react-router-dom'
+import useAuth from '../../common/hooks/useAuth'
 
-const EmailValide = () => {
-  const buttonSize = useBreakpointValue(['sm', 'md'])
-  const history = useHistory()
-
-  const submitEmail = (values, { setFieldError, setSubmitting }) => {
-    sendMagiclink(values)
-      .then(() => {
-        history.push('/authentification/confirmation', { email: values.email })
-        setSubmitting(false)
-      })
-      .catch(() => {
-        setFieldError('email', "L'adresse renseigné n'existe pas")
-        setSubmitting(false)
-      })
-  }
-
-  return (
-    <>
-      <Box pt={['6w', '12w']}>
-        <Heading fontSize={['32px', '40px']} as='h1'>
-          Mail vérifié
-        </Heading>
-        <Text fontSize={['16px', '22px']}>Votre email à bien été validé, vous pouvez maintenant vous connecter.</Text>
-      </Box>
-      <Divider my={6} w='20%' />
-      <Box>
-        <Formik
-          initialValues={{ email: '' }}
-          validationSchema={Yup.object().shape({
-            email: Yup.string().email('Insérez un email valide').required('champ obligatoire'),
-          })}
-          onSubmit={submitEmail}
-        >
-          {({ values, isValid, isSubmitting }) => {
-            return (
-              <Form>
-                <CustomInput
-                  required={false}
-                  name='email'
-                  label='Email professionnel'
-                  type='email'
-                  value={values.email}
-                  mb={5}
-                  width={['90%', '35%']}
-                />
-                <Button
-                  type='submit'
-                  size={buttonSize}
-                  variant='greyed'
-                  leftIcon={<ArrowRightLine width={5} />}
-                  isActive={isValid}
-                  disabled={!isValid || isSubmitting}
-                >
-                  Je me connecte
-                </Button>
-              </Form>
-            )
-          }}
-        </Formik>
-      </Box>
-    </>
-  )
-}
+/**
+ *
+ * Validate email & redirect to admin
+ */
 
 const EmailInvalide = () => (
   <>
@@ -92,13 +30,19 @@ const EmailInvalide = () => (
 export default (props) => {
   const [isValid, setIsValid] = useBoolean()
   const { id } = useParams()
+  const history = useHistory()
+  const [, setAuth] = useAuth()
 
   useEffect(() => {
     // get user from params coming from email link
     validationCompte({ id })
-      .then(() => setIsValid.on())
+      .then(({ data }) => {
+        setAuth(data?.token)
+        setIsValid.on()
+        history.push('/admin', { newUser: true })
+      })
       .catch(() => setIsValid.off())
   }, [id])
 
-  return <AuthentificationLayout>{isValid ? <EmailValide /> : <EmailInvalide />}</AuthentificationLayout>
+  return <AuthentificationLayout>{!isValid && <EmailInvalide />}</AuthentificationLayout>
 }

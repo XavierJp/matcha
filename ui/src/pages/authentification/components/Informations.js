@@ -72,7 +72,7 @@ export default ({ raison_sociale, uai, adresse, contacts, siret }) => {
     // save info if not trusted from source
     createPartenaire(values)
       .then(({ data }) => {
-        history.push('/authentification/en-attente', { email: data.email })
+        history.push('/authentification/confirmation', { email: data.email })
         setSubmitting(false)
       })
       .catch((error) => {

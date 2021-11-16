@@ -5,14 +5,12 @@ import { Login, Users, Search } from './admin'
 import {
   Authentification,
   ConfirmationCreationCompte,
-  ValidationEmail,
   ValidationToken,
   ConfirmationValidationEmail,
 } from './authentification'
 
 export {
   ValidationToken,
-  ValidationEmail,
   ConfirmationCreationCompte,
   ConfirmationValidationEmail,
   Authentification,
