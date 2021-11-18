@@ -37,6 +37,8 @@ module.exports = ({ etablissement, users, mail }) => {
           .json({ error: true, message: "Le numéro siret n'est pas référencé comme centre de formation" });
       }
 
+      // return res.json({ referentiel: referentiel?.data, catalogue: catalogue?.data?.etablissements[0] });
+
       if (!referentiel) {
         return res.json({ ...etablissement.formatTCOData(catalogue.data.etablissements[0]) });
       }

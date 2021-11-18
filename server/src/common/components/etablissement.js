@@ -55,6 +55,8 @@ module.exports = () => {
       raison_sociale: d.raison_sociale,
       contacts: d.contacts,
       adresse: d.adresse.label,
+      commune: d.adresse.localite,
+      code_postal: d.adresse.code_postal,
       geo_coordonnees: `${d.adresse.geojson?.geometry.coordinates[0]},${d.adresse.geojson?.geometry.coordinates[0]}`,
     }),
     formatTCOData: (d) => ({
@@ -62,7 +64,9 @@ module.exports = () => {
       siret: d.siret,
       uai: d.uai,
       raison_sociale: d.entreprise_raison_sociale,
-      contacts: [], // les tco n'ont pas d'information de contact, mais conserve un standard pour l'ui
+      contacts: [], // les tco n'ont pas d'information de contact, mais conserve un standard pour l'ui,
+      commune: d.localite,
+      code_postal: d.code_postal,
       adresse: `${d.numero_voie === null ? "" : d.numero_voie} ${d.type_voie} ${d.nom_voie}, ${d.code_postal} ${
         d.localite
       }`,
