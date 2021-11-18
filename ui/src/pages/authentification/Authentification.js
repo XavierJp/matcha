@@ -20,12 +20,27 @@ import * as Yup from 'yup'
 import { Close, SearchLine, ArrowRightLine } from '../../theme/components/icons'
 import CustomInput from '../formulaire/components/CustomInput'
 import logo from '../../assets/images/logo.svg'
-import Informations from './components/Informations'
+
 import { getSiretInformation, sendMagiclink } from '../../api'
 import AnimationContainer from '../../components/AnimationContainer'
+import AuthentificationLayout from './components/Authentification-layout'
 
-const CreationCompte = ({ submitSiret, validSIRET, siretInformation }) => {
+const CreationCompte = () => {
   const buttonSize = useBreakpointValue(['sm', 'md'])
+  const history = useHistory()
+
+  const submitSiret = (values, { setSubmitting, setFieldError }) => {
+    // validate SIRET
+    getSiretInformation(values)
+      .then(({ data }) => {
+        setSubmitting(false)
+        history.push('/authentification/creation-compte', { informationSiret: data })
+      })
+      .catch(({ response }) => {
+        setFieldError('siret', response.data.message)
+        setSubmitting(false)
+      })
+  }
 
   return (
     <Box p={['4', '8']}>
@@ -51,7 +66,6 @@ const CreationCompte = ({ submitSiret, validSIRET, siretInformation }) => {
                 <Form>
                   <CustomInput
                     required={false}
-                    isDisabled={validSIRET}
                     name='siret'
                     label='SIRET'
                     type='text'
@@ -72,11 +86,6 @@ const CreationCompte = ({ submitSiret, validSIRET, siretInformation }) => {
                     </Button>
                   </Flex>
                 </Form>
-                {validSIRET && siretInformation ? (
-                  <AnimationContainer>
-                    <Informations {...siretInformation} />
-                  </AnimationContainer>
-                ) : null}
               </>
             )
           }}
@@ -111,7 +120,7 @@ const ConnexionCompte = () => {
       <Box pt={12} mr={4}>
         <Formik
           enableReinitialize
-          initialValues={{ email: '' }}
+          initialValues={{ email: undefined }}
           validationSchema={Yup.object().shape({
             email: Yup.string().email('Insérez un email valide').required('champ obligatoire'),
           })}
@@ -121,17 +130,19 @@ const ConnexionCompte = () => {
             return (
               <Form autoComplete='off'>
                 <CustomInput name='email' label='E-mail professionnel' type='text' value={values.email} />
-                <Button
-                  mt={5}
-                  type='submit'
-                  size={buttonSize}
-                  variant='primary'
-                  leftIcon={<ArrowRightLine width={5} />}
-                  isActive={isValid}
-                  disabled={(!isValid && dirty) || isSubmitting}
-                >
-                  Je me connecte
-                </Button>
+                <Flex justifyContent='flex-end'>
+                  <Button
+                    mt={5}
+                    type='submit'
+                    size={buttonSize}
+                    variant='greyed'
+                    leftIcon={<ArrowRightLine width={5} />}
+                    isActive={isValid}
+                    disabled={(!isValid && dirty) || isSubmitting}
+                  >
+                    Je me connecte
+                  </Button>
+                </Flex>
               </Form>
             )
           }}
@@ -143,22 +154,6 @@ const ConnexionCompte = () => {
 
 export default () => {
   const history = useHistory()
-  const [validSIRET, setValidSIRET] = useBoolean()
-  const [siretInformation, setSiretInformation] = useState({})
-
-  const submitSiret = (values, { setSubmitting, setFieldError }) => {
-    // validate SIRET
-    getSiretInformation(values)
-      .then(({ data }) => {
-        setSiretInformation(data)
-        setValidSIRET.on()
-        setSubmitting(false)
-      })
-      .catch(({ response }) => {
-        setFieldError('siret', response.data.message)
-        setSubmitting(false)
-      })
-  }
 
   return (
     <Container maxW='container.xl' p={['0', '5']} h='100vh'>
@@ -179,13 +174,11 @@ export default () => {
 
         <SimpleGrid columns={['1', '2']} gap={5} flex='1' alignItems='center'>
           <GridItem>
-            <CreationCompte submitSiret={submitSiret} validSIRET={validSIRET} siretInformation={siretInformation} />
+            <CreationCompte />
           </GridItem>
-          {!validSIRET && (
-            <GridItem bg='grey.150'>
-              <ConnexionCompte />
-            </GridItem>
-          )}
+          <GridItem bg='grey.150'>
+            <ConnexionCompte />
+          </GridItem>
         </SimpleGrid>
       </Flex>
     </Container>

@@ -5,16 +5,16 @@ import dayjs from 'dayjs'
 import {
   Formulaire,
   NonTrouve,
-  Login,
   Accueil,
   Users,
   Search,
   Authentification,
-  ValidationEmail,
   ConfirmationCreationCompte,
   ValidationToken,
   ConfirmationValidationEmail,
+  CreationCompte,
 } from './pages'
+
 import useAuth from './common/hooks/useAuth'
 
 dayjs.locale('fr')
@@ -44,6 +44,7 @@ const App = () => {
         </PrivateRoute>
         <Route exact path='/' component={Accueil} />
         <Route exact path='/authentification' component={Authentification} />
+        <Route exact path='/authentification/creation-compte' component={CreationCompte} />
         <Route exact path='/authentification/confirmation' component={ConfirmationCreationCompte} />
         <Route exact path='/authentification/validation/:id' component={ConfirmationValidationEmail} />
         <Route exact path='/authentification/verification' component={ValidationToken} />

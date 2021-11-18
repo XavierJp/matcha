@@ -7,6 +7,7 @@ import {
   ConfirmationCreationCompte,
   ValidationToken,
   ConfirmationValidationEmail,
+  CreationCompte,
 } from './authentification'
 
 export {
@@ -14,6 +15,7 @@ export {
   ConfirmationCreationCompte,
   ConfirmationValidationEmail,
   Authentification,
+  CreationCompte,
   Formulaire,
   Accueil,
   NonTrouve,

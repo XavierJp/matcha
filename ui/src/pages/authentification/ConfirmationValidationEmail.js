@@ -1,4 +1,4 @@
-import { Heading, Text, Box, useBoolean, Link } from '@chakra-ui/react'
+import { Heading, Text, Box, useBoolean, Link, Spinner, Flex } from '@chakra-ui/react'
 import { useEffect } from 'react'
 
 import AuthentificationLayout from './components/Authentification-layout'
@@ -13,7 +13,7 @@ import useAuth from '../../common/hooks/useAuth'
 
 const EmailInvalide = () => (
   <>
-    <Box pt={['6w', '12w']}>
+    <Box pt={['6w', '12w']} px={['6', '8']}>
       <Heading fontSize={['32px', '40px']} as='h1'>
         Mail invalide
       </Heading>
@@ -31,7 +31,7 @@ export default (props) => {
   const [isValid, setIsValid] = useBoolean()
   const { id } = useParams()
   const history = useHistory()
-  const [, setAuth] = useAuth()
+  const [auth, setAuth] = useAuth()
 
   useEffect(() => {
     // get user from params coming from email link
@@ -39,10 +39,26 @@ export default (props) => {
       .then(({ data }) => {
         setAuth(data?.token)
         setIsValid.on()
-        history.push('/admin', { newUser: true })
+        setTimeout(() => {
+          history.push('/admin', { newUser: true })
+        }, 3500)
       })
       .catch(() => setIsValid.off())
   }, [id])
 
-  return <AuthentificationLayout>{!isValid && <EmailInvalide />}</AuthentificationLayout>
+  return (
+    <>
+      <Box>
+        <Flex justify='center' align='center' h='100vh' direction='column'>
+          <Spinner thickness='4px' speed='0.5s' emptyColor='gray.200' color='bluefrance.500' size='xl' />
+          <Text>Verification en cours...</Text>
+        </Flex>
+      </Box>
+      {!isValid && !auth && (
+        <AuthentificationLayout>
+          <EmailInvalide />
+        </AuthentificationLayout>
+      )}
+    </>
+  )
 }

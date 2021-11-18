@@ -23,7 +23,7 @@ export default (props) => {
             fermer
           </Button>
         </Flex>
-        <Box px={['2', '8']}>{props.children}</Box>
+        {props.children}
       </Flex>
     </Container>
   )
