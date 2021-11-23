@@ -14,7 +14,7 @@ export default () => {
             <Etablissement
               bg='bluefrance.100'
               title='Vous êtes une entreprise'
-              subtitle='Simplifier la diffusion de vos offres en alternance'
+              subtitle='Simplifiez la diffusion de vos offres en alternance'
               description='Exprimer vos besoins de recrutement en alternance pour les afficher au plus près des jeunes : La Bonne Alternance, Parcoursup, 1 jeune 1 solution, AFFELNET'
               buttonLabel='Poster une offre'
               link='/matcha/'
