@@ -24,6 +24,7 @@ module.exports = ({ etablissement, users, mail }) => {
       }
 
       let response = {
+        siret: result.data?.etablissement.siret,
         raison_sociale: result.data?.etablissement.adresse.l1,
         domaine: result.data?.etablissement.libelle_naf,
         adresse: `${result.data?.etablissement.adresse.l4}, ${result.data?.etablissement.adresse.l6}, ${result.data?.etablissement.adresse.l7}`,

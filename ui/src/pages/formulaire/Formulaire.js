@@ -49,7 +49,6 @@ import { LogoContext } from '../../contextLogo'
 import useAuth from '../../common/hooks/useAuth'
 
 const SiretDetails = ({ raison_sociale, domaine, adresse }) => {
-  console.log(raison_sociale, domaine, adresse)
   return (
     <>
       <CustomInput label='Raison Sociale' value={raison_sociale} name='raison_sociale' isDisabled required={false} />
@@ -223,11 +222,8 @@ export default (props) => {
     // validate SIRET
     getEntrepriseInformation(siret)
       .then(({ data }) => {
-        console.log(data)
         setSiretInformation(data)
-        setFieldValue('adresse', data.adresse)
         setValidSIRET.on()
-        // setSubmitting(false)
       })
       .catch(({ response }) => {
         setFieldError('siret', response.data.message)
@@ -358,10 +354,10 @@ export default (props) => {
                 enableReinitialize={true}
                 initialValues={{
                   mandataire: formState?.mandataire ?? false,
-                  raison_sociale: formState?.raison_sociale ?? '',
-                  siret: formState?.siret ? formState?.siret.replace(/ /g, '') : '',
-                  adresse: formState?.adresse ?? '',
-                  geo_coordonnees: formState?.geo_coordonnees ?? '',
+                  raison_sociale: siretInformation.raison_sociale,
+                  siret: siretInformation.siret,
+                  adresse: siretInformation.adresse,
+                  geo_coordonnees: siretInformation.geo_coordonnees,
                   nom: formState?.nom ?? '',
                   prenom: formState?.prenom ?? '',
                   telephone: formState?.telephone ? formState?.telephone.replace(/ /g, '') : '',
