@@ -62,6 +62,7 @@ export default (props) => {
 
   return (
     <Formik
+      validateOnMount
       enableReinitialize={true}
       initialValues={{
         libelle: props.libelle ?? '',
@@ -266,7 +267,8 @@ export default (props) => {
                 <Button
                   variant='form'
                   isFullWidth={true}
-                  disabled={!(isValid && dirty) || isSubmitting}
+                  isDisabled={!(isValid && dirty) || isSubmitting}
+                  isActive={isValid}
                   onClick={submitForm}
                 >
                   Enregistrer
