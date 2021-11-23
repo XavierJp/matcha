@@ -35,6 +35,7 @@ export const validateToken = async (token) => await API.post(`/login/verificatio
 export const sendMagiclink = async (email) => await API.post(`/login/magiclink`, email)
 
 export const getSiretInformation = async (siret) => await API.post(`/etablissement/`, siret)
+export const getEntrepriseInformation = async (siret) => await API.get(`/etablissement/${siret}`)
 export const createPartenaire = (partenaire) => API.post('/etablissement/creation', partenaire)
 export const validationCompte = (id) => API.post('/etablissement/validation', id)
 
