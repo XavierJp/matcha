@@ -64,6 +64,7 @@ const RechercheSiret = memo(({ submitSiret, validSIRET, siretInformation }) => {
 
   return (
     <Formik
+      validateOnMount
       initialValues={{ siret: undefined }}
       validationSchema={Yup.object().shape({
         siret: Yup.string()
@@ -94,10 +95,10 @@ const RechercheSiret = memo(({ submitSiret, validSIRET, siretInformation }) => {
                     mt={5}
                     onClick={() => siretForm.submitForm()}
                     size={buttonSize}
-                    variant='greyed'
+                    variant='form'
                     leftIcon={<SearchLine width={5} />}
                     isActive={siretForm.isValid}
-                    disabled={!siretForm.isValid || siretForm.isSubmitting}
+                    isDisabled={!siretForm.isValid || siretForm.isSubmitting}
                   >
                     Chercher
                   </Button>
