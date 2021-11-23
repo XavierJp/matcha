@@ -10,6 +10,7 @@ const colors = {
   info: '#3a55d1',
   bluefrance: {
     100: '#F2F2F9',
+    113: '#3131FF',
     200: '#E5E5F4',
     500: '#000091',
   },

@@ -230,7 +230,7 @@ export default (props) => {
             {!props.widget && (
               <Box pt={3}>
                 <Breadcrumb separator={<ArrowDropRightLine color='grey.600' />} textStyle='xs'>
-                  {auth ? (
+                  {auth.sub !== 'anonymous' ? (
                     <Breadcrumb separator={<ArrowDropRightLine color='grey.600' />} textStyle='xs'>
                       <BreadcrumbItem>
                         <BreadcrumbLink textDecoration='underline' as={Link} to='/admin' textStyle='xs'>
@@ -317,10 +317,10 @@ export default (props) => {
                         <Button
                           type='submit'
                           size={buttonSize}
-                          variant='primary'
+                          variant='form'
                           leftIcon={<AiOutlineEdit />}
                           isActive={isValid}
-                          disabled={!isValid || isSubmitting}
+                          isDisabled={!isValid || isSubmitting}
                         >
                           Enregistrer les informations
                         </Button>

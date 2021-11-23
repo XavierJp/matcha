@@ -50,6 +50,7 @@ const CreationCompte = () => {
       <Text>Nous avons besoin du numéro de SIRET de votre centre de formation afin de vous identifier.</Text>
       <Box pt={12} mr={4}>
         <Formik
+          validateOnMount
           initialValues={{ siret: undefined }}
           validationSchema={Yup.object().shape({
             siret: Yup.string()
@@ -77,10 +78,10 @@ const CreationCompte = () => {
                       mt={5}
                       type='submit'
                       size={buttonSize}
-                      variant='greyed'
+                      variant='form'
                       leftIcon={<SearchLine width={5} />}
                       isActive={isValid}
-                      disabled={!isValid || isSubmitting}
+                      isDisabled={!isValid || isSubmitting}
                     >
                       Chercher
                     </Button>
@@ -119,7 +120,7 @@ const ConnexionCompte = () => {
       <Text>Veuillez indiquer ci-dessous l’e-mail avec lequel vous avez créé votre compte.</Text>
       <Box pt={12} mr={4}>
         <Formik
-          enableReinitialize
+          validateOnMount
           initialValues={{ email: undefined }}
           validationSchema={Yup.object().shape({
             email: Yup.string().email('Insérez un email valide').required('champ obligatoire'),
@@ -135,10 +136,10 @@ const ConnexionCompte = () => {
                     mt={5}
                     type='submit'
                     size={buttonSize}
-                    variant='greyed'
+                    variant='form'
                     leftIcon={<ArrowRightLine width={5} />}
                     isActive={isValid}
-                    disabled={(!isValid && dirty) || isSubmitting}
+                    isDisabled={!isValid || isSubmitting}
                   >
                     Je me connecte
                   </Button>

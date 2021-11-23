@@ -264,7 +264,7 @@ export default (props) => {
 
               <ModalFooter>
                 <Button
-                  variant='primary'
+                  variant='form'
                   isFullWidth={true}
                   disabled={!(isValid && dirty) || isSubmitting}
                   onClick={submitForm}

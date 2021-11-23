@@ -158,7 +158,7 @@ const Formulaire = () => {
                   <Button
                     type='submit'
                     size={buttonSize}
-                    variant='primary'
+                    variant='form'
                     leftIcon={<ArrowRightLine width={5} />}
                     isActive={informationForm.isValid}
                     isDisabled={!informationForm.isValid || informationForm.isSubmitting}
