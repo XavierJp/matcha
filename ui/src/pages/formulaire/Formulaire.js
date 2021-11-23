@@ -411,7 +411,7 @@ export default (props) => {
                                 pattern='[0-9]{10}'
                                 maxLength='10'
                                 value={values.telephone}
-                                helper='ex: 0632923456'
+                                // helper='ex: 0632923456'
                               />
                               <CustomInput name='email' label='Email' type='email' value={values.email} />
                             </GridItem>
