@@ -17,6 +17,10 @@ module.exports = ({ etablissement, users, mail }) => {
         return res.status(400).json({ error: true, message: "Le numéro siret est invalide" });
       }
 
+      if (result.data?.etablissement.etat_administratif.value === "F") {
+        return res.status(400).json({ error: true, message: "Cette entreprise est considérée comme fermé" });
+      }
+
       let response = {
         raison_sociale: result.data?.etablissement.adresse.l1,
         domaine: result.data?.etablissement.libelle_naf,
