@@ -9,9 +9,8 @@ import {
   Box,
   SimpleGrid,
   useBreakpointValue,
-  useBoolean,
+  useToast,
 } from '@chakra-ui/react'
-import { useState } from 'react'
 
 import { useHistory } from 'react-router-dom'
 import { Formik, Form } from 'formik'
@@ -23,7 +22,6 @@ import logo from '../../assets/images/logo.svg'
 
 import { getSiretInformation, sendMagiclink } from '../../api'
 import AnimationContainer from '../../components/AnimationContainer'
-import AuthentificationLayout from './components/Authentification-layout'
 
 const CreationCompte = () => {
   const buttonSize = useBreakpointValue(['sm', 'md'])
@@ -98,13 +96,21 @@ const CreationCompte = () => {
 
 const ConnexionCompte = () => {
   const buttonSize = useBreakpointValue(['sm', 'md'])
-  const history = useHistory()
+  const toast = useToast()
 
   const submitEmail = (values, { setFieldError, setSubmitting }) => {
     sendMagiclink(values)
       .then(() => {
-        history.push('/authentification/confirmation', { email: values.email })
-        setSubmitting(false)
+        toast({
+          title: 'Email valide.',
+          description: "Un lien d'accès personnalisé vous a été envoyé par mail.",
+          position: 'top-right',
+          status: 'success',
+          duration: 5000,
+        })
+        setTimeout(() => {
+          setSubmitting(false)
+        }, 15000)
       })
       .catch(() => {
         setFieldError('email', "L'adresse renseigné n'existe pas")
@@ -157,31 +163,33 @@ export default () => {
   const history = useHistory()
 
   return (
-    <Container maxW='container.xl' p={['0', '5']} h='100vh'>
-      <Flex direction='column' h='100vh' mb={['4', '0']}>
-        <Flex justifyContent='space-between' alignItems='center' px={['2', '8']} pb={['4', '0']}>
-          <Image display='flex' src={logo} alt='logo matcha' mr={5} />
-          <Button
-            display='flex'
-            onClick={() => history.push('/')}
-            fontWeight='normal'
-            variant='link'
-            color='bluefrance.500'
-            rightIcon={<Close width={5} />}
-          >
-            fermer
-          </Button>
-        </Flex>
+    <AnimationContainer>
+      <Container maxW='container.xl' p={['0', '5']} h='100vh'>
+        <Flex direction='column' h='100vh' mb={['4', '0']}>
+          <Flex justifyContent='space-between' alignItems='center' px={['2', '8']} pb={['4', '0']}>
+            <Image display='flex' src={logo} alt='logo matcha' mr={5} />
+            <Button
+              display='flex'
+              onClick={() => history.push('/')}
+              fontWeight='normal'
+              variant='link'
+              color='bluefrance.500'
+              rightIcon={<Close width={5} />}
+            >
+              fermer
+            </Button>
+          </Flex>
 
-        <SimpleGrid columns={['1', '2']} gap={5} flex='1' alignItems='center'>
-          <GridItem>
-            <CreationCompte />
-          </GridItem>
-          <GridItem bg='grey.150'>
-            <ConnexionCompte />
-          </GridItem>
-        </SimpleGrid>
-      </Flex>
-    </Container>
+          <SimpleGrid columns={['1', '2']} gap={5} flex='1' alignItems='center'>
+            <GridItem>
+              <CreationCompte />
+            </GridItem>
+            <GridItem bg='grey.150'>
+              <ConnexionCompte />
+            </GridItem>
+          </SimpleGrid>
+        </Flex>
+      </Container>
+    </AnimationContainer>
   )
 }

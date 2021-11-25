@@ -1,6 +1,6 @@
 import { useParams, useHistory } from 'react-router-dom'
 import { IoIosAddCircleOutline } from 'react-icons/io'
-import { Formik, Form, useField, Field } from 'formik'
+import { Formik, Form } from 'formik'
 import { AiOutlineEdit } from 'react-icons/ai'
 import { useState, useEffect, useContext, memo } from 'react'
 import { Link } from 'react-router-dom'
@@ -8,10 +8,6 @@ import * as Yup from 'yup'
 import {
   Button,
   Box,
-  FormLabel,
-  FormControl,
-  FormHelperText,
-  FormErrorMessage,
   Flex,
   Grid,
   GridItem,
@@ -31,7 +27,6 @@ import {
   Link as ChakraLink,
   AlertIcon,
   Alert,
-  Input,
 } from '@chakra-ui/react'
 
 import { getFormulaire, postFormulaire, postOffre, putFormulaire, putOffre, getEntrepriseInformation } from '../../api'
