@@ -40,8 +40,6 @@ export default (props) => {
       {props.data
         .filter((x) => x.statut === 'Active')
         .map((item) => {
-          console.log({ expire: item.date_expiration, expireDayjs: dayjs().to(item.date_expiration, true) })
-
           let remainingDays = () => {
             if (dayjs().to(item.date_expiration, true) === 'un mois') {
               return 30

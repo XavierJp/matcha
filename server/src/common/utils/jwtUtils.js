@@ -21,6 +21,7 @@ module.exports = {
   createUserToken: (user, options = {}) => {
     const payload = { permissions: pick(user, ["isAdmin"]), organisation: user.organization, scope: user.scope };
 
-    return createToken("user", user.username, { payload, ...options });
+    return createToken("user", user.email, { payload, ...options });
   },
+  createMagicLinkToken: (subject, options = {}) => createToken("magiclink", subject, options),
 };

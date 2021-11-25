@@ -1,7 +1,19 @@
 import { Switch, Route, Redirect } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 
-import { Formulaire, NonTrouve, Login, Accueil, Users, Search } from './pages'
+import {
+  Formulaire,
+  NonTrouve,
+  Accueil,
+  Users,
+  Search,
+  Authentification,
+  ConfirmationCreationCompte,
+  ValidationToken,
+  ConfirmationValidationEmail,
+  CreationCompte,
+} from './pages'
+
 import useAuth from './common/hooks/useAuth'
 
 function PrivateRoute({ children, ...rest }) {
@@ -28,7 +40,11 @@ const App = () => {
           <Users />
         </PrivateRoute>
         <Route exact path='/' component={Accueil} />
-        <Route exact path='/login' component={Login} />
+        <Route exact path='/authentification' component={Authentification} />
+        <Route exact path='/authentification/creation-compte' component={CreationCompte} />
+        <Route exact path='/authentification/confirmation' component={ConfirmationCreationCompte} />
+        <Route exact path='/authentification/validation/:id' component={ConfirmationValidationEmail} />
+        <Route exact path='/authentification/verification' component={ValidationToken} />
         <Route
           exact
           path='/formulaire/:id_form'

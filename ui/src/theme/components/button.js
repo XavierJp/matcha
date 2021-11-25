@@ -2,15 +2,36 @@ const commonButtonStyle = {
   borderRadius: 0,
   textTransform: 'none',
   fontWeight: 400,
-  // _focus: { boxShadow: '0 0 0 3px #000091', outlineColor: 'bluefrance.500' },
-  _focus: { boxShadow: 'none', outlineColor: 'none' },
-  _focusVisible: { boxShadow: '0 0 0 3px #2A7FFE', outlineColor: 'bluefrance.500' },
+  _focus: { boxShadow: '0px 0px 0px 2px #FFFFFF, 0px 0px 0px 4px #0A76F6' },
+  _focusVisible: { boxShadow: '0px 0px 0px 2px #FFFFFF, 0px 0px 0px 4px #0A76F6' },
+  _hover: { bg: 'bluefrance.113' },
 }
 
 const Button = {
   variants: {
-    unstyled: {
+    form: {
       ...commonButtonStyle,
+      bg: 'grey.200',
+      color: 'grey.600',
+      _active: {
+        bg: 'bluefrance.500',
+        color: 'white',
+        _hover: {
+          bg: 'bluefrance.113',
+        },
+      },
+      _hover: {
+        _disabled: {
+          _hover: {
+            bg: 'grey.200',
+          },
+        },
+      },
+      _disabled: {
+        opacity: 1,
+        bg: 'grey.200',
+        color: 'grey.600',
+      },
     },
     secondary: {
       ...commonButtonStyle,
@@ -28,7 +49,6 @@ const Button = {
       ...commonButtonStyle,
       bg: 'bluefrance.500',
       color: 'white',
-      _hover: { bg: 'bluefrance.700', _disabled: { bg: 'bluefrance.300' } },
     },
     pill: {
       ...commonButtonStyle,

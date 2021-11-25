@@ -84,23 +84,7 @@ module.exports = new Schema(
     geo_coordonnees: {
       type: String,
       default: null,
-      description: "Longitude/Latitude de l'adresse de l'entreprise ",
-    },
-    raison_sociale_mandataire: {
-      type: String,
-      description: "Raison social de l'etablissement mandataire",
-    },
-    siret_mandataire: {
-      type: String,
-      description: "Numéro SIRET de l'etablissement mandataire",
-    },
-    adresse_mandataire: {
-      type: String,
-      description: "Adresse de l'etablissement mandataire",
-    },
-    geo_coordonnees_mandataire: {
-      type: String,
-      description: "Longitude/Latitude de l'adresse de l'etablissement mandataire ",
+      description: "Latitude/Longitude (inversion lié à LBA) de l'adresse de l'entreprise",
     },
     mandataire: {
       type: Boolean,

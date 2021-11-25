@@ -35,39 +35,39 @@ const MyTable = ({ users, editUser, removeUser }) => {
     <Box py='4'>
       <Table size='sm' bg='white'>
         <Thead borderBottom='2px solid grey'>
-          <Th>Admin</Th>
-          <Th>Nom</Th>
-          <Th py={6} paddingLeft='30px'>
-            Username
-          </Th>
-          <Th>Email</Th>
-          <Th>Organisation</Th>
-          <Th>Scope des offres visibles (Origine)</Th>
-          <Th>Edition</Th>
-          <Th>Suppression</Th>
+          <Tr>
+            <Th>Admin</Th>
+            <Th>Entreprise</Th>
+            <Th>Nom</Th>
+            <Th>Email</Th>
+            <Th>Organisation</Th>
+            <Th>Scope des offres visibles (Origine)</Th>
+            <Th>Edition</Th>
+            <Th>Suppression</Th>
+          </Tr>
         </Thead>
         <Tbody>
           {users?.map((item, index) => {
             return (
               <Tr key={index}>
                 <Td>{item.isAdmin ? 'Oui' : 'Non'}</Td>
-                <Td>{`${item.nom} ${item.prenom}`}</Td>
                 <Td py={4} paddingLeft='30px'>
-                  {item.username}
+                  {item.raison_sociale}
                 </Td>
+                <Td>{`${item.nom} ${item.prenom}`}</Td>
                 <Td>{item.email}</Td>
                 <Td>{item.organization}</Td>
                 <Td>{item.scope}</Td>
                 <Td>
                   <Center>
-                    <Link onClick={() => editUser(item)}>
+                    <Link to='#' onClick={() => editUser(item)}>
                       <Icon color='bluefrance.500' w={5} h={5} as={AiOutlineEdit} />
                     </Link>
                   </Center>
                 </Td>
                 <Td>
                   <Center>
-                    <Link onClick={() => removeUser(item._id)}>
+                    <Link to='#' onClick={() => removeUser(item._id)}>
                       <Icon color='bluefrance.500' w={5} h={5} as={AiOutlineDelete} />
                     </Link>
                   </Center>
