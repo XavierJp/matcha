@@ -1,10 +1,8 @@
-const config = require("config");
 const express = require("express");
-const logger = require("../../common/logger");
 const { User } = require("../../common/model");
 const tryCatch = require("../middlewares/tryCatchMiddleware");
 
-module.exports = ({ users, mail }) => {
+module.exports = ({ users }) => {
   const router = express.Router();
 
   router.get(
@@ -18,37 +16,7 @@ module.exports = ({ users, mail }) => {
   router.post(
     "/",
     tryCatch(async (req, res) => {
-      const userPayload = req.body;
-      const password = users.generatePassword();
-      const user = await users.createUser({ ...userPayload, password });
-
-      let { email, username, nom, prenom, _id } = user;
-
-      let mailParams = {
-        email,
-        senderName: `${prenom} ${nom}`,
-        templateId: 208,
-        tags: ["matcha-nouveau-utilisateur"],
-        params: {
-          URL: `${config.publicUrl}/admin`,
-          USERNAME: username,
-          PASSWORD: password,
-        },
-      };
-
-      console.log(mailParams);
-
-      // // send mail with credentials
-      const mailBody = mail.getEmailBody(mailParams);
-
-      const { body: result } = await mail.sendmail(mailBody);
-
-      if (!result.messageId) {
-        logger.info(`error : ${result} — ${email}`);
-      }
-
-      await User.findByIdAndUpdate(_id, { mail_sent: true });
-
+      const user = await users.createUser(req.body);
       return res.json(user);
     })
   );

@@ -22,6 +22,9 @@
     },
     "password": {
       "jwtSecret": "MATCHA_AUTH_PASSWORD_JWT_SECRET"
+    },
+    "magiclink": {
+      "jwtSecret": "MATCHA_AUTH_MAGICLINK_JWT_SECRET"
     }
   },
   "log": {

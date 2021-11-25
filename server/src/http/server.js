@@ -18,7 +18,7 @@ const login = require("./routes/login");
 const esSearch = require("./routes/esSearch");
 const password = require("./routes/password");
 const formulaire = require("./routes/formulaire");
-const entreprise = require("./routes/entreprise");
+const etablissement = require("./routes/etablissement");
 const externalAPI = require("./routes/api");
 
 const swaggerOptions = {
@@ -76,7 +76,7 @@ module.exports = async (components) => {
   app.use("/api/login", login(components));
   app.use("/api/password", password(components));
   app.use("/api/formulaire", formulaire(components));
-  app.use("/api/entreprise", entreprise());
+  app.use("/api/etablissement", etablissement(components));
   app.use("/api/es/search", esSearch());
   app.use("/api/v1/formulaire", apiMiddleware, externalAPI(components));
 

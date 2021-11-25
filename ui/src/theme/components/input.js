@@ -1,5 +1,12 @@
 const Input = {
   parts: ['field'],
+  baseStyle: {
+    field: {
+      _readOnly: {
+        borderColor: 'grey.400',
+      },
+    },
+  },
   variants: {
     edition: {
       field: {
@@ -19,6 +26,10 @@ const Input = {
         marginBottom: '-2px',
         borderColor: 'grey.600',
         bg: 'grey.200',
+        _readOnly: {
+          borderColor: 'grey.400',
+          userSelect: 'none',
+        },
       },
     },
   },

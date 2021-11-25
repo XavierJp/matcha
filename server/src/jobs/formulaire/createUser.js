@@ -1,14 +1,9 @@
 const logger = require("../../common/logger");
-const passwordGenerator = require("generate-password");
 
-const passwordOptions = {
-  length: 12,
-  numbers: true,
-};
-
-const createUser = async (users, email, username, organization, scope, isAdmin = false) => {
-  let password = passwordGenerator.generate(passwordOptions);
-
+const createUser = async (
+  users,
+  { prenom, nom, uai, siret, raison_sociale, telephone, adresse, email, organization, scope, isAdmin }
+) => {
   let exist = await users.getUser(email);
   if (exist) {
     logger.error(`Users ${email} already exist - ${exist._id}`);
@@ -16,9 +11,14 @@ const createUser = async (users, email, username, organization, scope, isAdmin =
   }
 
   let payload = {
+    prenom,
+    nom,
+    uai,
+    siret,
+    raison_sociale,
+    telephone,
+    adresse,
     email,
-    password,
-    username,
     organization,
     scope,
     isAdmin,
@@ -26,7 +26,7 @@ const createUser = async (users, email, username, organization, scope, isAdmin =
 
   await users.createUser(payload);
 
-  logger.info(`User created : ${email} — ${scope} - ${username}-${password}`);
+  logger.info(`User created : ${email} — ${scope} - admin: ${isAdmin}`);
 };
 
 module.exports = { createUser };

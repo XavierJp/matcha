@@ -1,17 +1,13 @@
 import { useParams, useHistory } from 'react-router-dom'
 import { IoIosAddCircleOutline } from 'react-icons/io'
-import { Formik, Form, useField, Field } from 'formik'
+import { Formik, Form } from 'formik'
 import { AiOutlineEdit } from 'react-icons/ai'
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect, useContext, memo } from 'react'
 import { Link } from 'react-router-dom'
 import * as Yup from 'yup'
 import {
   Button,
   Box,
-  FormLabel,
-  FormControl,
-  FormHelperText,
-  FormErrorMessage,
   Flex,
   Grid,
   GridItem,
@@ -33,9 +29,9 @@ import {
   Alert,
 } from '@chakra-ui/react'
 
-import { getFormulaire, postFormulaire, postOffre, putFormulaire, putOffre } from '../../api'
-import { Layout, AdresseAutocomplete, AnimationContainer } from '../../components'
-import { ArrowDropRightLine } from '../../theme/components/icons'
+import { getFormulaire, postFormulaire, postOffre, putFormulaire, putOffre, getEntrepriseInformation } from '../../api'
+import { Layout, AnimationContainer } from '../../components'
+import { ArrowDropRightLine, SearchLine } from '../../theme/components/icons'
 import addOfferImage from '../../assets/images/add-offer.svg'
 
 import ConfirmationSuppression from './components/ConfirmationSuppression'
@@ -45,6 +41,75 @@ import CustomInput from './components/CustomInput'
 import ListeVoeux from './components/ListeVoeux'
 
 import { LogoContext } from '../../contextLogo'
+import useAuth from '../../common/hooks/useAuth'
+
+const SiretDetails = ({ raison_sociale, domaine, adresse }) => {
+  return (
+    <>
+      <CustomInput label='Raison Sociale' value={raison_sociale} name='raison_sociale' isDisabled required={false} />
+      <CustomInput label="Domaine d'activité" value={domaine} name='domaine' isDisabled required={false} />
+      <CustomInput label='Adresse' value={adresse} name='adresse' isDisabled required={false} />
+    </>
+  )
+}
+
+const RechercheSiret = memo(({ submitSiret, validSIRET, siretInformation }) => {
+  const buttonSize = useBreakpointValue(['sm', 'md'])
+
+  return (
+    <Formik
+      validateOnMount
+      initialValues={{ siret: undefined }}
+      validationSchema={Yup.object().shape({
+        siret: Yup.string()
+          .matches(/^[0-9]+$/, 'Le siret est composé uniquement de chiffres')
+          .min(14, 'le siret est sur 14 chiffres')
+          .max(14, 'le siret est sur 14 chiffres')
+          .required('champs obligatoire'),
+      })}
+      onSubmit={submitSiret}
+    >
+      {(siretForm) => {
+        return (
+          <>
+            <Form>
+              <CustomInput
+                required={false}
+                isDisabled={validSIRET}
+                name='siret'
+                label='SIRET'
+                type='text'
+                value={siretForm.values.siret}
+                maxLength='14'
+              />
+              {!validSIRET && (
+                <Flex justifyContent='flex-end'>
+                  <Button
+                    type='submit'
+                    mt={5}
+                    onClick={() => siretForm.submitForm()}
+                    size={buttonSize}
+                    variant='form'
+                    leftIcon={<SearchLine width={5} />}
+                    isActive={siretForm.isValid}
+                    isDisabled={!siretForm.isValid || siretForm.isSubmitting}
+                  >
+                    Chercher
+                  </Button>
+                </Flex>
+              )}
+            </Form>
+            {validSIRET && siretInformation ? (
+              <AnimationContainer>
+                <SiretDetails {...siretInformation} />
+              </AnimationContainer>
+            ) : null}
+          </>
+        )
+      }}
+    </Formik>
+  )
+})
 
 export default (props) => {
   const [formState, setFormState] = useState({})
@@ -53,13 +118,15 @@ export default (props) => {
   const [loading, setLoading] = useBoolean(true)
   const [error, setError] = useBoolean()
   const [readOnlyMode, setReadOnlyMode] = useBoolean()
-  const [isMandataire, setIsMandataire] = useBoolean(false)
+  const [validSIRET, setValidSIRET] = useBoolean()
+  const [siretInformation, setSiretInformation] = useState({})
   const ajouterVoeuxPopup = useDisclosure()
   const confirmationSuppression = useDisclosure()
   const { id_form, origine } = useParams()
   const toast = useToast()
   const history = useHistory()
   const { setOrganisation } = useContext(LogoContext)
+  const [auth] = useAuth()
 
   const hasActiveOffers = offersList.filter((x) => x.statut === 'Active')
 
@@ -146,6 +213,19 @@ export default (props) => {
     confirmationSuppression.onOpen()
   }
 
+  const submitSiret = ({ siret }, { setSubmitting, setFieldError, setFieldValue }) => {
+    // validate SIRET
+    getEntrepriseInformation(siret)
+      .then(({ data }) => {
+        setSiretInformation(data)
+        setValidSIRET.on()
+      })
+      .catch(({ response }) => {
+        setFieldError('siret', response.data.message)
+        setSubmitting(false)
+      })
+  }
+
   const submitFormulaire = (values, { setSubmitting }) => {
     if (formState.id_form) {
       // update form
@@ -228,17 +308,35 @@ export default (props) => {
             {!props.widget && (
               <Box pt={3}>
                 <Breadcrumb separator={<ArrowDropRightLine color='grey.600' />} textStyle='xs'>
-                  <BreadcrumbItem>
-                    <BreadcrumbLink textDecoration='underline' as={Link} to='/' textStyle='xs'>
-                      Accueil
-                    </BreadcrumbLink>
-                  </BreadcrumbItem>
-
-                  <BreadcrumbItem isCurrentPage>
-                    <BreadcrumbLink href='#' textStyle='xs'>
-                      {formState._id ? 'Consulter vos offres en cours' : "Nouveau dépot d'offre"}
-                    </BreadcrumbLink>
-                  </BreadcrumbItem>
+                  {auth.sub !== 'anonymous' ? (
+                    <Breadcrumb separator={<ArrowDropRightLine color='grey.600' />} textStyle='xs'>
+                      <BreadcrumbItem>
+                        <BreadcrumbLink textDecoration='underline' as={Link} to='/admin' textStyle='xs'>
+                          Administration des offres
+                        </BreadcrumbLink>
+                      </BreadcrumbItem>
+                      <BreadcrumbItem>
+                        {formState._id ? (
+                          <BreadcrumbLink textStyle='xs'>{formState.raison_sociale}</BreadcrumbLink>
+                        ) : (
+                          <BreadcrumbLink textStyle='xs'>Nouvelle entreprise</BreadcrumbLink>
+                        )}
+                      </BreadcrumbItem>
+                    </Breadcrumb>
+                  ) : (
+                    <Breadcrumb separator={<ArrowDropRightLine color='grey.600' />} textStyle='xs'>
+                      <BreadcrumbItem>
+                        <BreadcrumbLink textDecoration='underline' as={Link} to='/' textStyle='xs'>
+                          Accueil
+                        </BreadcrumbLink>
+                      </BreadcrumbItem>
+                      <BreadcrumbItem isCurrentPage>
+                        <BreadcrumbLink href='#' textStyle='xs'>
+                          {formState._id ? 'Consulter vos offres en cours' : "Nouveau dépot d'offre"}
+                        </BreadcrumbLink>
+                      </BreadcrumbItem>
+                    </Breadcrumb>
+                  )}
                 </Breadcrumb>
               </Box>
             )}
@@ -251,16 +349,10 @@ export default (props) => {
                 enableReinitialize={true}
                 initialValues={{
                   mandataire: formState?.mandataire ?? false,
-                  raison_sociale_mandataire: formState?.raison_sociale_mandataire ?? undefined,
-                  siret_mandataire: formState?.siret_mandataire
-                    ? formState?.siret_mandataire.replace(/ /g, '')
-                    : undefined,
-                  adresse_mandataire: formState?.adresse_mandataire ?? undefined,
-                  geo_coordonnees_mandataire: formState?.geo_coordonnees_mandataire ?? undefined,
-                  raison_sociale: formState?.raison_sociale ?? '',
-                  siret: formState?.siret ? formState?.siret.replace(/ /g, '') : '',
-                  adresse: formState?.adresse ?? '',
-                  geo_coordonnees: formState?.geo_coordonnees ?? '',
+                  raison_sociale: siretInformation.raison_sociale,
+                  siret: siretInformation.siret,
+                  adresse: siretInformation.adresse,
+                  geo_coordonnees: siretInformation.geo_coordonnees,
                   nom: formState?.nom ?? '',
                   prenom: formState?.prenom ?? '',
                   telephone: formState?.telephone ? formState?.telephone.replace(/ /g, '') : '',
@@ -291,16 +383,16 @@ export default (props) => {
                     <Form autoComplete='off'>
                       <Flex py={6} alignItems='center'>
                         <Box as='h2' fontSize={['sm', '3xl']} fontWeight='700' color='grey.800'>
-                          {formState.id_form ? formState.raison_sociale : 'Nouveau formulaire'}
+                          Nouveau formulaire
                         </Box>
                         <Spacer />
                         <Button
                           type='submit'
                           size={buttonSize}
-                          variant='primary'
+                          variant='form'
                           leftIcon={<AiOutlineEdit />}
                           isActive={isValid}
-                          disabled={!isValid || isSubmitting}
+                          isDisabled={!isValid || isSubmitting}
                         >
                           Enregistrer les informations
                         </Button>
@@ -312,34 +404,11 @@ export default (props) => {
                               <Heading size='md' pb={6}>
                                 Renseignements Entreprise
                               </Heading>
-                              <CustomInput name='siret' label='SIRET' type='text' value={values.siret} maxLength='14' />
-                              <CustomInput
-                                name='raison_sociale'
-                                label="Nom de l'enseigne"
-                                type='text'
-                                value={values.raison_sociale}
+                              <RechercheSiret
+                                validSIRET={validSIRET}
+                                submitSiret={submitSiret}
+                                siretInformation={siretInformation}
                               />
-
-                              <Field name='adresse'>
-                                {({ meta, form }) => {
-                                  return (
-                                    <FormControl pb={5} isInvalid={meta.error && meta.touched} isRequired>
-                                      <FormLabel>Adresse</FormLabel>
-                                      <AdresseAutocomplete
-                                        handleValues={(value) => {
-                                          setFieldValue('geo_coordonnees', value.geo_coordonnees)
-                                          setFieldValue('adresse', value.name)
-                                        }}
-                                        defaultValue={values.adresse}
-                                        setFieldTouched={form.setFieldTouched}
-                                        name='adresse'
-                                      />
-                                      <FormHelperText>ex: 110 rue de Grenelle 75007 Paris</FormHelperText>
-                                      <FormErrorMessage>{meta.error}</FormErrorMessage>
-                                    </FormControl>
-                                  )
-                                }}
-                              </Field>
                             </GridItem>
                             <GridItem colSpan={[12, 6]} p={[, 8]}>
                               <Heading size='md' pb={6}>
@@ -354,7 +423,7 @@ export default (props) => {
                                 pattern='[0-9]{10}'
                                 maxLength='10'
                                 value={values.telephone}
-                                helper='ex: 0632923456'
+                                // helper='ex: 0632923456'
                               />
                               <CustomInput name='email' label='Email' type='email' value={values.email} />
                             </GridItem>

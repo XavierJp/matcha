@@ -1,58 +1,42 @@
 const { User } = require("../model");
-const sha512Utils = require("../utils/sha512Utils");
 const passwordGenerator = require("generate-password");
 const { KEY_GENERATOR_PARAMS } = require("../constants");
 
-const passwordOptions = {
-  length: 12,
-  numbers: true,
-};
-
-const rehashPassword = (user, password) => {
-  user.password = sha512Utils.hash(password);
-  return user.save();
-};
-
 module.exports = async () => {
   return {
-    generatePassword: () => passwordGenerator.generate(passwordOptions),
-    createApiKey: () => `mna-${passwordGenerator.generate(KEY_GENERATOR_PARAMS)}`,
-    authenticate: async (username, password) => {
-      const user = await User.findOne({ username });
-      if (!user) {
-        return null;
-      }
-
-      const current = user.password;
-      if (sha512Utils.compare(password, current)) {
-        if (sha512Utils.isTooWeak(current)) {
-          await rehashPassword(user, password);
-        }
-        return user.toObject();
-      }
-      return null;
-    },
+    createApiKey: () => `mna-${passwordGenerator.generate(KEY_GENERATOR_PARAMS())}`,
     getUser: (email) => User.findOne({ email }),
-    createUser: async ({ nom, prenom, username, organization, password, email, scope, isAdmin = false }) => {
+    createUser: async ({
+      nom,
+      prenom,
+      organization,
+      email,
+      scope,
+      isAdmin = false,
+      siret,
+      uai,
+      raison_sociale,
+      telephone,
+      adresse,
+    }) => {
       if (!scope) {
-        throw new Error("scope is mandatory");
-      }
-
-      let hash;
-      if (!password) {
-        const password = passwordGenerator.generate(passwordOptions);
-        hash = sha512Utils.hash(password);
-      } else {
-        hash = sha512Utils.hash(password);
+        // generate user scope
+        let key = passwordGenerator.generate(
+          KEY_GENERATOR_PARAMS({ length: 5, symbols: false, numbers: true, letters: false })
+        );
+        scope = `cfa-${key}`;
       }
 
       let user = new User({
         nom,
         prenom,
-        username,
         email,
+        siret,
+        adresse,
+        telephone,
+        uai,
+        raison_sociale,
         organization,
-        password: hash,
         isAdmin: isAdmin,
         scope: scope,
       });
@@ -72,17 +56,6 @@ module.exports = async () => {
       }
 
       return await user.deleteOne({ _id: id });
-    },
-    changePassword: async (username, newPassword) => {
-      const user = await User.findOne({ username });
-      if (!user) {
-        throw new Error(`Unable to find user ${username}`);
-      }
-
-      user.password = sha512Utils.hash(newPassword);
-      await user.save();
-
-      return user.toObject();
     },
     registerUser: (email) => User.findOneAndUpdate({ email }, { last_connection: new Date() }),
   };

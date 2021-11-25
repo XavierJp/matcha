@@ -7,27 +7,36 @@ module.exports = new Schema(
       description: "Nom de l'utilisateur",
     },
     prenom: { type: String, description: "Prénom de l'utilisateur" },
-    username: {
-      type: String,
-      default: null,
-      description: "L'identifiant de l'utilisateur",
-      unique: true,
-    },
     organization: {
       type: String,
       default: null,
       description: "Organisme de l'utilisateur",
+    },
+    raison_sociale: {
+      type: String,
+      description: "Raison social de l'établissement",
+    },
+    siret: {
+      type: String,
+      description: "Siret de l'établissement",
+    },
+    adresse: {
+      type: String,
+      description: "Adresse de l'établissement",
+    },
+    uai: {
+      type: String,
+      description: "Numéro uai de l'établissement",
+    },
+    telephone: {
+      type: String,
+      description: "Téléphone de l'établissement",
     },
     email: {
       type: String,
       default: null,
       description: "L'email de l'utilisateur",
       unique: true,
-    },
-    password: {
-      type: String,
-      default: null,
-      description: "Le mot de passe hashé",
     },
     isAdmin: {
       type: Boolean,
@@ -39,10 +48,10 @@ module.exports = new Schema(
       default: null,
       description: "Scope accessible par l'utilisateur",
     },
-    mail_sent: {
+    email_valide: {
       type: Boolean,
       default: false,
-      description: "L'utilisateur a reçu ses identifiants de connexion",
+      description: "Indicateur de confirmation de l'adresse mail par l'utilisateur",
     },
     last_connection: {
       type: Date,

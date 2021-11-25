@@ -10,6 +10,7 @@ const colors = {
   info: '#3a55d1',
   bluefrance: {
     100: '#F2F2F9',
+    113: '#3131FF',
     200: '#E5E5F4',
     500: '#000091',
   },
@@ -22,6 +23,7 @@ const colors = {
     400: '#cecece',
     300: '#e7e7e7',
     200: '#f0f0f0',
+    150: '#fafafc',
     100: '#f8f8f8',
   },
   greenwarm: {
