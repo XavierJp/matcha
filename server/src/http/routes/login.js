@@ -44,7 +44,7 @@ module.exports = ({ users, mail, etablissement }) => {
       const user = await users.getUser(email);
 
       if (!user) {
-        return res.status(400).json({ error: true, message: "L'adresse email renseigné n'existe pas" });
+        return res.status(400).json({ error: true, message: "L’adresse email renseignée n’existe pas" });
       }
 
       if (user.email_valide === false) {
@@ -64,9 +64,11 @@ module.exports = ({ users, mail, etablissement }) => {
 
         await mail.sendmail(emailBody);
 
-        return res
-          .status(400)
-          .json({ error: true, message: "Votre compte n'a pas été validé. Un mail vient de vous être envoyer." });
+        return res.status(400).json({
+          error: true,
+          message:
+            "Votre adresse n’a été vérifiée. Cliquez sur le lien que nous venons de vous transmettre pour vérifier votre compte",
+        });
       }
 
       const magiclink = `${config.publicUrl}/authentification/verification?token=${createMagicLinkToken(email)}`;

@@ -63,7 +63,9 @@ export default () => {
                 <Flex alignItems='center'>
                   <Icon as={RiAccountCircleLine} color='bluefrance.500' />
                   <Box display={['none', 'block']} ml={2}>
-                    <Text color='bluefrance.500'>{auth.sub}</Text>
+                    <Text color='bluefrance.500'>
+                      {auth.prenom} {auth.nom}
+                    </Text>
                   </Box>
                 </Flex>
               </MenuButton>
