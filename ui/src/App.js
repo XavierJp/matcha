@@ -7,11 +7,12 @@ import {
   Accueil,
   Users,
   Search,
-  Authentification,
+  Connexion,
   ConfirmationCreationCompte,
   ValidationToken,
   ConfirmationValidationEmail,
   CreationCompte,
+  InformationCreationCompte,
 } from './pages'
 
 import useAuth from './common/hooks/useAuth'
@@ -40,8 +41,9 @@ const App = () => {
           <Users />
         </PrivateRoute>
         <Route exact path='/' component={Accueil} />
-        <Route exact path='/authentification' component={Authentification} />
-        <Route exact path='/authentification/creation-compte' component={CreationCompte} />
+        <Route exact path='/authentification' component={Connexion} />
+        <Route exact path='/creation-compte' component={CreationCompte} />
+        <Route exact path='/creation-compte/detail' component={InformationCreationCompte} />
         <Route exact path='/authentification/confirmation' component={ConfirmationCreationCompte} />
         <Route exact path='/authentification/validation/:id' component={ConfirmationValidationEmail} />
         <Route exact path='/authentification/verification' component={ValidationToken} />

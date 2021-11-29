@@ -34,7 +34,7 @@ export const deleteUser = async (userId) => await API.delete(`/user/${userId}`).
 export const validateToken = async (token) => await API.post(`/login/verification`, token)
 export const sendMagiclink = async (email) => await API.post(`/login/magiclink`, email)
 
-export const getSiretInformation = async (siret) => await API.post(`/etablissement/`, siret)
+export const getCfaInformation = async (siret) => await API.post(`/etablissement/`, siret)
 export const getEntrepriseInformation = async (siret) => await API.get(`/etablissement/${siret}`)
 export const createPartenaire = (partenaire) => API.post('/etablissement/creation', partenaire)
 export const validationCompte = (id) => API.post('/etablissement/validation', id)

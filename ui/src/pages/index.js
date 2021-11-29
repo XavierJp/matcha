@@ -3,18 +3,20 @@ import { Accueil } from './accueil'
 import { Formulaire } from './formulaire'
 import { Login, Users, Search } from './admin'
 import {
-  Authentification,
+  Connexion,
   ConfirmationCreationCompte,
   ValidationToken,
   ConfirmationValidationEmail,
   CreationCompte,
+  InformationCreationCompte,
 } from './authentification'
 
 export {
   ValidationToken,
   ConfirmationCreationCompte,
   ConfirmationValidationEmail,
-  Authentification,
+  InformationCreationCompte,
+  Connexion,
   CreationCompte,
   Formulaire,
   Accueil,

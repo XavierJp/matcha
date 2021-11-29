@@ -1,7 +1,7 @@
 import { Box, Heading, Text, Button, Stack } from '@chakra-ui/react'
 import { useHistory } from 'react-router-dom'
 
-export default ({ title, subtitle, description, buttonLabel, bg, link }) => {
+export default ({ title, subtitle, description, buttonLabel, bg, link, type }) => {
   const history = useHistory()
   return (
     <Box
@@ -20,7 +20,7 @@ export default ({ title, subtitle, description, buttonLabel, bg, link }) => {
           {subtitle}
         </Text>
         <Text>{description}</Text>
-        <Button variant='primary' onClick={() => history.push(`${link}`)}>
+        <Button variant='primary' onClick={() => history.push(`${link}`, { type })}>
           {buttonLabel}
         </Button>
       </Stack>

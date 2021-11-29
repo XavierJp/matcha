@@ -17,7 +17,8 @@ export default () => {
               subtitle='Simplifiez la diffusion de vos offres en alternance'
               description='Exprimer vos besoins de recrutement en alternance pour les afficher au plus près des jeunes : La Bonne Alternance, Parcoursup, 1 jeune 1 solution, AFFELNET'
               buttonLabel='Poster une offre'
-              link='/matcha/'
+              link='/creation-compte'
+              type='ENTREPRISE'
             />
             <Etablissement
               bg='bluefrance.200'
@@ -25,7 +26,8 @@ export default () => {
               subtitle='Déposez les offres de vos entreprises partenaires'
               description='Gérer facilement vos mandats de recrutement et la diffusion de vos offres en alternance'
               buttonLabel='Accéder à votre espace'
-              link='/authentification'
+              link='/creation-compte'
+              type='CFA'
             />
           </Stack>
         </Container>
