@@ -6,19 +6,9 @@ module.exports = async () => {
   return {
     createApiKey: () => `mna-${passwordGenerator.generate(KEY_GENERATOR_PARAMS())}`,
     getUser: (email) => User.findOne({ email }),
-    createUser: async ({
-      nom,
-      prenom,
-      organization,
-      email,
-      scope,
-      isAdmin = false,
-      siret,
-      uai,
-      raison_sociale,
-      telephone,
-      adresse,
-    }) => {
+    createUser: async (values) => {
+      let scope = values.scope ?? undefined;
+
       if (!scope) {
         // generate user scope
         let key = passwordGenerator.generate(
@@ -27,16 +17,10 @@ module.exports = async () => {
         scope = `cfa-${key}`;
       }
 
+      let isAdmin = values.isAdmin ?? false;
+
       let user = new User({
-        nom,
-        prenom,
-        email,
-        siret,
-        adresse,
-        telephone,
-        uai,
-        raison_sociale,
-        organization,
+        ...values,
         isAdmin: isAdmin,
         scope: scope,
       });

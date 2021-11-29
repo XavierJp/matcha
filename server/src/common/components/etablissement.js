@@ -58,10 +58,20 @@ module.exports = () => {
       const coordinates = response.data.features[0].geometry.coordinates.reverse().join(",");
       return coordinates;
     },
+    formatEntrepriseData: (d) => ({
+      etat: d.etat_administratif.value, // F pour fermé ou A pour actif
+      siret: d.siret,
+      raison_sociale: d.adresse.l1,
+      domaine: d.libelle_naf,
+      adresse: `${d.adresse.l4}, ${d.adresse.l6}, ${d.adresse.l7}`,
+      commune: d.adresse.localite,
+      code_postal: d.adresse.code_postal,
+      contacts: [], // conserve la coherence avec l'UI
+    }),
     formatReferentielData: (d) => ({
       etat: d.etat_administratif,
       siret: d.siret,
-      uai: d.uai,
+      uai: d.uais.filter((x) => x.valide === true),
       raison_sociale: d.raison_sociale,
       contacts: d.contacts,
       adresse: d.adresse.label,

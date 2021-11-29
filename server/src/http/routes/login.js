@@ -31,7 +31,7 @@ const checkToken = (users) => {
   return passport.authenticate("jwt", { session: false, failWithError: true });
 };
 
-module.exports = ({ users, mail }) => {
+module.exports = ({ users, mail, etablissement }) => {
   const router = express.Router(); // eslint-disable-line new-cap
 
   router.post(
@@ -44,7 +44,29 @@ module.exports = ({ users, mail }) => {
       const user = await users.getUser(email);
 
       if (!user) {
-        return res.status(400).send("KO");
+        return res.status(400).json({ error: true, message: "L'adresse email renseigné n'existe pas" });
+      }
+
+      if (user.email_valide === false) {
+        let { email, raison_sociale, _id } = user;
+
+        const url = etablissement.getValidationUrl(_id);
+
+        const emailBody = mail.getEmailBody({
+          email,
+          senderName: raison_sociale,
+          templateId: 218,
+          tags: ["matcha-confirmation-email"],
+          params: {
+            URL_CONFIRMATION: url,
+          },
+        });
+
+        await mail.sendmail(emailBody);
+
+        return res
+          .status(400)
+          .json({ error: true, message: "Votre compte n'a pas été validé. Un mail vient de vous être envoyer." });
       }
 
       const magiclink = `${config.publicUrl}/authentification/verification?token=${createMagicLinkToken(email)}`;
