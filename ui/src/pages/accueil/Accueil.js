@@ -22,7 +22,7 @@ export default () => {
             <Etablissement
               bg='bluefrance.200'
               title='Vous êtes un CFA'
-              subtitle='Pilotez les offres de vos entreprise partenaires'
+              subtitle='Déposez les offres de vos entreprises partenaires'
               description='Gérer facilement vos mandats de recrutement et la diffusion de vos offres en alternance'
               buttonLabel='Accéder à votre espace'
               link='/authentification'
