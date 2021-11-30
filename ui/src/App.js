@@ -14,6 +14,8 @@ import {
   CreationCompte,
 } from './pages'
 
+import { Formulaire as Widget } from './widget'
+
 import useAuth from './common/hooks/useAuth'
 
 function PrivateRoute({ children, ...rest }) {
@@ -50,7 +52,7 @@ const App = () => {
           path='/formulaire/:id_form'
           render={(props) => <Formulaire {...props} byId={true} widget={false} />}
         />
-        <Route exact path='/widget/:origine/' render={(props) => <Formulaire {...props} widget={true} />} />
+        <Route exact path='/widget/:origine/' render={(props) => <Widget {...props} widget={true} />} />
         <Route strict path='/:origine/' component={Formulaire} />
         <Route component={NonTrouve} />
       </Switch>
