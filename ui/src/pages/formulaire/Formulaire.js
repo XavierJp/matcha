@@ -178,7 +178,7 @@ export default (props) => {
       // update
       putOffre(currentOffer._id, values).then((result) => setOffersList(result.data.offres))
       toast({
-        title: 'Offre mise à jour avec succès !',
+        title: 'Offre mise à jour avec succès.',
         position: 'top-right',
         status: 'success',
         duration: 2000,
@@ -188,7 +188,7 @@ export default (props) => {
       // create
       postOffre(formState.id_form, values).then((result) => setOffersList(result.data.offres))
       toast({
-        title: 'Offre enregistré avec succès !',
+        title: 'Offre enregistré avec succès.',
         position: 'top-right',
         status: 'success',
         duration: 2000,
@@ -200,7 +200,7 @@ export default (props) => {
   const extendOffer = (idOffre, values) => {
     putOffre(idOffre, values).then((result) => setOffersList(result.data.offres))
     toast({
-      title: "Offre prolongé d'un mois",
+      title: "Offre prolongé d'un mois.",
       position: 'top-right',
       status: 'success',
       duration: 2000,
@@ -211,6 +211,19 @@ export default (props) => {
   const removeOffer = (offer) => {
     setCurrentOffer(offer)
     confirmationSuppression.onOpen()
+  }
+
+  const delegateOffer = (idOffre, values) => {
+    putOffre(idOffre, values).then((result) => {
+      setOffersList(result.data.offres)
+      toast({
+        title: 'Offre délégué.',
+        position: 'top-right',
+        status: 'success',
+        duration: 2000,
+        isClosable: true,
+      })
+    })
   }
 
   const submitSiret = ({ siret }, { setSubmitting, setFieldError, setFieldValue }) => {
@@ -453,6 +466,7 @@ export default (props) => {
                     removeOffer={removeOffer}
                     editOffer={editOffer}
                     extendOffer={extendOffer}
+                    delegateOffer={delegateOffer}
                     geo_coordonnees={formState.geo_coordonnees}
                   />
                 ) : (

@@ -75,6 +75,7 @@ export default (props) => {
         statut: props.statut ?? 'Active',
         type: props.type ?? 'Apprentissage',
         multi_diffuser: props.multi_diffuser ?? undefined,
+        delegate: props.delegate ?? undefined,
       }}
       validationSchema={Yup.object().shape({
         libelle: Yup.string().required('Champ obligatoire'),

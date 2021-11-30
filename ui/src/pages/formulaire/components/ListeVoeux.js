@@ -7,6 +7,8 @@ import {
   AiOutlineRetweet,
 } from 'react-icons/ai'
 
+import { RiSendPlaneFill } from 'react-icons/ri'
+
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 
@@ -50,7 +52,7 @@ export default (props) => {
           let isExtendable = remainingDaysAsNumber > 7 ? false : true
 
           return (
-            <Box bg='white' p={8} border='1px solid' borderColor='bluefrance.500'>
+            <Box bg='white' p={8} border='1px solid' borderColor='bluefrance.500' key={item._id}>
               <Flex alignItems='flex-start'>
                 <Text fontSize='sm' pr={9} pb={[3, 0]}>
                   Postée le {dayjs(item.date_creation).format('DD/MM/YYYY')}
@@ -98,7 +100,7 @@ export default (props) => {
                   </Flex>
                 )}
               </VStack>
-              <Stack direction={['column', 'row']} spacing={3}>
+              <Stack direction={['column', 'row']} spacing={5}>
                 <Button variant='secondary' leftIcon={<AiOutlineEdit />} onClick={() => props.editOffer(item)}>
                   Modifier l'offre
                 </Button>
@@ -140,6 +142,24 @@ export default (props) => {
                 >
                   Supprimer l'offre
                 </Button>
+                <Tooltip
+                  hasArrow
+                  label='Assurez-vous de trouver le bon apprenti(e) en transmettant votre besoin auprès des CFA (centre de formation) de votre région.'
+                  placement='top'
+                  isDisabled={isExtendable}
+                >
+                  <Box>
+                    <Button
+                      w={['100%', 'inherit']}
+                      variant='secondary'
+                      isDisabled={item.delegate}
+                      leftIcon={<RiSendPlaneFill />}
+                      onClick={() => props.delegateOffer(item._id, { ...item, delegate: true })}
+                    >
+                      Déléger l'offre à un CFA
+                    </Button>
+                  </Box>
+                </Tooltip>
               </Stack>
             </Box>
           )
