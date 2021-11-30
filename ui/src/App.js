@@ -13,6 +13,7 @@ import {
   ConfirmationValidationEmail,
   CreationCompte,
   InformationCreationCompte,
+  Landing,
 } from './pages'
 
 import useAuth from './common/hooks/useAuth'
@@ -54,6 +55,8 @@ const App = () => {
         />
         <Route exact path='/widget/:origine/' render={(props) => <Formulaire {...props} widget={true} />} />
         <Route strict path='/:origine/' component={Formulaire} />
+        /** Landing pages */
+        <Route exact path='/deleguer-gestion-offre-alternant-cfa' component={Landing} />
         <Route component={NonTrouve} />
       </Switch>
     </AnimatePresence>
