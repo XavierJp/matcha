@@ -28,6 +28,7 @@ import { ArrowRightLine } from '../../theme/components/icons'
 import { AiOutlineRight } from 'react-icons/ai'
 import useAuth from '../../common/hooks/useAuth'
 import ExportButton from '../../components/ExportButton/ExportButton'
+import EmptySpace from './components/EmptySpace'
 
 export default memo(() => {
   const { filters, facetDefinition, dataSearchDefinition, exportableColumns, excludedFields } = constants
@@ -155,6 +156,7 @@ export default memo(() => {
                   excludeFields={excludedFields}
                   defaultQuery={queryFilter}
                   scrollOnChange={false}
+                  renderNoResults={() => <EmptySpace />}
                   renderResultStats={(stats) => {
                     return (
                       <div
