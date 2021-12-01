@@ -28,10 +28,10 @@ module.exports = ({ etablissement, users, mail }) => {
         return res.status(400).json({ error: true, message: "Cette entreprise est considérée comme fermé." });
       }
 
-      if (result.data?.etablissement.naf === "8559B") {
+      if (result.data?.etablissement.naf.startsWith("85")) {
         return res.status(400).json({
           error: true,
-          message: "Ce numéro SIRET est un centre de formation.",
+          message: "Le numéro siret n'est pas référencé comme une entreprise mais un CFA.",
         });
       }
 
