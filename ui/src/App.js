@@ -47,11 +47,13 @@ const App = () => {
         <Route exact path='/authentification/confirmation' component={ConfirmationCreationCompte} />
         <Route exact path='/authentification/validation/:id' component={ConfirmationValidationEmail} />
         <Route exact path='/authentification/verification' component={ValidationToken} />
-        <Route
-          exact
-          path='/formulaire/:id_form'
-          render={(props) => <Formulaire {...props} byId={true} widget={false} />}
-        />
+        <PrivateRoute>
+          <Route
+            exact
+            path='/formulaire/:id_form'
+            render={(props) => <Formulaire {...props} byId={true} widget={false} />}
+          />
+        </PrivateRoute>
         <Route exact path='/widget/:origine/' render={(props) => <Formulaire {...props} widget={true} />} />
         <Route strict path='/:origine/' component={Formulaire} />
         <Route component={NonTrouve} />
