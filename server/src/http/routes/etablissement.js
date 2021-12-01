@@ -10,7 +10,7 @@ module.exports = ({ etablissement, users, mail }) => {
    * Récupérer les informations d'une entreprise à l'aide de l'API du gouvernement
    */
   router.get(
-    "/:siret",
+    "/entreprise/:siret",
     tryCatch(async (req, res) => {
       if (!req.params.siret) {
         return res.status(400).json({ error: true, message: "Le numéro siret est obligatoire." });
@@ -46,16 +46,14 @@ module.exports = ({ etablissement, users, mail }) => {
   /**
    * Récupération des informations d'un établissement à l'aide des tables de correspondances et du référentiel
    */
-  router.post(
-    "/",
+  router.get(
+    "/cfa/:siret",
     tryCatch(async (req, res) => {
-      const siret = req.body.siret;
-
-      if (!siret) {
+      if (!req.params.siret) {
         return res.status(400).json({ error: true, message: "Le numéro siret est obligatoire." });
       }
 
-      const exist = await etablissement.getEtablissement(siret);
+      const exist = await etablissement.getEtablissement(req.params.siret);
 
       if (exist) {
         return res
@@ -64,8 +62,8 @@ module.exports = ({ etablissement, users, mail }) => {
       }
 
       const [catalogue, referentiel] = await Promise.all([
-        etablissement.getEtablissementFromTCO(siret),
-        etablissement.getEtablissementFromReferentiel(siret),
+        etablissement.getEtablissementFromTCO(req.params.siret),
+        etablissement.getEtablissementFromReferentiel(req.params.siret),
       ]);
 
       if (catalogue?.data?.ferme === true || referentiel?.data?.etat_administratif === "fermé") {

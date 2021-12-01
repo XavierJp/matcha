@@ -63,7 +63,7 @@ module.exports = () => {
       siret: d.siret,
       raison_sociale: d.adresse.l1,
       domaine: d.libelle_naf,
-      adresse: `${d.adresse.l4}, ${d.adresse.l6}, ${d.adresse.l7}`,
+      adresse: `${d.adresse.l4}`,
       commune: d.adresse.localite,
       code_postal: d.adresse.code_postal,
       contacts: [], // conserve la coherence avec l'UI
@@ -74,7 +74,7 @@ module.exports = () => {
       uai: d.uais.filter((x) => x.valide === true),
       raison_sociale: d.raison_sociale,
       contacts: d.contacts,
-      adresse: d.adresse.label,
+      adresse: d.adresse.label.split(`${d.adresse.code_postal}`)[0].trim(),
       commune: d.adresse.localite,
       code_postal: d.adresse.code_postal,
       geo_coordonnees: `${d.adresse.geojson?.geometry.coordinates[0]},${d.adresse.geojson?.geometry.coordinates[0]}`,
@@ -87,9 +87,7 @@ module.exports = () => {
       contacts: [], // les tco n'ont pas d'information de contact, mais conserve un standard pour l'ui,
       commune: d.localite,
       code_postal: d.code_postal,
-      adresse: `${d.numero_voie === null ? "" : d.numero_voie} ${d.type_voie} ${d.nom_voie}, ${d.code_postal} ${
-        d.localite
-      }`,
+      adresse: `${d.numero_voie === null ? "" : d.numero_voie} ${d.type_voie} ${d.nom_voie}`,
       geo_coordonnees: d.geo_coordonnees,
     }),
   };

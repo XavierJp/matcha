@@ -31,7 +31,7 @@ const CreationCompte = () => {
           setSubmitting(false)
         })
     } else {
-      getCfaInformation({ siret })
+      getCfaInformation(siret)
         .then(({ data }) => {
           setSubmitting(false)
           history.push('/creation-compte/detail', { informationSiret: data, type })
