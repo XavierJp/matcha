@@ -27,6 +27,7 @@ import {
   Link as ChakraLink,
   AlertIcon,
   Alert,
+  Badge,
 } from '@chakra-ui/react'
 
 import { getFormulaire, postFormulaire, postOffre, putFormulaire, putOffre, getEntrepriseInformation } from '../../api'
@@ -373,10 +374,10 @@ export default (props) => {
                 enableReinitialize={true}
                 initialValues={{
                   mandataire: formState?.mandataire ?? false,
-                  raison_sociale: siretInformation.raison_sociale,
-                  siret: siretInformation.siret,
-                  adresse: siretInformation.adresse,
-                  geo_coordonnees: siretInformation.geo_coordonnees,
+                  raison_sociale: siretInformation.raison_sociale || formState?.raison_sociale,
+                  siret: siretInformation.siret || formState?.siret,
+                  adresse: siretInformation.adresse || formState?.adresse,
+                  geo_coordonnees: siretInformation.geo_coordonnees || formState?.geo_coordonnees,
                   nom: formState?.nom ?? '',
                   prenom: formState?.prenom ?? '',
                   telephone: formState?.telephone ? formState?.telephone.replace(/ /g, '') : '',
@@ -403,11 +404,12 @@ export default (props) => {
                 onSubmit={submitFormulaire}
               >
                 {({ values, isValid, isSubmitting, setFieldValue }) => {
+                  console.log(values)
                   return (
                     <Form autoComplete='off'>
                       <Flex py={6} alignItems='center'>
                         <Box as='h2' fontSize={['sm', '3xl']} fontWeight='700' color='grey.800'>
-                          Nouveau formulaire
+                          {values.raison_sociale}
                         </Box>
                         <Spacer />
                         <Button
@@ -428,11 +430,37 @@ export default (props) => {
                               <Heading size='md' pb={6}>
                                 Renseignements Entreprise
                               </Heading>
-                              <RechercheSiret
-                                validSIRET={validSIRET}
-                                submitSiret={submitSiret}
-                                siretInformation={siretInformation}
-                              />
+                              {formState._id ? (
+                                <>
+                                  <CustomInput
+                                    name='raison_sociale'
+                                    label='Raison sociale'
+                                    type='text'
+                                    value={values.raison_sociale}
+                                    isDisabled={true}
+                                  />
+                                  <CustomInput
+                                    name='siret'
+                                    label='Siret'
+                                    type='text'
+                                    value={values.siret}
+                                    isDisabled={true}
+                                  />
+                                  <CustomInput
+                                    name='adresse'
+                                    label='Adresse'
+                                    type='text'
+                                    value={values.adresse}
+                                    isDisabled={true}
+                                  />
+                                </>
+                              ) : (
+                                <RechercheSiret
+                                  validSIRET={validSIRET}
+                                  submitSiret={submitSiret}
+                                  siretInformation={siretInformation}
+                                />
+                              )}
                             </GridItem>
                             <GridItem colSpan={[12, 6]} p={[, 8]}>
                               <Heading size='md' pb={6}>
