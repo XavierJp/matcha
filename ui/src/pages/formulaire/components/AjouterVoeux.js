@@ -250,7 +250,7 @@ export default (props) => {
                   </Box>
                 </FormControl>
 
-                {(values.description || organisation.includes('akto')) && (
+                {(values.description || organisation?.includes('akto')) && (
                   <FormControl mt={4}>
                     <FormLabel>Description</FormLabel>
                     <Textarea rows='6' name='description' defaultValue={values.description} onChange={handleChange} />

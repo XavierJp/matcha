@@ -1,4 +1,4 @@
-import { useParams, useHistory } from 'react-router-dom'
+import { useParams, useHistory, useLocation } from 'react-router-dom'
 import { IoIosAddCircleOutline } from 'react-icons/io'
 import { Formik, Form } from 'formik'
 import { AiOutlineEdit } from 'react-icons/ai'
@@ -123,6 +123,7 @@ export default (props) => {
   const ajouterVoeuxPopup = useDisclosure()
   const confirmationSuppression = useDisclosure()
   const { id_form, origine } = useParams()
+  const { newUser } = useLocation()
   const toast = useToast()
   const history = useHistory()
   const { setOrganisation } = useContext(LogoContext)
@@ -139,6 +140,16 @@ export default (props) => {
           setFormState(result.data)
           setOrganisation(result.data.origine)
           setOffersList(result.data.offres)
+          if (newUser) {
+            toast({
+              title: 'Vérification réussi',
+              description: 'Votre adresse mail a été validé avec succès.',
+              position: 'top-right',
+              status: 'success',
+              duration: 7000,
+              isClosable: true,
+            })
+          }
         })
         .catch(() => {
           setError.toggle(true)

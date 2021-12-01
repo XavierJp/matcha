@@ -26,6 +26,7 @@ module.exports = {
       nom: user.nom,
       prenom: user.prenom,
       type: user.type,
+      id_form: user.id_form,
     };
 
     return createToken("user", user.email, { payload, ...options });
