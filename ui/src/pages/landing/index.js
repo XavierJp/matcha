@@ -12,7 +12,7 @@ import { AnimationContainer } from '../../components'
 
 const TextBlock = ({ content, header }) => {
   return (
-    <Stack direction='column' spacing='32px' borderBottom='4px solid #000091'>
+    <Stack direction='column' spacing='32px' border='1px solid #E5E5E5' borderBottom='4px solid #000091' p='32px'>
       <Heading fontSize='22px' fontWeight='700' color='bluefrance.500'>
         {header}
       </Heading>
