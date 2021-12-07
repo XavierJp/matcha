@@ -113,7 +113,7 @@ const ConnexionCompte = () => {
         }, 15000)
       })
       .catch(() => {
-        setFieldError('email', "L'adresse renseigné n'existe pas")
+        setFieldError('email', "L'adresse renseignée n'existe pas")
         setSubmitting(false)
       })
   }
