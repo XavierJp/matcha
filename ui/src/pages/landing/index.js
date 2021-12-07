@@ -52,7 +52,7 @@ export default () => {
                 Développer votre réseau d'entreprises partenaires
               </Heading>
               <Text pb={2}>
-                Vous êtes un centre de formation? Avec Matcha, retrouvez facilement les entreprises autour de chez vous
+                Vous êtes un centre de formation ? Avec Matcha, retrouvez facilement les entreprises autour de chez vous
                 prêtes à recruter vos apprenti(e)s. Accompagnez ces entreprises dans la diffusion et la gestion de leurs
                 offres au sein de votre réseau afin d'établir des liens de confiance et développer votre réseau de
                 partenaire.
@@ -133,7 +133,7 @@ export default () => {
                         isActive={isValid}
                         isDisabled={!isValid || isSubmitting}
                       >
-                        Identifier une entreprise partenaire
+                        Identifier des entreprises partenaires
                       </Button>
                     </Form>
                   )
