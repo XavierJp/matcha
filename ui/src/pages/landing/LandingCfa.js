@@ -39,12 +39,9 @@ export default () => {
                 partenaire.
               </Text>
               <Text fontSize='12px' pb={6} fontStyle='italic'>
-                La prestation de recrutement est gratuite et ne donnera lieu à aucune facturation.
+                Dans le cadre de ce service, la prestation de recrutement doit être gratuite et ne pourra donner lieu à
+                aucune facturation.
               </Text>
-              {/* <Text pb={2}>
-              Merci de renseigner les informations ci-dessous pour recevoir la liste entreprises autour de chez vous,
-              actuellement à la recherche d'apprenti(e)s afin d'être mis en relation avec elles:
-            </Text> */}
               <Formik
                 validateOnMount={true}
                 initialValues={{
@@ -135,14 +132,9 @@ export default () => {
                     'Le numéro de SIRET nous permettra de facilement localiser votre entreprise et ainsi vous proposer des partenaires à proximité.',
                 },
                 {
-                  title: 'Décrivez votre besoin',
+                  title: 'Développez votre réseau',
                   description:
-                    'Afin de vous suggérer les meilleurs partenaires possibles, nous avons besoin de connaitre votre besoin en alternance.',
-                },
-                {
-                  title: 'Sélectionnez le/les CFA que vous souhaitez mandater',
-                  description:
-                    'Une fois le formulaire envoyé, nous vous transmettrons par email la liste des CFA que nous avons sélectionné pour vous.',
+                    "Une fois le formulaire envoyé, nous vous transmettrons par email la liste des entreprises actuellement à la recherche d'alternants dans votre région afin de prendre contact avec eux.",
                 },
                 {
                   title: ' ',
@@ -151,27 +143,22 @@ export default () => {
               ]}
             />
             <EditorialTextBlock
-              header='Pourquoi accompagner des entreprises partenaires'
+              header='Pourquoi accompagner des entreprises partenaires ?'
               content={[
                 {
-                  title: 'Partenaire de confiance',
+                  title: 'Facilitez la prise de mandat de recrutement',
                   description:
-                    'En mandatant un CFA, celui-ci sera en charge de la diffusion et de la gestion de votre offre au sein de son réseau. ',
+                    "En identifiant facilement les entreprises de votre région à la recherche d'alternants...",
                 },
                 {
-                  title: 'Pré-sélection des candidats',
+                  title: 'Développez votre réseau de  partenaires',
                   description:
-                    'Le centre de formation vous présentera des candidatures en adéquation avec vos besoins et les valeurs de vos entreprises ',
+                    "Développez des relations de confiance avec les entreprises de votre région en les accompagnants dans leurs recherches d'alternants",
                 },
                 {
-                  title: 'Trouver des partenaires de confiance',
+                  title: 'Démultipliez les débouchées pour vos alternants',
                   description:
-                    "Développer des relations de confiance avec les acteurs de l'apprentissage afin de faire découvrir votre entreprise et vos métiers auprès des jeunes.",
-                },
-                {
-                  title: "Offre d'alternance complète pour les apprentis",
-                  description:
-                    "Faciliter l'entrée des jeunes en alternance et en formation en leurs proposant des offres complètes: formation et métier",
+                    "Facilitez l'entrée des jeunes en alternance et en formation en leurs proposant des offres complètes : formation et entreprise d'accueil.",
                 },
                 {
                   title: ' ',
