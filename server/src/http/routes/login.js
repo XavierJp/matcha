@@ -48,13 +48,13 @@ module.exports = ({ users, mail, etablissement }) => {
       }
 
       if (user.email_valide === false) {
-        let { email, raison_sociale, _id } = user;
+        let { email, raison_sociale, _id, prenom, nom } = user;
 
         const url = etablissement.getValidationUrl(_id);
 
         const emailBody = mail.getEmailBody({
           email,
-          senderName: raison_sociale,
+          senderName: raison_sociale ?? `${prenom} ${nom}`,
           templateId: 218,
           tags: ["matcha-confirmation-email"],
           params: {
