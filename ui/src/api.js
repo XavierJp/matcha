@@ -11,6 +11,11 @@ const errorHandler = (error) => {
 }
 
 /**
+ * La bonne Alternance API (domaine/métier)
+ */
+export const getMetier = (search) =>
+  Axios.get(`https://labonnealternance.apprentissage.beta.gouv.fr/api/romelabels?title=${search}`)
+/**
  * Formulaire API
  */
 export const getFormulaire = (formId) => API.get(`/formulaire/${formId}`).catch(errorHandler)

@@ -12,6 +12,8 @@ import {
   InformationCreationCompte,
 } from './authentification'
 
+import { LandingCfa, LandingEntreprise } from './landing'
+
 export {
   ValidationToken,
   ConfirmationCreationCompte,
@@ -25,5 +27,6 @@ export {
   Login,
   Users,
   Search,
-  Landing,
+  LandingEntreprise,
+  LandingCfa,
 }

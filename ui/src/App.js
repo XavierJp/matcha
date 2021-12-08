@@ -13,7 +13,8 @@ import {
   ConfirmationValidationEmail,
   CreationCompte,
   InformationCreationCompte,
-  Landing,
+  LandingCfa,
+  LandingEntreprise,
 } from './pages'
 
 import useAuth from './common/hooks/useAuth'
@@ -56,7 +57,8 @@ const App = () => {
         <Route exact path='/widget/:origine/' render={(props) => <Formulaire {...props} widget={true} />} />
         <Route strict path='/:origine/' component={Formulaire} />
         /** Landing pages */
-        <Route exact path='/deleguer-gestion-offre-alternant-cfa' component={Landing} />
+        <Route exact path='/deleguer-gestion-offre-alternant-cfa' component={LandingCfa} />
+        <Route exact path='/accompagner-entreprise-recherche-alternant' component={LandingEntreprise} />
         <Route component={NonTrouve} />
       </Switch>
     </AnimatePresence>

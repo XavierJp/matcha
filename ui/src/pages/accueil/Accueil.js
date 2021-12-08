@@ -18,8 +18,8 @@ export default () => {
               description='Exprimer vos besoins de recrutement en alternance pour les afficher au plus près des jeunes : La Bonne Alternance, Parcoursup, 1 jeune 1 solution, AFFELNET'
               buttonLabel='Poster une offre'
               link='/creation-compte'
-              buttonLabel2=''
-              link2=''
+              buttonLabel2='Déléguer la gestion'
+              link2='/accompagner-entreprise-recherche-alternant'
               type='ENTREPRISE'
             />
             <Etablissement
