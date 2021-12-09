@@ -74,7 +74,9 @@ module.exports = () => {
       uai: d.uais.filter((x) => x.valide === true),
       raison_sociale: d.raison_sociale,
       contacts: d.contacts,
-      adresse: d.adresse.label.split(`${d.adresse.code_postal}`)[0].trim(),
+      adresse:
+        d.adresse.label.split(`${d.adresse.code_postal}`)[0].trim() ||
+        d.lieux_de_formation.adresse.label.split(`${d.lieux_de_formation.adresse.code_postal}`)[0].trim(),
       commune: d.adresse.localite,
       code_postal: d.adresse.code_postal,
       geo_coordonnees: `${d.adresse.geojson?.geometry.coordinates[0]},${d.adresse.geojson?.geometry.coordinates[0]}`,
