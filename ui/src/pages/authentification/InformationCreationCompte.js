@@ -183,6 +183,8 @@ const InformationLegale = () => {
   let location = useLocation()
   const { raison_sociale, uai, adresse, siret, commune, code_postal } = location.state?.informationSiret
 
+  const RAISON_SOCIALE = raison_sociale.length > 30 ? raison_sociale.substring(0, 30) + '...' : raison_sociale
+
   return (
     <Box border='1px solid #000091' p={5} pb={12} h='100%'>
       <Heading mb={3} fontSize='2xl'>
@@ -203,7 +205,7 @@ const InformationLegale = () => {
         <Flex align='center'>
           <Text mr={3}>Raison sociale :</Text>
           <Badge mr={3} fontSize='md'>
-            {raison_sociale}
+            {RAISON_SOCIALE}
           </Badge>
           <InfoTooltip description='La donnée “Raison sociale” provient de l’INSEE puis est déduite du SIREN. Si cette information est erronée, merci de leur signaler.' />
         </Flex>{' '}
@@ -249,7 +251,7 @@ export default () => {
     <AuthentificationLayout>
       <Box pb={10}>
         <AnimationContainer>
-          <Box w={[, '50%']} pb={12} pt={12} px={['6', '8']}>
+          <Box w={['100%', '50%']} pb={12} pt={12} px={['6', '8']}>
             <Heading fontSize='32px' pb={3}>
               Créez votre compte sur Matcha
             </Heading>
