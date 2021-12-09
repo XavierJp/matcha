@@ -3,7 +3,7 @@ import { Icon } from '@chakra-ui/react'
 
 export function Close(props) {
   return (
-    <Icon width='16' height='16' viewBox='0 0 16 16' {...props}>
+    <Icon viewBox='0 0 16 16' {...props}>
       <path
         fillRule='evenodd'
         clipRule='evenodd'

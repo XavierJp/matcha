@@ -3,6 +3,7 @@ const formulaireSchema = require("./formulaire");
 const logSchema = require("./logs");
 const usersSchema = require("./users");
 const credentialsSchema = require("./credentials");
+const landingSchema = require("./landing");
 
 module.exports = {
   transactionalSchema,
@@ -10,4 +11,5 @@ module.exports = {
   logSchema,
   usersSchema,
   credentialsSchema,
+  landingSchema,
 };

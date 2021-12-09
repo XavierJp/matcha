@@ -45,7 +45,7 @@ export default () => {
           <Image display={['none', 'flex']} src={logo} alt='logo matcha' mr={5} />
           {organisation?.includes('akto') && <LogoAkto display={['none', 'flex']} w='100px' h={6} />}
           <Spacer />
-          {history.location.pathname === '/' && auth.sub === 'anonymous' && (
+          {auth.sub === 'anonymous' && (
             <Button
               display={['none', 'flex']}
               onClick={() => history.push('/authentification')}

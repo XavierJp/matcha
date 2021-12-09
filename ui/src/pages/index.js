@@ -2,6 +2,7 @@ import { NonTrouve } from './non-trouvé'
 import { Accueil } from './accueil'
 import { Formulaire } from './formulaire'
 import { Login, Users, Search } from './admin'
+import Landing from './landing'
 import {
   Connexion,
   ConfirmationCreationCompte,
@@ -10,6 +11,8 @@ import {
   CreationCompte,
   InformationCreationCompte,
 } from './authentification'
+
+import { LandingCfa, LandingEntreprise } from './landing'
 
 export {
   ValidationToken,
@@ -24,4 +27,6 @@ export {
   Login,
   Users,
   Search,
+  LandingEntreprise,
+  LandingCfa,
 }
