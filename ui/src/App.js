@@ -49,6 +49,8 @@ const App = () => {
         <Route exact path='/authentification/confirmation' component={ConfirmationCreationCompte} />
         <Route exact path='/authentification/validation/:id' component={ConfirmationValidationEmail} />
         <Route exact path='/authentification/verification' component={ValidationToken} />
+        <Route exact path='/deleguer-gestion-offre-alternant-cfa' component={LandingCfa} />
+        <Route exact path='/accompagner-entreprise-recherche-alternant' component={LandingEntreprise} />
         <PrivateRoute>
           <Route
             exact
@@ -59,8 +61,6 @@ const App = () => {
         <Route exact path='/widget/:origine/' render={(props) => <Formulaire {...props} widget={true} />} />
         <Route strict path='/:origine/' component={Formulaire} />
         /** Landing pages */
-        <Route exact path='/deleguer-gestion-offre-alternant-cfa' component={LandingCfa} />
-        <Route exact path='/accompagner-entreprise-recherche-alternant' component={LandingEntreprise} />
         <Route component={NonTrouve} />
       </Switch>
     </AnimatePresence>
