@@ -79,9 +79,9 @@ module.exports = () => {
         d.lieux_de_formation[0].adresse.label.split(`${d.lieux_de_formation[0].adresse.code_postal}`)[0].trim(),
       commune: d.adresse?.localite || d.lieux_de_formation[0].adresse.localite,
       code_postal: d.adresse?.code_postal || d.lieux_de_formation[0].adresse.code_postal,
-      geo_coordonnees:
-        `${d.adresse?.geojson?.geometry.coordinates[0]},${d.adresse?.geojson?.geometry.coordinates[0]}` ||
-        `${d.lieux_de_formation[0].adresse.geojson?.geometry.coordinates[0]},${d.lieux_de_formation[0].adresse.geojson?.geometry.coordinates[0]}`,
+      geo_coordonnees: d.adresse
+        ? `${d.adresse?.geojson.geometry.coordinates[0]},${d.adresse?.geojson.geometry.coordinates[0]}`
+        : `${d.lieux_de_formation[0].adresse.geojson?.geometry.coordinates[0]},${d.lieux_de_formation[0].adresse.geojson?.geometry.coordinates[1]}`,
     }),
     formatTCOData: (d) => ({
       etat: d.ferme === false ? etat_etablissements.FERME : etat_etablissements.ACTIF,
