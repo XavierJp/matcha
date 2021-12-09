@@ -144,7 +144,7 @@ export default (props) => {
           if (newUser) {
             toast({
               title: 'Vérification réussi',
-              description: 'Votre adresse mail a été validé avec succès.',
+              description: 'Votre adresse mail a été validée avec succès.',
               position: 'top-right',
               status: 'success',
               duration: 7000,

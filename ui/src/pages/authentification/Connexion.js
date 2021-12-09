@@ -39,7 +39,10 @@ const ConnexionCompte = () => {
       <Heading fontSize='32px' as='h2'>
         Vous avez déjà un compte ?
       </Heading>
-      <Text fontSize='xl'>Veuillez indiquer ci-dessous l’e-mail avec lequel vous avez créé votre compte.</Text>
+      <Text fontSize='xl'>
+        Veuillez indiquer ci-dessous l'email avec lequel vous avez crée votre compte afin de recevoir le lien de
+        connexion à votre espace.
+      </Text>
       <Box>
         <Formik
           validateOnMount
@@ -55,7 +58,7 @@ const ConnexionCompte = () => {
                 <CustomInput
                   required={false}
                   name='email'
-                  label='E-mail professionnel'
+                  label='Votre e-mail'
                   type='text'
                   value={values.email}
                   width='90%'
@@ -70,7 +73,7 @@ const ConnexionCompte = () => {
                   isActive={isValid}
                   isDisabled={!isValid || isSubmitting}
                 >
-                  Je me connecte
+                  Me connecter
                 </Button>
               </Form>
             )

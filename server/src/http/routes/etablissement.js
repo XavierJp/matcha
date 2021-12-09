@@ -31,7 +31,7 @@ module.exports = ({ etablissement, users, mail, formulaire }) => {
       if (result.data?.etablissement.naf.startsWith("85")) {
         return res.status(400).json({
           error: true,
-          message: "Le numéro siret n'est pas référencé comme une entreprise mais un CFA.",
+          message: "Le numéro siret n'est pas référencé comme une entreprise.",
         });
       }
 
@@ -107,7 +107,7 @@ module.exports = ({ etablissement, users, mail, formulaire }) => {
         partenaire = await users.createUser(req.body);
       }
 
-      let { email, raison_sociale, _id } = partenaire;
+      let { email, raison_sociale, _id, nom, prenom } = partenaire;
 
       const url = etablissement.getValidationUrl(_id);
 
@@ -118,6 +118,8 @@ module.exports = ({ etablissement, users, mail, formulaire }) => {
         tags: ["matcha-confirmation-email"],
         params: {
           URL_CONFIRMATION: url,
+          NOM: nom,
+          PRENOM: prenom,
         },
       });
 

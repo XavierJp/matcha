@@ -60,7 +60,7 @@ const ContactField = memo(({ values }) => {
         label='Email'
         type='email'
         value={values.email}
-        info='Il s’agit de l’adresse qui vous permettra de vous connecter à Matcha. Vérifiez qu’elle soit correcte ou bien modifiez-la'
+        info='Il s’agit de l’adresse qui vous permettra de vous connecter à Matcha. Vérifiez qu’elle soit correcte ou bien modifiez-là'
       />
     )
   }
@@ -192,7 +192,7 @@ const InformationLegale = () => {
       </Heading>
       <Flex alignItems='flex-start' alignItems='flex-start' mb={10}>
         <InfoCircle mr={2} mt={1} />
-        <Text>Vérifiez que les informations pré-remplies sont correctes avant de continuer.</Text>
+        <Text>Vérifiez que les informations pré-remplies soient correctes avant de continuer.</Text>
       </Flex>
       <Stack direction='column' spacing={7}>
         <Flex align='center'>

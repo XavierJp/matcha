@@ -77,9 +77,9 @@ module.exports = ({ users, mail, etablissement }) => {
         email: user.email,
         senderName: `${user.prenom} ${user.nom}`,
         templateId: 217,
-        params: { MAGICLINK: magiclink },
         tags: ["matcha-magiclink"],
         subject: "Lien de connexion à votre espace partenaire",
+        params: { MAGICLINK: magiclink, NOM: user.nom, PRENOM: user.prenom },
       });
 
       await mail.sendmail(mailBody);

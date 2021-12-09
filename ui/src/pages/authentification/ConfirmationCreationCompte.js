@@ -16,12 +16,12 @@ export default (props) => {
     <AuthentificationLayout>
       <Box px={['6', '8']} pt={['6w', '12w']}>
         <Heading fontSize={['32px', '40px']} as='h1'>
-          Vérification de votre adresse mail
+          Vérifier votre messagerie
         </Heading>
         <Box fontSize={['16px', '22px']}>
           <Text>
-            Afin de nous assurer de l'authenticité de votre adresse, nous venons de vous envoyer un email à{' '}
-            <strong>{email}</strong> avec un lien de connexion.
+            Nous vous avons envoyé un email à <strong>{email}</strong> avec un lien de confirmation. Celui-ci sera
+            valide pour les 60 prochaines minutes.
           </Text>
         </Box>
 
