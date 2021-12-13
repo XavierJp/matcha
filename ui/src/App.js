@@ -51,13 +51,13 @@ const App = () => {
         <Route exact path='/authentification/verification' component={ValidationToken} />
         <Route exact path='/deleguer-gestion-offre-alternant-cfa' component={LandingCfa} />
         <Route exact path='/accompagner-entreprise-recherche-alternant' component={LandingEntreprise} />
+        <Route strict path='/:origine/' component={Formulaire} />
         <PrivateRoute>
           <Route
             exact
             path='/formulaire/:id_form'
             render={(props) => <Formulaire {...props} byId={true} widget={false} />}
           />
-          <Route strict path='/:origine/' component={Formulaire} />
         </PrivateRoute>
         <Route exact path='/widget/:origine/' render={(props) => <Formulaire {...props} widget={true} />} />
         <Route component={NonTrouve} />

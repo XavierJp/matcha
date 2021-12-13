@@ -409,7 +409,7 @@ export default (props) => {
                     <Form autoComplete='off'>
                       <Flex py={6} alignItems='center'>
                         <Box as='h2' fontSize={['sm', '3xl']} fontWeight='700' color='grey.800'>
-                          {values.raison_sociale}
+                          {values.raison_sociale || "Nouveau dépot d'offre"}
                         </Box>
                         <Spacer />
                         <Button
