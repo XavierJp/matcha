@@ -146,9 +146,9 @@ export default () => {
               header='Pourquoi accompagner des entreprises partenaires ?'
               content={[
                 {
-                  title: 'Facilitez la prise de mandat de recrutement',
+                  title: 'Gérez les candidatures pour le compte des entreprises',
                   description:
-                    "En identifiant facilement les entreprises de votre région à la recherche d'alternants...",
+                    'Trouvez des entreprises proches de votre CFA pour leur proposer des candidat(e)s en formation chez vous',
                 },
                 {
                   title: 'Développez votre réseau de  partenaires',

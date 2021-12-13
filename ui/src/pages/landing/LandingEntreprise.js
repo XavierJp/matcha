@@ -108,7 +108,7 @@ export default () => {
                         <CustomInput
                           name='siret'
                           type='text'
-                          label='Le SIRET de votre centre de formation'
+                          label='Le SIRET de votre entreprise'
                           value={values.siret}
                           required={false}
                           maxLength='14'
@@ -176,10 +176,14 @@ export default () => {
                           </FieldArray>
                         </Box>
                         <Text fontSize='14px' color='grey.425' pt={3} pb={6}>
-                          Vos données seront utilisées par Matcha dans le seul but de vous mettre en relation avec un
-                          entreprises. Pour en savoir plus sur vos données et sur vos droits,{' '}
-                          <Link textDecoration='underline' color='bluefrance.500'>
-                            {' '}
+                          Vos données seront utilisées par Matcha dans le seul but de vous mettre en relation avec des
+                          centres de formations. Pour en savoir plus sur vos données et sur vos droits,{' '}
+                          <Link
+                            textDecoration='underline'
+                            color='bluefrance.500'
+                            href='https://beta.gouv.fr/suivi/'
+                            target='_blank'
+                          >
                             consultez notre politique de confidentialité.
                           </Link>
                         </Text>
@@ -204,7 +208,7 @@ export default () => {
           </SimpleGrid>
           <EditorialContainer>
             <EditorialTextBlock
-              header='Comment identifier des entreprises partenaires avec Matcha'
+              header="Comment transmettre mes offres d'alternance à des CFA ?"
               content={[
                 {
                   title: 'Renseignez vos informations',
@@ -228,7 +232,7 @@ export default () => {
               ]}
             />
             <EditorialTextBlock
-              header='Pourquoi accompagner des entreprises partenaires'
+              header='Pourquoi transmettre mes offres à un CFA ?'
               content={[
                 {
                   title: 'Gagnez du temps',
