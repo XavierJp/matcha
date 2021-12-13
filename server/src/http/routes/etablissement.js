@@ -107,14 +107,14 @@ module.exports = ({ etablissement, users, mail, formulaire }) => {
         partenaire = await users.createUser(req.body);
       }
 
-      let { email, raison_sociale, _id, nom, prenom } = partenaire;
+      let { email, raison_sociale, _id, nom, prenom, type } = partenaire;
 
       const url = etablissement.getValidationUrl(_id);
 
       const emailBody = mail.getEmailBody({
         email,
         senderName: raison_sociale,
-        templateId: 218,
+        templateId: type === "ENTREPRISE" ? 226 : 218,
         tags: ["matcha-confirmation-email"],
         params: {
           URL_CONFIRMATION: url,
@@ -125,7 +125,7 @@ module.exports = ({ etablissement, users, mail, formulaire }) => {
 
       await mail.sendmail(emailBody);
 
-      return res.json(partenaire);
+      return res.json({ partenaire, ...formulaireInfo });
     })
   );
 

@@ -247,17 +247,18 @@ const InformationLegale = () => {
 }
 
 export default () => {
+  let location = useLocation()
+  const { type } = location.state
+
   return (
     <AuthentificationLayout>
       <Box pb={10}>
         <AnimationContainer>
           <Box w={['100%', '50%']} pb={12} pt={12} px={['6', '8']}>
             <Heading fontSize='32px' pb={3}>
-              Créez votre compte sur Matcha
+              {type === 'ENTREPRISE' ? 'Vos informations de contact' : 'Créez votre compte sur Matcha'}
             </Heading>
-            <Text fontSize='xl'>
-              Nous avons besoin du numéro de SIRET de votre centre de formation afin de vous identifier.
-            </Text>
+            <Text fontSize='xl'>Vérifiez vos informations légales et renseignez vos informations de contact.</Text>
           </Box>
           <Box px={['6', '8']}>
             <SimpleGrid columns={['1', '2']} gap={10} flex='1' alignItems='center'>

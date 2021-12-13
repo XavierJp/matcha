@@ -46,7 +46,7 @@ const CreationCompte = () => {
   return (
     <Stack direction='column' spacing={7} bg='grey.150' p={['4', '8']} py={10} pr={12}>
       <Heading size='lg' as='h2'>
-        Créez votre compte sur Matcha
+        {type === 'ENTREPRISE' ? 'Retrouvez votre entreprise' : 'Créez votre compte sur Matcha'}
       </Heading>
       <Text fontSize='xl'>Nous avons besoin du numéro SIRET afin de vous identifier.</Text>
       <Box mr={4}>
