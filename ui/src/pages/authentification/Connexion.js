@@ -40,7 +40,7 @@ const ConnexionCompte = () => {
         Vous avez déjà un compte ?
       </Heading>
       <Text fontSize='xl'>
-        Veuillez indiquer ci-dessous l'email avec lequel vous avez crée votre compte afin de recevoir le lien de
+        Veuillez indiquer ci-dessous le mail avec lequel vous avez crée votre compte afin de recevoir le lien de
         connexion à votre espace.
       </Text>
       <Box>
@@ -58,7 +58,7 @@ const ConnexionCompte = () => {
                 <CustomInput
                   required={false}
                   name='email'
-                  label='Votre e-mail'
+                  label='Votre email'
                   type='text'
                   value={values.email}
                   width='90%'

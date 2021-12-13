@@ -67,7 +67,7 @@ module.exports = ({ users, mail, etablissement }) => {
         return res.status(400).json({
           error: true,
           message:
-            "Votre adresse n’a été vérifiée. Cliquez sur le lien que nous venons de vous transmettre pour vérifier votre compte",
+            "Votre adresse n’a pas été vérifiée. Cliquez sur le lien que nous venons de vous transmettre pour vérifier votre compte",
         });
       }
 
