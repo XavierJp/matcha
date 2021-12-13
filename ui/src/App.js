@@ -57,10 +57,9 @@ const App = () => {
             path='/formulaire/:id_form'
             render={(props) => <Formulaire {...props} byId={true} widget={false} />}
           />
+          <Route strict path='/:origine/' component={Formulaire} />
         </PrivateRoute>
         <Route exact path='/widget/:origine/' render={(props) => <Formulaire {...props} widget={true} />} />
-        <Route strict path='/:origine/' component={Formulaire} />
-        /** Landing pages */
         <Route component={NonTrouve} />
       </Switch>
     </AnimatePresence>
