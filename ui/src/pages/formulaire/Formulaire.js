@@ -229,7 +229,7 @@ export default (props) => {
     putOffre(idOffre, values).then((result) => {
       setOffersList(result.data.offres)
       toast({
-        title: 'Offre délégué.',
+        title: 'L’offre a été transmise à des CFA.',
         position: 'top-right',
         status: 'success',
         duration: 2000,
@@ -333,7 +333,7 @@ export default (props) => {
             {!props.widget && (
               <Box pt={3}>
                 <Breadcrumb separator={<ArrowDropRightLine color='grey.600' />} textStyle='xs'>
-                  {auth.sub !== 'anonymous' ? (
+                  {auth.sub !== 'anonymous' && auth.type !== 'ENTREPRISE' ? (
                     <Breadcrumb separator={<ArrowDropRightLine color='grey.600' />} textStyle='xs'>
                       <BreadcrumbItem>
                         <BreadcrumbLink textDecoration='underline' as={Link} to='/admin' textStyle='xs'>

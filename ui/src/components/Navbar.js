@@ -70,14 +70,18 @@ export default () => {
                 </Flex>
               </MenuButton>
               <MenuList>
-                <MenuItem onClick={() => history.push('/admin')}>Gestion des offres</MenuItem>
+                {auth.sub !== 'anonymous' && auth.type !== 'ENTREPRISE' && (
+                  <>
+                    <MenuItem onClick={() => history.push('/admin')}>Gestion des offres</MenuItem>
+                    <MenuDivider />
+                  </>
+                )}
                 {auth.permissions.isAdmin && (
                   <>
                     <MenuDivider />
                     <MenuItem onClick={() => history.push('/admin/users')}>Gestion des utilisateurs</MenuItem>
                   </>
                 )}
-                <MenuDivider />
                 <MenuItem onClick={() => setAuth('')}>Déconnexion</MenuItem>
               </MenuList>
             </Menu>
