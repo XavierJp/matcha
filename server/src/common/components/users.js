@@ -9,12 +9,14 @@ module.exports = async () => {
     createUser: async (values) => {
       let scope = values.scope ?? undefined;
 
-      if (!scope) {
+      if (!scope && values.type === "CFA") {
         // generate user scope
         let key = passwordGenerator.generate(
           KEY_GENERATOR_PARAMS({ length: 5, symbols: false, numbers: true, letters: false })
         );
         scope = `cfa-${key}`;
+      } else {
+        scope = `etp-${values.raison_sociale.toLowerCase().replace(/ /g, "-")}`;
       }
 
       let isAdmin = values.isAdmin ?? false;
