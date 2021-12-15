@@ -113,24 +113,29 @@ const RechercheSiret = memo(({ submitSiret, validSIRET, siretInformation }) => {
 })
 
 export default (props) => {
-  const [formState, setFormState] = useState({})
-  const [offersList, setOffersList] = useState([])
+  const [siretInformation, setSiretInformation] = useState({})
   const [currentOffer, setCurrentOffer] = useState({})
-  const [loading, setLoading] = useBoolean(true)
-  const [error, setError] = useBoolean()
+  const [offersList, setOffersList] = useState([])
+  const [formState, setFormState] = useState({})
+
   const [readOnlyMode, setReadOnlyMode] = useBoolean()
   const [validSIRET, setValidSIRET] = useBoolean()
-  const [siretInformation, setSiretInformation] = useState({})
-  const ajouterVoeuxPopup = useDisclosure()
   const confirmationSuppression = useDisclosure()
+  const [loading, setLoading] = useBoolean(true)
+  const ajouterVoeuxPopup = useDisclosure()
+  const [error, setError] = useBoolean()
+  const toast = useToast()
+
+  const { setOrganisation } = useContext(LogoContext)
+
   const { id_form, origine } = useParams()
   const location = useLocation()
-  const toast = useToast()
   const history = useHistory()
-  const { setOrganisation } = useContext(LogoContext)
+
   const [auth] = useAuth()
 
-  const { newUser, offerPopup } = location.state
+  const newUser = location.state?.newUser ?? false
+  const offerPopup = location.state?.offerPopup ?? false
 
   const hasActiveOffers = offersList.filter((x) => x.statut === 'Active')
 
