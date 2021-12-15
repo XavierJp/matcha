@@ -87,8 +87,8 @@ export default () => {
                     .then(() => {
                       setSubmitting(false)
                       toast({
-                        title: 'Demande enregistré avec succès.',
-                        description: "Vous serez recontacter d'ici peu.",
+                        title: 'Demande enregistrée avec succès.',
+                        description: "Vous serez recontacté d'ici peu.",
                         position: 'top-right',
                         status: 'success',
                         duration: 4000,
