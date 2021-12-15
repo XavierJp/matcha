@@ -124,11 +124,13 @@ export default (props) => {
   const ajouterVoeuxPopup = useDisclosure()
   const confirmationSuppression = useDisclosure()
   const { id_form, origine } = useParams()
-  const { newUser } = useLocation()
+  const location = useLocation()
   const toast = useToast()
   const history = useHistory()
   const { setOrganisation } = useContext(LogoContext)
   const [auth] = useAuth()
+
+  const { newUser, offerPopup } = location.state
 
   const hasActiveOffers = offersList.filter((x) => x.statut === 'Active')
 
@@ -150,6 +152,9 @@ export default (props) => {
               duration: 7000,
               isClosable: true,
             })
+          }
+          if (offerPopup) {
+            ajouterVoeuxPopup.onOpen()
           }
         })
         .catch(() => {

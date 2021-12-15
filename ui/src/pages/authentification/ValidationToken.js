@@ -31,7 +31,7 @@ export default () => {
     if (auth.sub !== 'anonymous') {
       if (auth.id_form) {
         setTimeout(() => {
-          history.push(`/formulaire/${auth.id_form}`)
+          history.push(`/formulaire/${auth.id_form}`, { offerPopup: true })
         }, 3500)
       } else {
         setTimeout(() => {

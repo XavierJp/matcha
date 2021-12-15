@@ -51,7 +51,7 @@ const App = () => {
         <Route exact path='/authentification/verification' component={ValidationToken} />
         <Route exact path='/deleguer-gestion-offre-alternant-cfa' component={LandingCfa} />
         <Route exact path='/accompagner-entreprise-recherche-alternant' component={LandingEntreprise} />
-        <Route strict path='/:origine/' component={Formulaire} />
+        <Route exact path='/:origine/' component={Formulaire} />
         <PrivateRoute>
           <Route
             exact

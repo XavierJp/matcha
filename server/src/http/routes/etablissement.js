@@ -1,6 +1,6 @@
 const express = require("express");
 const tryCatch = require("../middlewares/tryCatchMiddleware");
-const { createUserToken } = require("../../common/utils/jwtUtils");
+const { createUserToken, createMagicLinkToken } = require("../../common/utils/jwtUtils");
 const { User } = require("../../common/model");
 
 module.exports = ({ etablissement, users, mail, formulaire }) => {
@@ -95,12 +95,13 @@ module.exports = ({ etablissement, users, mail, formulaire }) => {
     tryCatch(async (req, res) => {
       let exist = await users.getUser(req.body.email);
       let formulaireInfo, partenaire;
+      let ENTREPRISE = req.body.type === "ENTREPRISE";
 
       if (exist) {
         return res.status(403).json({ error: true, message: "L'adresse mail est déjà associé à un compte Matcha." });
       }
 
-      if (req.body.type === "ENTREPRISE") {
+      if (ENTREPRISE) {
         formulaireInfo = await formulaire.createFormulaire(req.body);
         partenaire = await users.createUser({ ...req.body, id_form: formulaireInfo.id_form });
       } else {
@@ -125,7 +126,11 @@ module.exports = ({ etablissement, users, mail, formulaire }) => {
 
       await mail.sendmail(emailBody);
 
-      return res.json({ partenaire, ...formulaireInfo });
+      if (ENTREPRISE) {
+        return res.json({ token: createMagicLinkToken(email) });
+      } else {
+        return res.json({ partenaire });
+      }
     })
   );
 

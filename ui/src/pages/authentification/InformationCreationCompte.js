@@ -88,7 +88,11 @@ const Formulaire = () => {
     // save info if not trusted from source
     createPartenaire(values)
       .then(({ data }) => {
-        history.push('/authentification/confirmation', { email: data.email })
+        if (type === 'ENTREPRISE') {
+          history.push(`/authentification/verification?token=${data.token}`)
+        } else {
+          history.push('/authentification/confirmation', { email: data.email })
+        }
         setSubmitting(false)
       })
       .catch((error) => {
