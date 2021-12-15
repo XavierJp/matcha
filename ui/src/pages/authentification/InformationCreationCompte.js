@@ -89,7 +89,7 @@ const Formulaire = () => {
     createPartenaire(values)
       .then(({ data }) => {
         if (type === 'ENTREPRISE') {
-          history.push(`/authentification/verification?token=${data.token}`)
+          history.push(`/authentification/verification?token=${data.token}`, { fromEntrepriseCreation: true })
         } else {
           history.push('/authentification/confirmation', { email: data.email })
         }

@@ -6,8 +6,11 @@ import useAuth from '../../common/hooks/useAuth'
 
 export default () => {
   let history = useHistory()
-  const { search } = useLocation()
+  const location = useLocation()
   const [auth, setAuth] = useAuth()
+
+  const { search } = location
+  const fromEntrepriseCreation = location.state
 
   let params = new URLSearchParams(search)
   let token = params.get('token')
@@ -31,7 +34,7 @@ export default () => {
     if (auth.sub !== 'anonymous') {
       if (auth.id_form) {
         setTimeout(() => {
-          history.push(`/formulaire/${auth.id_form}`, { offerPopup: true })
+          history.push(`/formulaire/${auth.id_form}`, { offerPopup: fromEntrepriseCreation ? true : false })
         }, 3500)
       } else {
         setTimeout(() => {
