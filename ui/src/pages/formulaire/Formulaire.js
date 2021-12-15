@@ -409,7 +409,6 @@ export default (props) => {
                 onSubmit={submitFormulaire}
               >
                 {({ values, isValid, isSubmitting, setFieldValue }) => {
-                  console.log(values)
                   return (
                     <Form autoComplete='off'>
                       <Flex py={6} alignItems='center'>
