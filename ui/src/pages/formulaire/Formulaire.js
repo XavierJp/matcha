@@ -136,6 +136,8 @@ export default (props) => {
 
   const newUser = location.state?.newUser ?? false
   const offerPopup = location.state?.offerPopup ?? false
+  const gestionnaire = location.state?.gestionnaire ?? undefined
+  const mandataire = location.state?.mandataire ?? false
 
   const hasActiveOffers = offersList.filter((x) => x.statut === 'Active')
 
@@ -210,7 +212,7 @@ export default (props) => {
       // create
       postOffre(formState.id_form, values).then((result) => setOffersList(result.data.offres))
       toast({
-        title: 'Offre enregistré avec succès.',
+        title: 'Offre enregistrée avec succès.',
         position: 'top-right',
         status: 'success',
         duration: 2000,
@@ -222,7 +224,7 @@ export default (props) => {
   const extendOffer = (idOffre, values) => {
     putOffre(idOffre, values).then((result) => setOffersList(result.data.offres))
     toast({
-      title: "Offre prolongé d'un mois.",
+      title: "Offre prolongée d'un mois.",
       position: 'top-right',
       status: 'success',
       duration: 2000,
@@ -267,7 +269,7 @@ export default (props) => {
       putFormulaire(id_form, values).then((result) => {
         setFormState(result.data)
         toast({
-          title: 'Enregistré avec succès',
+          title: 'Mise à jour enregistrée avec succès',
           position: 'top-right',
           status: 'success',
           duration: 2000,
@@ -284,8 +286,7 @@ export default (props) => {
         setOrganisation(result.data.origine)
         history.push(`/formulaire/${result.data.id_form}`)
         toast({
-          title: 'Formulaire créé !',
-          description: "Un mail d'accès vous a été envoyé",
+          title: 'Formulaire créé avec succès.',
           position: 'top-right',
           status: 'success',
           duration: 4000,
@@ -383,7 +384,8 @@ export default (props) => {
                 validateOnMount={true}
                 enableReinitialize={true}
                 initialValues={{
-                  mandataire: formState?.mandataire ?? false,
+                  mandataire,
+                  gestionnaire,
                   raison_sociale: siretInformation.raison_sociale || formState?.raison_sociale,
                   siret: siretInformation.siret || formState?.siret,
                   adresse: siretInformation.adresse || formState?.adresse,
