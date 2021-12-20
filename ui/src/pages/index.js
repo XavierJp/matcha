@@ -2,19 +2,24 @@ import { NonTrouve } from './non-trouvé'
 import { Accueil } from './accueil'
 import { Formulaire } from './formulaire'
 import { Login, Users, Search } from './admin'
+import Landing from './landing'
 import {
-  Authentification,
+  Connexion,
   ConfirmationCreationCompte,
   ValidationToken,
   ConfirmationValidationEmail,
   CreationCompte,
+  InformationCreationCompte,
 } from './authentification'
+
+import { LandingCfa, LandingEntreprise } from './landing'
 
 export {
   ValidationToken,
   ConfirmationCreationCompte,
   ConfirmationValidationEmail,
-  Authentification,
+  InformationCreationCompte,
+  Connexion,
   CreationCompte,
   Formulaire,
   Accueil,
@@ -22,4 +27,6 @@ export {
   Login,
   Users,
   Search,
+  LandingEntreprise,
+  LandingCfa,
 }

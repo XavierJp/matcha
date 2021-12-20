@@ -48,7 +48,7 @@ module.exports = () => {
       }
     },
     getEtablissementFromTCO: (siret) =>
-      axios.get("https://tables-correspondances.apprentissage.beta.gouv.fr/api/v1/entity/etablissements/", {
+      axios.get("https://catalogue.apprentissage.beta.gouv.fr/api/v1/entity/etablissements/", {
         params: {
           query: { siret },
         },
@@ -58,16 +58,30 @@ module.exports = () => {
       const coordinates = response.data.features[0].geometry.coordinates.reverse().join(",");
       return coordinates;
     },
+    formatEntrepriseData: (d) => ({
+      etat: d.etat_administratif.value, // F pour fermé ou A pour actif
+      siret: d.siret,
+      raison_sociale: d.adresse.l1,
+      domaine: d.libelle_naf,
+      adresse: `${d.adresse.l4}`,
+      commune: d.adresse.localite,
+      code_postal: d.adresse.code_postal,
+      contacts: [], // conserve la coherence avec l'UI
+    }),
     formatReferentielData: (d) => ({
       etat: d.etat_administratif,
       siret: d.siret,
-      uai: d.uai,
+      uai: d.uais.filter((x) => x.valide === true),
       raison_sociale: d.raison_sociale,
       contacts: d.contacts,
-      adresse: d.adresse.label,
-      commune: d.adresse.localite,
-      code_postal: d.adresse.code_postal,
-      geo_coordonnees: `${d.adresse.geojson?.geometry.coordinates[0]},${d.adresse.geojson?.geometry.coordinates[0]}`,
+      adresse:
+        d.adresse?.label?.split(`${d.adresse?.code_postal}`)[0].trim() ||
+        d.lieux_de_formation[0].adresse.label.split(`${d.lieux_de_formation[0].adresse.code_postal}`)[0].trim(),
+      commune: d.adresse?.localite || d.lieux_de_formation[0].adresse.localite,
+      code_postal: d.adresse?.code_postal || d.lieux_de_formation[0].adresse.code_postal,
+      geo_coordonnees: d.adresse
+        ? `${d.adresse?.geojson.geometry.coordinates[0]},${d.adresse?.geojson.geometry.coordinates[0]}`
+        : `${d.lieux_de_formation[0].adresse.geojson?.geometry.coordinates[0]},${d.lieux_de_formation[0].adresse.geojson?.geometry.coordinates[1]}`,
     }),
     formatTCOData: (d) => ({
       etat: d.ferme === false ? etat_etablissements.FERME : etat_etablissements.ACTIF,
@@ -77,9 +91,7 @@ module.exports = () => {
       contacts: [], // les tco n'ont pas d'information de contact, mais conserve un standard pour l'ui,
       commune: d.localite,
       code_postal: d.code_postal,
-      adresse: `${d.numero_voie === null ? "" : d.numero_voie} ${d.type_voie} ${d.nom_voie}, ${d.code_postal} ${
-        d.localite
-      }`,
+      adresse: `${d.numero_voie === null ? "" : d.numero_voie} ${d.type_voie} ${d.nom_voie}`,
       geo_coordonnees: d.geo_coordonnees,
     }),
   };

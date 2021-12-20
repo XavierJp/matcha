@@ -28,7 +28,7 @@ const EmailInvalide = () => (
 )
 
 export default (props) => {
-  const [isValid, setIsValid] = useBoolean()
+  const [isValid, setIsValid] = useBoolean(true)
   const { id } = useParams()
   const history = useHistory()
   const [auth, setAuth] = useAuth()
@@ -38,23 +38,35 @@ export default (props) => {
     validationCompte({ id })
       .then(({ data }) => {
         setAuth(data?.token)
-        setIsValid.on()
-        setTimeout(() => {
-          history.push('/admin', { newUser: true })
-        }, 3500)
       })
       .catch(() => setIsValid.off())
   }, [id])
 
+  useEffect(() => {
+    if (auth.sub !== 'anonymous') {
+      if (auth.id_form) {
+        setTimeout(() => {
+          history.push(`/formulaire/${auth.id_form}`, { newUser: true })
+        }, 3500)
+      } else {
+        setTimeout(() => {
+          history.push('/admin', { newUser: true })
+        }, 3500)
+      }
+    }
+  }, [auth])
+
   return (
     <>
-      <Box>
-        <Flex justify='center' align='center' h='100vh' direction='column'>
-          <Spinner thickness='4px' speed='0.5s' emptyColor='gray.200' color='bluefrance.500' size='xl' />
-          <Text>Verification en cours...</Text>
-        </Flex>
-      </Box>
-      {!isValid && !auth && (
+      {isValid && (
+        <Box>
+          <Flex justify='center' align='center' h='100vh' direction='column'>
+            <Spinner thickness='4px' speed='0.5s' emptyColor='gray.200' color='bluefrance.500' size='xl' />
+            <Text>Verification en cours...</Text>
+          </Flex>
+        </Box>
+      )}
+      {!isValid && (
         <AuthentificationLayout>
           <EmailInvalide />
         </AuthentificationLayout>

@@ -11,7 +11,6 @@ import { RiSendPlaneFill } from 'react-icons/ri'
 
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import useAuth from '../../../common/hooks/useAuth'
 
 const getStatusBadge = (status) => {
   let [statut] = Object.keys(status).filter((x) => status[x])
@@ -31,7 +30,6 @@ const getStatusBadge = (status) => {
 
 export default (props) => {
   dayjs.extend(relativeTime)
-  const [auth] = useAuth()
 
   if (!props.data) {
     return <div />
@@ -144,26 +142,6 @@ export default (props) => {
                 >
                   Supprimer l'offre
                 </Button>
-                {auth.type === 'ENTREPRISE' && (
-                  <Tooltip
-                    hasArrow
-                    label='Assurez-vous de trouver le bon apprenti(e) en transmettant votre besoin auprès des OF (organismes de formation) de votre région.'
-                    placement='top'
-                    isDisabled={isExtendable}
-                  >
-                    <Box>
-                      <Button
-                        w={['100%', 'inherit']}
-                        variant='secondary'
-                        isDisabled={item.delegate}
-                        leftIcon={<RiSendPlaneFill />}
-                        onClick={() => props.delegateOffer(item._id, { ...item, delegate: true })}
-                      >
-                        Déléger l'offre
-                      </Button>
-                    </Box>
-                  </Tooltip>
-                )}
               </Stack>
             </Box>
           )

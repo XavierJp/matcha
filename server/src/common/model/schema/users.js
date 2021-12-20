@@ -25,8 +25,13 @@ module.exports = new Schema(
       description: "Adresse de l'établissement",
     },
     uai: {
-      type: String,
+      type: Array,
       description: "Numéro uai de l'établissement",
+    },
+    geo_coordonnees: {
+      type: String,
+      default: null,
+      description: "Latitude/Longitude de l'adresse de l'entreprise",
     },
     telephone: {
       type: String,
@@ -52,6 +57,15 @@ module.exports = new Schema(
       type: Boolean,
       default: false,
       description: "Indicateur de confirmation de l'adresse mail par l'utilisateur",
+    },
+    type: {
+      type: String,
+      enum: ["ENTREPRISE", "CFA", "OPCO"],
+      description: "Type d'utilisateur",
+    },
+    id_form: {
+      type: String,
+      description: "Si l'utilisateur est une entreprise, l'objet doit contenir un identifiant de formulaire unique",
     },
     last_connection: {
       type: Date,
