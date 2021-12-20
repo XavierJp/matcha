@@ -17,7 +17,7 @@ import {
   BreadcrumbLink,
   useToast,
 } from '@chakra-ui/react'
-import { NavLink, useLocation } from 'react-router-dom'
+import { NavLink, useLocation, useHistory } from 'react-router-dom'
 
 import constants from './admin.constants'
 import Facet from '../../components/Facet/Facet'
@@ -34,6 +34,7 @@ export default memo(() => {
   const { filters, facetDefinition, dataSearchDefinition, exportableColumns, excludedFields } = constants
   const [auth] = useAuth()
   const location = useLocation()
+  const history = useHistory()
   const toast = useToast()
 
   useEffect(() => {
@@ -80,11 +81,20 @@ export default memo(() => {
               </BreadcrumbLink>
             </BreadcrumbItem>
           </Breadcrumb>
-          <Link as={NavLink} to={`/${auth.scope === 'all' ? 'matcha' : auth.scope}/`}>
-            <Button variant='primary' size='sm' mr={3}>
-              Nouvelle entreprise
-            </Button>
-          </Link>
+
+          <Button
+            variant='primary'
+            size='sm'
+            mr={3}
+            onClick={() =>
+              history.push(`/${auth.scope === 'all' ? 'matcha' : auth.scope}/`, {
+                mandataire: true,
+                gestionnaire: auth.siret,
+              })
+            }
+          >
+            Nouvelle entreprise
+          </Button>
         </Flex>
         <div className='search-page'>
           <ReactiveBase url={`${process.env.REACT_APP_BASE_URL}/es/search`} app='formulaires'>

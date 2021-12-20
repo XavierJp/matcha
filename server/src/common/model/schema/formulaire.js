@@ -95,6 +95,10 @@ module.exports = new Schema(
       default: false,
       description: "le formulaire est-il géré par un mandataire ?",
     },
+    gestionnaire: {
+      type: String,
+      description: "Siret de l'organisme de formation gestionnaire des offres de l'entreprise",
+    },
     nom: {
       type: String,
       default: null,

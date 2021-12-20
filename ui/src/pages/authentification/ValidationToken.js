@@ -32,7 +32,7 @@ export default () => {
 
   useEffect(() => {
     if (auth.sub !== 'anonymous') {
-      if (auth.id_form) {
+      if (auth.type === 'ENTREPRISE' && auth.id_form) {
         setTimeout(() => {
           history.push(`/formulaire/${auth.id_form}`, { offerPopup: fromEntrepriseCreation ? true : false })
         }, 3500)
