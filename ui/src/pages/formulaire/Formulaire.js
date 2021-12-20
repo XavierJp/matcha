@@ -239,7 +239,7 @@ export default (props) => {
     putOffre(idOffre, values).then((result) => {
       setOffersList(result.data.offres)
       toast({
-        title: 'L’offre a été transmise à des CFA.',
+        title: 'L’offre a été transmise à des organismes de formation.',
         position: 'top-right',
         status: 'success',
         duration: 2000,

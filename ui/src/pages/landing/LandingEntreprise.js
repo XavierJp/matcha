@@ -63,7 +63,8 @@ export default () => {
                 ainsi trouver l'alternant de vos rêves.
               </Text>
               <Text fontSize='12px' pb={6} fontStyle='italic'>
-                La prestation de recrutement est gratuite et ne donnera lieu à aucune facturation de la part du CFA.
+                La prestation de recrutement est gratuite et ne donnera lieu à aucune facturation de la part de
+                l'organisme de formation.
               </Text>
               <Formik
                 validateOnMount={true}
@@ -208,7 +209,7 @@ export default () => {
           </SimpleGrid>
           <EditorialContainer>
             <EditorialTextBlock
-              header="Comment transmettre mes offres d'alternance à des CFA ?"
+              header="Comment transmettre mes offres d'alternance à des OF ?"
               content={[
                 {
                   title: 'Renseignez vos informations',
@@ -223,7 +224,7 @@ export default () => {
                 {
                   title: 'Identifiez et transmettez vos offres',
                   description:
-                    "Une fois le formulaire envoyé, nous vous transmettrons par email la liste des CFA que nous avons sélectionné pour vous afin de transmettre vos offres d'alternances",
+                    "Une fois le formulaire envoyé, nous vous transmettrons par email la liste des OF que nous avons sélectionné pour vous afin de transmettre vos offres d'alternances",
                 },
                 {
                   title: ' ',
@@ -232,12 +233,12 @@ export default () => {
               ]}
             />
             <EditorialTextBlock
-              header='Pourquoi transmettre mes offres à un CFA ?'
+              header='Pourquoi transmettre mes offres à un OF ?'
               content={[
                 {
                   title: 'Gagnez du temps',
                   description:
-                    "En mandatant un CFA, celui-ci sera en charge de la diffusion, la gestion de votre offre et de la pré-sélection des candidats afin de trouver l'alternant répondant à vos besoins et aux valeurs de votre entreprise.",
+                    "En transmettant une lettre de mission à un organisme de formation, celui-ci sera en charge de la diffusion, la gestion de votre offre et de la pré-sélection des candidats afin de trouver l'alternant répondant à vos besoins et aux valeurs de votre entreprise.",
                 },
                 {
                   title: "Rejoignez le réseau des acteurs de l'apprentissage de votre territoire",

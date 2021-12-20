@@ -148,7 +148,7 @@ export default () => {
                 {
                   title: 'Gérez les candidatures pour le compte des entreprises',
                   description:
-                    'Trouvez des entreprises proches de votre CFA pour leur proposer des candidat(e)s en formation chez vous',
+                    'Trouvez des entreprises proches de votre OF pour leur proposer des candidat(e)s en formation chez vous',
                 },
                 {
                   title: 'Développez votre réseau de  partenaires',

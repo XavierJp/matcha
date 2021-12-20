@@ -24,13 +24,13 @@ export default () => {
             />
             <Etablissement
               bg='bluefrance.200'
-              title='Vous êtes un CFA'
+              title='Vous êtes un organisme de formation'
               subtitle='Déposez les offres de vos entreprises partenaires'
               description='Gérer facilement vos mandats de recrutement et la diffusion de vos offres en alternance'
               buttonLabel='Accéder à votre espace'
               buttonLabel2='Développer mon réseau'
               link='/creation-compte'
-              link2='/deleguer-gestion-offre-alternant-cfa'
+              link2='/deleguer-gestion-offre-alternant-of'
               type='CFA'
             />
           </Stack>

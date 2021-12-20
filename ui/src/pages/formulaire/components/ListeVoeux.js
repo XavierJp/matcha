@@ -147,7 +147,7 @@ export default (props) => {
                 {auth.type === 'ENTREPRISE' && (
                   <Tooltip
                     hasArrow
-                    label='Assurez-vous de trouver le bon apprenti(e) en transmettant votre besoin auprès des CFA (centre de formation) de votre région.'
+                    label='Assurez-vous de trouver le bon apprenti(e) en transmettant votre besoin auprès des OF (organismes de formation) de votre région.'
                     placement='top'
                     isDisabled={isExtendable}
                   >
@@ -159,7 +159,7 @@ export default (props) => {
                         leftIcon={<RiSendPlaneFill />}
                         onClick={() => props.delegateOffer(item._id, { ...item, delegate: true })}
                       >
-                        Déléger l'offre à un CFA
+                        Déléger l'offre à un OF
                       </Button>
                     </Box>
                   </Tooltip>
