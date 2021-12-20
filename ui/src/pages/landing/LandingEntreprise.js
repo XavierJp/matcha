@@ -209,7 +209,7 @@ export default () => {
           </SimpleGrid>
           <EditorialContainer>
             <EditorialTextBlock
-              header="Comment transmettre mes offres d'alternance à des OF ?"
+              header="Comment transmettre mes offres d'alternance à des organismes de formation ?"
               content={[
                 {
                   title: 'Renseignez vos informations',
@@ -224,7 +224,7 @@ export default () => {
                 {
                   title: 'Identifiez et transmettez vos offres',
                   description:
-                    "Une fois le formulaire envoyé, nous vous transmettrons par email la liste des OF que nous avons sélectionné pour vous afin de transmettre vos offres d'alternances",
+                    "Une fois le formulaire envoyé, nous vous transmettrons par email la liste des organismes de formation que nous avons sélectionné pour vous afin de transmettre vos offres d'alternances",
                 },
                 {
                   title: ' ',
@@ -233,7 +233,7 @@ export default () => {
               ]}
             />
             <EditorialTextBlock
-              header='Pourquoi transmettre mes offres à un OF ?'
+              header='Pourquoi transmettre mes offres à un organisme de formation ?'
               content={[
                 {
                   title: 'Gagnez du temps',
