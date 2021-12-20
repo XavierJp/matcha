@@ -26,6 +26,7 @@ module.exports = {
       nom: user.nom,
       prenom: user.prenom,
       type: user.type,
+      siret: user.siret,
       id_form: user.id_form,
     };
 
