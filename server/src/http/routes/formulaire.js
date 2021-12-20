@@ -1,11 +1,10 @@
 const express = require("express");
 const tryCatch = require("../middlewares/tryCatchMiddleware");
 const { getElasticInstance } = require("../../common/esClient");
-const config = require("config");
 
 const esClient = getElasticInstance();
 
-module.exports = ({ mail, formulaire }) => {
+module.exports = ({ formulaire }) => {
   const router = express.Router();
 
   /**
@@ -48,6 +47,9 @@ module.exports = ({ mail, formulaire }) => {
     "/",
     tryCatch(async (req, res) => {
       const response = await formulaire.createFormulaire(req.body);
+      /** 
+       * 20/12/2021 : mise en commentaire car l'accès est impossible depuis l'URL seul, il faut être authentifié.
+       * 
       let { _id, id_form, raison_sociale, email } = response;
 
       const mailBody = {
@@ -69,6 +71,7 @@ module.exports = ({ mail, formulaire }) => {
 
       let campagne = "matcha-nouveau-formulaire";
       await mail.logMail(result, campagne, _id);
+      */
 
       return res.json(response);
     })
