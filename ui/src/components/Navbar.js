@@ -78,8 +78,8 @@ export default () => {
                 )}
                 {auth.permissions.isAdmin && (
                   <>
-                    <MenuDivider />
                     <MenuItem onClick={() => history.push('/admin/users')}>Gestion des utilisateurs</MenuItem>
+                    <MenuDivider />
                   </>
                 )}
                 <MenuItem onClick={() => setAuth('')}>Déconnexion</MenuItem>
