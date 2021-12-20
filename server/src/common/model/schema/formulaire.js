@@ -56,6 +56,10 @@ const offresSchema = new Schema({
     default: null,
     description: "Definit si l'offre est diffusé sur d'autre jobboard que Matcha",
   },
+  delegate: {
+    type: Boolean,
+    description: "Definit si l'entreprise souhaite déléger l'offre à un CFA",
+  },
 });
 
 module.exports = new Schema(

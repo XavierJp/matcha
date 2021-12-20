@@ -29,29 +29,6 @@ export default ({ formState, buttonSize, setEditionMode }) => {
         borderColor='bluefrance.500'
         gap={[6, 0]}
       >
-        {formState.mandataire && (
-          <GridItem>
-            <Heading size='md' pb={6}>
-              Renseignements Mandataire
-            </Heading>
-            <Grid templateRows='repeat(3, 1fr)' gap={4}>
-              <Flex>
-                <Text pr={3}>Nom de l'etablissement :</Text>
-                <Badge variant='readOnly'>{formState.raison_sociale_mandataire}</Badge>
-              </Flex>
-              <Flex>
-                <Text pr={3}>SIRET :</Text>
-                <Badge variant='readOnly'>{formState.siret_mandataire}</Badge>
-              </Flex>
-              <Flex>
-                <Text pr={3} isTruncated>
-                  Adresse :
-                </Text>
-                <Badge variant='readOnly'>{formState.adresse_mandataire}</Badge>
-              </Flex>
-            </Grid>
-          </GridItem>
-        )}
         <GridItem>
           <Heading size='md' pb={6}>
             Renseignements Entreprise

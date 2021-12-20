@@ -31,7 +31,7 @@ const checkToken = (users) => {
   return passport.authenticate("jwt", { session: false, failWithError: true });
 };
 
-module.exports = ({ users, mail }) => {
+module.exports = ({ users, mail, etablissement }) => {
   const router = express.Router(); // eslint-disable-line new-cap
 
   router.post(
@@ -44,7 +44,31 @@ module.exports = ({ users, mail }) => {
       const user = await users.getUser(email);
 
       if (!user) {
-        return res.status(400).send("KO");
+        return res.status(400).json({ error: true, message: "L’adresse email renseignée n’existe pas" });
+      }
+
+      if (user.email_valide === false) {
+        let { email, raison_sociale, _id, prenom, nom } = user;
+
+        const url = etablissement.getValidationUrl(_id);
+
+        const emailBody = mail.getEmailBody({
+          email,
+          senderName: raison_sociale ?? `${prenom} ${nom}`,
+          templateId: 218,
+          tags: ["matcha-confirmation-email"],
+          params: {
+            URL_CONFIRMATION: url,
+          },
+        });
+
+        await mail.sendmail(emailBody);
+
+        return res.status(400).json({
+          error: true,
+          message:
+            "Votre adresse n’a pas été vérifiée. Cliquez sur le lien que nous venons de vous transmettre pour vérifier votre compte",
+        });
       }
 
       const magiclink = `${config.publicUrl}/authentification/verification?token=${createMagicLinkToken(email)}`;
@@ -53,9 +77,9 @@ module.exports = ({ users, mail }) => {
         email: user.email,
         senderName: `${user.prenom} ${user.nom}`,
         templateId: 217,
-        params: { MAGICLINK: magiclink },
         tags: ["matcha-magiclink"],
         subject: "Lien de connexion à votre espace partenaire",
+        params: { MAGICLINK: magiclink, NOM: user.nom, PRENOM: user.prenom },
       });
 
       await mail.sendmail(mailBody);

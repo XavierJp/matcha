@@ -1,4 +1,4 @@
-import { useParams, useHistory } from 'react-router-dom'
+import { useParams, useHistory, useLocation } from 'react-router-dom'
 import { IoIosAddCircleOutline } from 'react-icons/io'
 import { Formik, Form } from 'formik'
 import { AiOutlineEdit } from 'react-icons/ai'
@@ -27,6 +27,7 @@ import {
   Link as ChakraLink,
   AlertIcon,
   Alert,
+  Badge,
 } from '@chakra-ui/react'
 
 import { getFormulaire, postFormulaire, postOffre, putFormulaire, putOffre, getEntrepriseInformation } from '../../api'
@@ -112,21 +113,29 @@ const RechercheSiret = memo(({ submitSiret, validSIRET, siretInformation }) => {
 })
 
 export default (props) => {
-  const [formState, setFormState] = useState({})
-  const [offersList, setOffersList] = useState([])
+  const [siretInformation, setSiretInformation] = useState({})
   const [currentOffer, setCurrentOffer] = useState({})
-  const [loading, setLoading] = useBoolean(true)
-  const [error, setError] = useBoolean()
+  const [offersList, setOffersList] = useState([])
+  const [formState, setFormState] = useState({})
+
   const [readOnlyMode, setReadOnlyMode] = useBoolean()
   const [validSIRET, setValidSIRET] = useBoolean()
-  const [siretInformation, setSiretInformation] = useState({})
-  const ajouterVoeuxPopup = useDisclosure()
   const confirmationSuppression = useDisclosure()
-  const { id_form, origine } = useParams()
+  const [loading, setLoading] = useBoolean(true)
+  const ajouterVoeuxPopup = useDisclosure()
+  const [error, setError] = useBoolean()
   const toast = useToast()
-  const history = useHistory()
+
   const { setOrganisation } = useContext(LogoContext)
+
+  const { id_form, origine } = useParams()
+  const location = useLocation()
+  const history = useHistory()
+
   const [auth] = useAuth()
+
+  const newUser = location.state?.newUser ?? false
+  const offerPopup = location.state?.offerPopup ?? false
 
   const hasActiveOffers = offersList.filter((x) => x.statut === 'Active')
 
@@ -139,6 +148,19 @@ export default (props) => {
           setFormState(result.data)
           setOrganisation(result.data.origine)
           setOffersList(result.data.offres)
+          if (newUser) {
+            toast({
+              title: 'Vérification réussi',
+              description: 'Votre adresse mail a été validée avec succès.',
+              position: 'top-right',
+              status: 'success',
+              duration: 7000,
+              isClosable: true,
+            })
+          }
+          if (offerPopup) {
+            ajouterVoeuxPopup.onOpen()
+          }
         })
         .catch(() => {
           setError.toggle(true)
@@ -178,7 +200,7 @@ export default (props) => {
       // update
       putOffre(currentOffer._id, values).then((result) => setOffersList(result.data.offres))
       toast({
-        title: 'Offre mise à jour avec succès !',
+        title: 'Offre mise à jour avec succès.',
         position: 'top-right',
         status: 'success',
         duration: 2000,
@@ -188,7 +210,7 @@ export default (props) => {
       // create
       postOffre(formState.id_form, values).then((result) => setOffersList(result.data.offres))
       toast({
-        title: 'Offre enregistré avec succès !',
+        title: 'Offre enregistré avec succès.',
         position: 'top-right',
         status: 'success',
         duration: 2000,
@@ -200,7 +222,7 @@ export default (props) => {
   const extendOffer = (idOffre, values) => {
     putOffre(idOffre, values).then((result) => setOffersList(result.data.offres))
     toast({
-      title: "Offre prolongé d'un mois",
+      title: "Offre prolongé d'un mois.",
       position: 'top-right',
       status: 'success',
       duration: 2000,
@@ -211,6 +233,19 @@ export default (props) => {
   const removeOffer = (offer) => {
     setCurrentOffer(offer)
     confirmationSuppression.onOpen()
+  }
+
+  const delegateOffer = (idOffre, values) => {
+    putOffre(idOffre, values).then((result) => {
+      setOffersList(result.data.offres)
+      toast({
+        title: 'L’offre a été transmise à des organismes de formation.',
+        position: 'top-right',
+        status: 'success',
+        duration: 2000,
+        isClosable: true,
+      })
+    })
   }
 
   const submitSiret = ({ siret }, { setSubmitting, setFieldError, setFieldValue }) => {
@@ -308,7 +343,7 @@ export default (props) => {
             {!props.widget && (
               <Box pt={3}>
                 <Breadcrumb separator={<ArrowDropRightLine color='grey.600' />} textStyle='xs'>
-                  {auth.sub !== 'anonymous' ? (
+                  {auth.sub !== 'anonymous' && auth.type !== 'ENTREPRISE' ? (
                     <Breadcrumb separator={<ArrowDropRightLine color='grey.600' />} textStyle='xs'>
                       <BreadcrumbItem>
                         <BreadcrumbLink textDecoration='underline' as={Link} to='/admin' textStyle='xs'>
@@ -349,10 +384,10 @@ export default (props) => {
                 enableReinitialize={true}
                 initialValues={{
                   mandataire: formState?.mandataire ?? false,
-                  raison_sociale: siretInformation.raison_sociale,
-                  siret: siretInformation.siret,
-                  adresse: siretInformation.adresse,
-                  geo_coordonnees: siretInformation.geo_coordonnees,
+                  raison_sociale: siretInformation.raison_sociale || formState?.raison_sociale,
+                  siret: siretInformation.siret || formState?.siret,
+                  adresse: siretInformation.adresse || formState?.adresse,
+                  geo_coordonnees: siretInformation.geo_coordonnees || formState?.geo_coordonnees,
                   nom: formState?.nom ?? '',
                   prenom: formState?.prenom ?? '',
                   telephone: formState?.telephone ? formState?.telephone.replace(/ /g, '') : '',
@@ -383,7 +418,7 @@ export default (props) => {
                     <Form autoComplete='off'>
                       <Flex py={6} alignItems='center'>
                         <Box as='h2' fontSize={['sm', '3xl']} fontWeight='700' color='grey.800'>
-                          Nouveau formulaire
+                          {values.raison_sociale || "Nouveau dépot d'offre"}
                         </Box>
                         <Spacer />
                         <Button
@@ -404,11 +439,37 @@ export default (props) => {
                               <Heading size='md' pb={6}>
                                 Renseignements Entreprise
                               </Heading>
-                              <RechercheSiret
-                                validSIRET={validSIRET}
-                                submitSiret={submitSiret}
-                                siretInformation={siretInformation}
-                              />
+                              {formState._id ? (
+                                <>
+                                  <CustomInput
+                                    name='raison_sociale'
+                                    label='Raison sociale'
+                                    type='text'
+                                    value={values.raison_sociale}
+                                    isDisabled={true}
+                                  />
+                                  <CustomInput
+                                    name='siret'
+                                    label='Siret'
+                                    type='text'
+                                    value={values.siret}
+                                    isDisabled={true}
+                                  />
+                                  <CustomInput
+                                    name='adresse'
+                                    label='Adresse'
+                                    type='text'
+                                    value={values.adresse}
+                                    isDisabled={true}
+                                  />
+                                </>
+                              ) : (
+                                <RechercheSiret
+                                  validSIRET={validSIRET}
+                                  submitSiret={submitSiret}
+                                  siretInformation={siretInformation}
+                                />
+                              )}
                             </GridItem>
                             <GridItem colSpan={[12, 6]} p={[, 8]}>
                               <Heading size='md' pb={6}>
@@ -453,6 +514,7 @@ export default (props) => {
                     removeOffer={removeOffer}
                     editOffer={editOffer}
                     extendOffer={extendOffer}
+                    delegateOffer={delegateOffer}
                     geo_coordonnees={formState.geo_coordonnees}
                   />
                 ) : (

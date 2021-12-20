@@ -5,12 +5,10 @@ const { runScript } = require("../scriptWrapper");
 const logger = require("../../common/logger");
 const config = require("config");
 
-const { erratum } = require("./misc/emailToFilter");
-
 const launch = async (mail) => {
   await paginator(
     Formulaire,
-    { origine: "1J1S", email: { $nin: erratum } },
+    { origine: "1J1S" },
     // { $nor: [{ offres: { $exists: false } }, { offres: { $size: 0 } }] },
     { lean: true, maxItems: 42000, limit: 30 }, // premier envoi 1J1S
     // { lean: true, maxItems: 1, limit: 1 }, // Test 1 formulaire

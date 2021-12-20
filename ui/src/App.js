@@ -7,11 +7,14 @@ import {
   Accueil,
   Users,
   Search,
-  Authentification,
+  Connexion,
   ConfirmationCreationCompte,
   ValidationToken,
   ConfirmationValidationEmail,
   CreationCompte,
+  InformationCreationCompte,
+  LandingCfa,
+  LandingEntreprise,
 } from './pages'
 
 import { Formulaire as Widget } from './widget'
@@ -42,18 +45,23 @@ const App = () => {
           <Users />
         </PrivateRoute>
         <Route exact path='/' component={Accueil} />
-        <Route exact path='/authentification' component={Authentification} />
-        <Route exact path='/authentification/creation-compte' component={CreationCompte} />
+        <Route exact path='/authentification' component={Connexion} />
+        <Route exact path='/creation-compte' component={CreationCompte} />
+        <Route exact path='/creation-compte/detail' component={InformationCreationCompte} />
         <Route exact path='/authentification/confirmation' component={ConfirmationCreationCompte} />
         <Route exact path='/authentification/validation/:id' component={ConfirmationValidationEmail} />
         <Route exact path='/authentification/verification' component={ValidationToken} />
-        <Route
-          exact
-          path='/formulaire/:id_form'
-          render={(props) => <Formulaire {...props} byId={true} widget={false} />}
-        />
-        <Route exact path='/widget/:origine/' render={(props) => <Widget {...props} widget={true} />} />
-        <Route strict path='/:origine/' component={Formulaire} />
+        <Route exact path='/deleguer-gestion-offre-alternant-of' component={LandingCfa} />
+        <Route exact path='/accompagner-entreprise-recherche-alternant' component={LandingEntreprise} />
+        <Route exact path='/:origine/' component={Formulaire} />
+        <PrivateRoute>
+          <Route
+            exact
+            path='/formulaire/:id_form'
+            render={(props) => <Formulaire {...props} byId={true} widget={false} />}
+          />
+        </PrivateRoute>
+        <Route exact path='/widget/:origine/' render={(props) => <Formulaire {...props} widget={true} />} />
         <Route component={NonTrouve} />
       </Switch>
     </AnimatePresence>

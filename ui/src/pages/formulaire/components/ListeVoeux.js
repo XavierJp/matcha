@@ -7,8 +7,11 @@ import {
   AiOutlineRetweet,
 } from 'react-icons/ai'
 
+import { RiSendPlaneFill } from 'react-icons/ri'
+
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import useAuth from '../../../common/hooks/useAuth'
 
 const getStatusBadge = (status) => {
   let [statut] = Object.keys(status).filter((x) => status[x])
@@ -28,6 +31,7 @@ const getStatusBadge = (status) => {
 
 export default (props) => {
   dayjs.extend(relativeTime)
+  const [auth] = useAuth()
 
   if (!props.data) {
     return <div />
@@ -50,7 +54,7 @@ export default (props) => {
           let isExtendable = remainingDaysAsNumber > 7 ? false : true
 
           return (
-            <Box bg='white' p={8} border='1px solid' borderColor='bluefrance.500'>
+            <Box bg='white' p={8} border='1px solid' borderColor='bluefrance.500' key={item._id}>
               <Flex alignItems='flex-start'>
                 <Text fontSize='sm' pr={9} pb={[3, 0]}>
                   Postée le {dayjs(item.date_creation).format('DD/MM/YYYY')}
@@ -98,7 +102,7 @@ export default (props) => {
                   </Flex>
                 )}
               </VStack>
-              <Stack direction={['column', 'row']} spacing={3}>
+              <Stack direction={['column', 'row']} spacing={5}>
                 <Button variant='secondary' leftIcon={<AiOutlineEdit />} onClick={() => props.editOffer(item)}>
                   Modifier l'offre
                 </Button>
@@ -140,6 +144,26 @@ export default (props) => {
                 >
                   Supprimer l'offre
                 </Button>
+                {auth.type === 'ENTREPRISE' && (
+                  <Tooltip
+                    hasArrow
+                    label='Assurez-vous de trouver le bon apprenti(e) en transmettant votre besoin auprès des OF (organismes de formation) de votre région.'
+                    placement='top'
+                    isDisabled={isExtendable}
+                  >
+                    <Box>
+                      <Button
+                        w={['100%', 'inherit']}
+                        variant='secondary'
+                        isDisabled={item.delegate}
+                        leftIcon={<RiSendPlaneFill />}
+                        onClick={() => props.delegateOffer(item._id, { ...item, delegate: true })}
+                      >
+                        Déléger l'offre
+                      </Button>
+                    </Box>
+                  </Tooltip>
+                )}
               </Stack>
             </Box>
           )

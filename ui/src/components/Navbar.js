@@ -45,7 +45,7 @@ export default () => {
           <Image display={['none', 'flex']} src={logo} alt='logo matcha' mr={5} />
           {organisation?.includes('akto') && <LogoAkto display={['none', 'flex']} w='100px' h={6} />}
           <Spacer />
-          {history.location.pathname === '/' && auth.sub === 'anonymous' && (
+          {auth.sub === 'anonymous' && (
             <Button
               display={['none', 'flex']}
               onClick={() => history.push('/authentification')}
@@ -63,19 +63,25 @@ export default () => {
                 <Flex alignItems='center'>
                   <Icon as={RiAccountCircleLine} color='bluefrance.500' />
                   <Box display={['none', 'block']} ml={2}>
-                    <Text color='bluefrance.500'>{auth.sub}</Text>
+                    <Text color='bluefrance.500'>
+                      {auth.prenom} {auth.nom}
+                    </Text>
                   </Box>
                 </Flex>
               </MenuButton>
               <MenuList>
-                <MenuItem onClick={() => history.push('/admin')}>Gestion des offres</MenuItem>
-                {auth.permissions.isAdmin && (
+                {auth.sub !== 'anonymous' && auth.type !== 'ENTREPRISE' && (
                   <>
+                    <MenuItem onClick={() => history.push('/admin')}>Gestion des offres</MenuItem>
                     <MenuDivider />
-                    <MenuItem onClick={() => history.push('/admin/users')}>Gestion des utilisateurs</MenuItem>
                   </>
                 )}
-                <MenuDivider />
+                {auth.permissions.isAdmin && (
+                  <>
+                    <MenuItem onClick={() => history.push('/admin/users')}>Gestion des utilisateurs</MenuItem>
+                    <MenuDivider />
+                  </>
+                )}
                 <MenuItem onClick={() => setAuth('')}>Déconnexion</MenuItem>
               </MenuList>
             </Menu>

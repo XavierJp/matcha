@@ -1,7 +1,7 @@
-import { Box, Heading, Text, Button, Stack } from '@chakra-ui/react'
+import { Box, Heading, Text, Button, Stack, Flex } from '@chakra-ui/react'
 import { useHistory } from 'react-router-dom'
 
-export default ({ title, subtitle, description, buttonLabel, bg, link }) => {
+export default ({ title, subtitle, description, buttonLabel, bg, link, type, buttonLabel2, link2 }) => {
   const history = useHistory()
   return (
     <Box
@@ -12,7 +12,7 @@ export default ({ title, subtitle, description, buttonLabel, bg, link }) => {
       _hover={{ background: 'white', border: '3px solid #000091' }}
       flex='1'
     >
-      <Stack direction='column' spacing='20px' py={10} align='flex-start'>
+      <Stack direction='column' spacing='20px' py={10}>
         <Heading color='bluefrance.500' fontSize='32px'>
           {title}
         </Heading>
@@ -20,9 +20,16 @@ export default ({ title, subtitle, description, buttonLabel, bg, link }) => {
           {subtitle}
         </Text>
         <Text>{description}</Text>
-        <Button variant='primary' onClick={() => history.push(`${link}`)}>
-          {buttonLabel}
-        </Button>
+        <Flex>
+          <Button variant='primary' onClick={() => history.push(`${link}`, { type })} mr={5}>
+            {buttonLabel}
+          </Button>
+          {buttonLabel2 && (
+            <Button variant='secondary' onClick={() => history.push(`${link2}`)}>
+              {buttonLabel2}
+            </Button>
+          )}
+        </Flex>
       </Stack>
     </Box>
   )

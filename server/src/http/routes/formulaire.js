@@ -51,7 +51,6 @@ module.exports = ({ mail, formulaire }) => {
       let { _id, id_form, raison_sociale, email } = response;
 
       const mailBody = {
-        id_form,
         email,
         senderName: raison_sociale,
         tags: ["matcha-nouveau-formulaire"],

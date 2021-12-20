@@ -15,17 +15,23 @@ export default () => {
               bg='bluefrance.100'
               title='Vous êtes une entreprise'
               subtitle='Simplifiez la diffusion de vos offres en alternance'
-              description='Exprimer vos besoins de recrutement en alternance pour les afficher au plus près des jeunes : La Bonne Alternance, Parcoursup, 1 jeune 1 solution, AFFELNET'
-              buttonLabel='Poster une offre'
-              link='/matcha/'
+              description='Exprimer vos besoins de recrutement en alternance pour les afficher au plus près des jeunes : La Bonne Alternance, Parcoursup, 1 jeune 1 solution, Affelnet'
+              buttonLabel='Diffuser une offre'
+              link='/creation-compte'
+              buttonLabel2='Déléguer la gestion'
+              link2='/accompagner-entreprise-recherche-alternant'
+              type='ENTREPRISE'
             />
             <Etablissement
               bg='bluefrance.200'
-              title='Vous êtes un CFA'
+              title='Vous êtes un organisme de formation'
               subtitle='Déposez les offres de vos entreprises partenaires'
               description='Gérer facilement vos mandats de recrutement et la diffusion de vos offres en alternance'
               buttonLabel='Accéder à votre espace'
-              link='/authentification'
+              buttonLabel2='Développer mon réseau'
+              link='/creation-compte'
+              link2='/deleguer-gestion-offre-alternant-of'
+              type='CFA'
             />
           </Stack>
         </Container>

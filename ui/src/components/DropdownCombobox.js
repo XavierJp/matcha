@@ -5,19 +5,19 @@ export default (props) => {
   let { saveSelectedItem, setInputItems, handleSearch, value, placeholder, inputItems, name } = props
 
   const itemToString = (item) => (item ? item.label : '')
-  const onSelectedItemChange = ({ selectedItem }) => saveSelectedItem(selectedItem)
   const onInputValueChange = async ({ inputValue }) => setInputItems(await handleSearch(inputValue))
+  const onSelectedItemChange = ({ selectedItem }) => saveSelectedItem(selectedItem, reset)
 
-  const { isOpen, getMenuProps, getInputProps, getComboboxProps, highlightedIndex, getItemProps } = useCombobox({
+  const { isOpen, getMenuProps, getInputProps, getComboboxProps, highlightedIndex, getItemProps, reset } = useCombobox({
     itemToString,
     onInputValueChange,
     onSelectedItemChange,
     items: inputItems,
-    initialInputValue: value ?? '',
+    initialInputValue: value ?? [],
   })
 
   return (
-    <div className=''>
+    <div>
       <div {...getComboboxProps()}>
         <Input mb='0' name={name} placeholder={placeholder || 'sélectionner un métier'} {...getInputProps()} />
       </div>

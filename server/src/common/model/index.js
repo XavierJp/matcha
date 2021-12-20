@@ -26,4 +26,5 @@ module.exports = {
   User: createModel("users", schema.usersSchema),
   Credential: createModel("credentials", schema.credentialsSchema),
   Log: createModel("logs", schema.logSchema),
+  Landing: createModel("landing", schema.landingSchema),
 };

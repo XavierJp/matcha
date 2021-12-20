@@ -75,6 +75,7 @@ export default (props) => {
         statut: props.statut ?? 'Active',
         type: props.type ?? 'Apprentissage',
         multi_diffuser: props.multi_diffuser ?? undefined,
+        delegate: props.delegate ?? undefined,
       }}
       validationSchema={Yup.object().shape({
         libelle: Yup.string().required('Champ obligatoire'),
@@ -249,7 +250,7 @@ export default (props) => {
                   </Box>
                 </FormControl>
 
-                {(values.description || organisation.includes('akto')) && (
+                {(values.description || organisation?.includes('akto')) && (
                   <FormControl mt={4}>
                     <FormLabel>Description</FormLabel>
                     <Textarea rows='6' name='description' defaultValue={values.description} onChange={handleChange} />

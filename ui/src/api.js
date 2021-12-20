@@ -11,6 +11,11 @@ const errorHandler = (error) => {
 }
 
 /**
+ * La bonne Alternance API (domaine/métier)
+ */
+export const getMetier = (search) =>
+  Axios.get(`https://labonnealternance.apprentissage.beta.gouv.fr/api/romelabels?title=${search}`)
+/**
  * Formulaire API
  */
 export const getFormulaire = (formId) => API.get(`/formulaire/${formId}`).catch(errorHandler)
@@ -31,13 +36,22 @@ export const createUser = async (user) => await API.post('/user', user).catch(er
 export const updateUser = async (userId, user) => await API.put(`user/${userId}`, user).catch(errorHandler)
 export const deleteUser = async (userId) => await API.delete(`/user/${userId}`).catch(errorHandler)
 
+/**
+ * Auth API
+ */
 export const validateToken = async (token) => await API.post(`/login/verification`, token)
 export const sendMagiclink = async (email) => await API.post(`/login/magiclink`, email)
 
-export const getSiretInformation = async (siret) => await API.post(`/etablissement/`, siret)
-export const getEntrepriseInformation = async (siret) => await API.get(`/etablissement/${siret}`)
+export const getCfaInformation = async (siret) => await API.get(`/etablissement/cfa/${siret}`)
+export const getEntrepriseInformation = async (siret) => await API.get(`/etablissement/entreprise/${siret}`)
 export const createPartenaire = (partenaire) => API.post('/etablissement/creation', partenaire)
 export const validationCompte = (id) => API.post('/etablissement/validation', id)
+
+/**
+ * Landing page API
+ */
+export const postCfaLanding = (values) => API.post('/landing/cfa', values)
+export const postEntrepriseLanding = (values) => API.post('/landing/entreprise', values)
 
 export const getWithQS = (payload) =>
   API.get('/formulaire', { params: { query: JSON.stringify(payload.query), ...payload } })
