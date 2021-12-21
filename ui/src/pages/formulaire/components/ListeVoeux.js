@@ -159,7 +159,7 @@ export default (props) => {
                         leftIcon={<RiSendPlaneFill />}
                         onClick={() => props.delegateOffer(item._id, { ...item, delegate: true })}
                       >
-                        Déléger l'offre
+                        Déléguer l'offre
                       </Button>
                     </Box>
                   </Tooltip>
