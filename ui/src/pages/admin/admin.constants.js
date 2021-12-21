@@ -1,4 +1,4 @@
-import { escapeDiacritics } from '../../common/utils/downloadUtils'
+import { escapeDiacritics, getLocation, getStreet, getPostcode } from '../../common/utils/downloadUtils'
 import { CloseCircleLine, SearchLine } from '../../theme/components/icons'
 import dayjs from 'dayjs'
 
@@ -15,7 +15,7 @@ const excludedFields = ['events', 'mailing']
 
 const exportableColumns = [
   {
-    Header: 'Raison Social',
+    Header: 'Raison sociale',
     accessor: 'raison_sociale',
     exportable: true,
     formatter: (value) => escapeDiacritics(value),
@@ -26,10 +26,31 @@ const exportableColumns = [
     exportable: true,
   },
   {
-    Header: 'Adresse Postal',
+    Header: 'Adresse postale',
     accessor: 'adresse',
     exportable: true,
-    formatter: (value) => escapeDiacritics(value),
+    formatter: (value) => {
+      let val = escapeDiacritics(value)
+      return getStreet(val)
+    },
+  },
+  {
+    Header: 'Code postal',
+    accessor: 'adresse',
+    exportable: true,
+    formatter: (value) => {
+      let val = escapeDiacritics(value)
+      return getPostcode(val)
+    },
+  },
+  {
+    Header: 'Region',
+    accessor: 'adresse',
+    exportable: true,
+    formatter: (value) => {
+      let val = escapeDiacritics(value)
+      return getLocation(val)
+    },
   },
   {
     Header: 'Prenom',
