@@ -74,6 +74,7 @@ const exportableColumns = [
             ? dayjs(x.date_debut_apprentissage).format('YYYY-MM-DD')
             : 'NA',
           Date_expiration: dayjs(x.date_expiration).format('YYYY-MM-DD'),
+          Description: escapeDiacritics(x.description),
         }
       })
     },
@@ -113,6 +114,12 @@ const exportableColumns = [
     accessor: 'offres.date_expiration',
     exportable: true,
     formatter: (value) => dayjs(value).format('YYYY-MM-DD'),
+  },
+  {
+    Header: 'Description',
+    accessor: 'offres.description',
+    exportable: true,
+    formatter: (value) => escapeDiacritics(value),
   },
 ]
 
