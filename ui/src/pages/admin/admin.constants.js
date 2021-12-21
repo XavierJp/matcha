@@ -90,6 +90,10 @@ const exportableColumns = [
           Type: escapeDiacritics(x.type),
           Metier: escapeDiacritics(x.libelle),
           Niveau: escapeDiacritics(x.niveau),
+          Prolongation: x.nombre_prolongation ?? 0,
+          Date_prolongation: x.date_derniere_prolongation
+            ? dayjs(x.date_derniere_prolongation).format('YYYY-MM-DD')
+            : 'NA',
           Date_creation: dayjs(x.date_creation).format('YYYY-MM-DD'),
           Date_debut_apprentissage: x.date_debut_apprentissage
             ? dayjs(x.date_debut_apprentissage).format('YYYY-MM-DD')
@@ -117,6 +121,17 @@ const exportableColumns = [
     accessor: 'offres.niveau',
     exportable: true,
     formatter: (value) => escapeDiacritics(value),
+  },
+  {
+    Header: 'Nombre de prolongation',
+    accessor: 'offres.nombre_prolongation',
+    exportable: true,
+  },
+  {
+    Header: "Date de derniere prolongation de l'offre",
+    accessor: 'offres.date_derniere_prolongation',
+    exportable: true,
+    formatter: (value) => dayjs(value).format('YYYY-MM-DD'),
   },
   {
     Header: "Date de creation de l'offre",
