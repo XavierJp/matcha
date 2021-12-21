@@ -44,14 +44,9 @@ export default (props) => {
       {props.data
         .filter((x) => x.statut === 'Active')
         .map((item) => {
-          let remainingDays = () => {
-            if (dayjs().to(item.date_expiration, true) === 'un mois') {
-              return 30
-            }
-            return dayjs().to(item.date_expiration, true)
-          }
-          let remainingDaysAsNumber = parseFloat(remainingDays(), 2)
-          let isExtendable = remainingDaysAsNumber > 7 ? false : true
+          console.log(item.nombre_prolongation)
+          const expire = dayjs(item.date_expiration)
+          const isExtendable = expire.diff(Date(), 'days') > 7 ? false : true
 
           return (
             <Box bg='white' p={8} border='1px solid' borderColor='bluefrance.500' key={item._id}>
@@ -123,6 +118,8 @@ export default (props) => {
                         props.extendOffer(item._id, {
                           ...item,
                           date_expiration: dayjs().add(1, 'month').format('YYYY-MM-DD'),
+                          date_derniere_prolongation: Date(),
+                          nombre_prolongation: item.nombre_prolongation >= 0 ? item.nombre_prolongation + 1 : 1,
                         })
                       }
                     >
