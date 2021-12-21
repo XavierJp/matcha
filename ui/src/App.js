@@ -54,6 +54,7 @@ const App = () => {
         <Route exact path='/deleguer-gestion-offre-alternant-of' component={LandingCfa} />
         <Route exact path='/accompagner-entreprise-recherche-alternant' component={LandingEntreprise} />
         <Route exact path='/:origine/' component={Formulaire} />
+        <Route exact path='/widget/:origine/' render={(props) => <Widget {...props} widget={true} />} />
         <PrivateRoute>
           <Route
             exact
@@ -61,7 +62,6 @@ const App = () => {
             render={(props) => <Formulaire {...props} byId={true} widget={false} />}
           />
         </PrivateRoute>
-        <Route exact path='/widget/:origine/' render={(props) => <Formulaire {...props} widget={true} />} />
         <Route component={NonTrouve} />
       </Switch>
     </AnimatePresence>
