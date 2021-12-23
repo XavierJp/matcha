@@ -84,7 +84,7 @@ module.exports = () => {
         : `${d.lieux_de_formation[0].adresse.geojson?.geometry.coordinates[0]},${d.lieux_de_formation[0].adresse.geojson?.geometry.coordinates[1]}`,
     }),
     formatTCOData: (d) => ({
-      etat: d.ferme === false ? etat_etablissements.FERME : etat_etablissements.ACTIF,
+      etat: d.ferme === false ? etat_etablissements.ACTIF : etat_etablissements.FERME,
       siret: d.siret,
       uai: d.uai,
       raison_sociale: d.entreprise_raison_sociale,
