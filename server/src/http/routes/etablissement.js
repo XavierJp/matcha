@@ -37,7 +37,9 @@ module.exports = ({ etablissement, users, mail, formulaire }) => {
 
       let response = etablissement.formatEntrepriseData(result.data.etablissement);
 
-      response.geo_coordonnees = await etablissement.getGeoCoordinates(response.adresse);
+      response.geo_coordonnees = await etablissement.getGeoCoordinates(
+        `${response.adresse}, ${response.code_postal}, ${response.commune}`
+      );
 
       return res.json(response);
     })
