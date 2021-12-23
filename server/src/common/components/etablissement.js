@@ -37,9 +37,7 @@ module.exports = () => {
     },
     getEtablissementFromReferentiel: async (siret) => {
       try {
-        const response = await axios.get(
-          `https://referentiel.apprentissage.beta.gouv.fr/api/v1/etablissements/${siret}`
-        );
+        const response = await axios.get(`https://referentiel.apprentissage.beta.gouv.fr/api/v1/organismes/${siret}`);
         return response;
       } catch (error) {
         if (error.response.status === 404) {
@@ -55,7 +53,9 @@ module.exports = () => {
       }),
     getGeoCoordinates: async (adresse) => {
       const response = await axios.get(`https://api-adresse.data.gouv.fr/search/?q=${adresse}`);
-      const coordinates = response.data.features[0].geometry.coordinates.reverse().join(",");
+      const coordinates = response.data.features[0]
+        ? response.data.features[0].geometry.coordinates.reverse().join(",")
+        : "NOT FOUND";
       return coordinates;
     },
     formatEntrepriseData: (d) => ({
@@ -71,7 +71,7 @@ module.exports = () => {
     formatReferentielData: (d) => ({
       etat: d.etat_administratif,
       siret: d.siret,
-      uai: d.uais.filter((x) => x.valide === true),
+      uai: d.uai_potentiels.filter((x) => x.valide === true).map((x) => x.uai),
       raison_sociale: d.raison_sociale,
       contacts: d.contacts,
       adresse:

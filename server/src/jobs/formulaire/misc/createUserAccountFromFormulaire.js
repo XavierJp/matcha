@@ -2,77 +2,55 @@ const { Formulaire, User } = require("../../../common/model");
 const { runScript } = require("../../scriptWrapper");
 const { asyncForEach } = require("../../../common/utils/asyncUtils");
 
-runScript(async ({ /*users, */ etablissement }) => {
-  const forms = await Formulaire.find({}).select({ events: 0, mailing: 0 }).lean().limit(3);
+runScript(async ({ users, etablissement }) => {
+  const forms = await Formulaire.find({ origine: { $not: /cfa-*/ } })
+    .select({ events: 0, mailing: 0 })
+    .lean();
 
-  // const duplicates = forms
-  //   .reduce((acc, form) => {
-  //     // console.log(form);
-  //     let index = acc.findIndex((i) => i.siret === form.siret);
-  //     let hasOffer = form.offres.length > 0 ? true : false;
-  //     if (index !== -1) {
-  //       acc[index].forms.push({ ...form, hasOffer });
-  //     } else {
-  //       acc.push({ siret: form.siret, forms: [{ ...form, hasOffer }] });
-  //     }
-  //     return acc;
-  //   }, [])
-  //   .filter((x) => x.forms.length > 1);
-
-  // console.log(duplicates);
-
-  // return;
+  let count = {
+    total: forms.length,
+    exist: 0,
+    closedETP: 0,
+    closedCFA: 0,
+    inserted: 0,
+    escaped: 0,
+  };
 
   await asyncForEach(forms, async (form) => {
     const exist = await User.findOne({ email: form.email });
-    if (exist) return;
+    if (exist) {
+      count.exist++;
+      return;
+    }
 
     let format;
 
-    // const { email, raison_sociale, adresse, geo_coordonnees, nom, prenom, telephone, id_form, siret } = form;
-    const { siret } = form;
+    const { email, nom, prenom, telephone, id_form, siret } = form;
 
-    console.log("Looking for :", siret);
+    console.log("Looking for:", siret);
 
     const result = await etablissement.getEtablissementFromGouv(siret);
 
-    if (result) {
-      format = etablissement.formatEntrepriseData(result.data.etablissement);
-      format.geo_coordonnees = await etablissement.getGeoCoordinates(
-        `${format.adresse}, ${format.code_postal}, ${format.commune}`
-      );
-      console.log("ETP", format);
-      // save
-      // await users.createUser({
-      //   email,
-      //   raison_sociale,
-      //   adresse,
-      //   geo_coordonnees,
-      //   nom,
-      //   prenom,
-      //   telephone,
-      //   id_form,
-      //   siret,
-      //   type: "ENTREPRISE",
-      // });
-    } else {
+    if (result.data?.etablissement.etat_administratif.value === "F") {
+      count.closedETP++;
+      return;
+    }
+
+    if (result.data?.etablissement.naf.startsWith("85")) {
+      // search CFA
       const [catalogue, referentiel] = await Promise.all([
         etablissement.getEtablissementFromTCO(siret),
         etablissement.getEtablissementFromReferentiel(siret),
       ]);
 
-      // console.log({ referentiel: referentiel?.data, catalogue: catalogue?.data?.etablissements[0] });
-
       if (catalogue?.data?.ferme === true || referentiel?.data?.etat_administratif === "fermé") {
-        return console.log({ siret: siret, error: true, message: "Cette établissement est considérée comme fermé." });
+        count.closedCFA++;
+        return;
       }
 
       if (!referentiel && catalogue.data.pagination.total === 0) {
-        return console.log({
-          siret: siret,
-          error: true,
-          message: "Le numéro siret n'est pas référencé comme centre de formation.",
-        });
+        count.escaped++;
+        return;
       }
 
       if (!referentiel) {
@@ -83,18 +61,86 @@ runScript(async ({ /*users, */ etablissement }) => {
 
       console.log("CFA", format);
       // save
-      // await users.createUser({
-      //   email,
-      //   raison_sociale,
-      //   adresse,
-      //   geo_coordonnees,
-      //   nom,
-      //   prenom,
-      //   telephone,
-      //   id_form,
-      //   siret,
-      //   type: "CFA",
-      // });
+      const user = await users.createUser({
+        email,
+        raison_sociale: format.raison_sociale,
+        adresse: `${format.adresse}, ${format.code_postal}, ${format.commune}`,
+        geo_coordonnees: format.geo_coordonnees,
+        uai: format.uai,
+        nom,
+        prenom,
+        telephone,
+        siret,
+        type: "CFA",
+      });
+
+      await Formulaire.updateMany({ siret, email }, { origine: user.scope });
+
+      count.inserted++;
+
+      return;
+    }
+
+    if (result) {
+      format = etablissement.formatEntrepriseData(result.data.etablissement);
+      format.geo_coordonnees = await etablissement.getGeoCoordinates(
+        `${format.adresse}, ${format.code_postal}, ${format.commune}`
+      );
+
+      // save
+      await users.createUser({
+        email,
+        raison_sociale: format.raison_sociale,
+        adresse: `${format.adresse}, ${format.code_postal}, ${format.commune}`,
+        geo_coordonnees: format.geo_coordonnees,
+        nom,
+        prenom,
+        telephone,
+        id_form,
+        siret,
+        type: "ENTREPRISE",
+      });
+
+      count.inserted++;
+    } else {
+      const [catalogue, referentiel] = await Promise.all([
+        etablissement.getEtablissementFromTCO(siret),
+        etablissement.getEtablissementFromReferentiel(siret),
+      ]);
+
+      if (catalogue?.data?.ferme === true || referentiel?.data?.etat_administratif === "fermé") {
+        count.closedCFA++;
+        return;
+      }
+
+      if (!referentiel && catalogue.data.pagination.total === 0) {
+        count.escaped++;
+        return;
+      }
+
+      if (!referentiel) {
+        format = etablissement.formatTCOData(catalogue.data.etablissements[0]);
+      } else {
+        format = etablissement.formatReferentielData(referentiel.data);
+      }
+
+      console.log("CFA", format);
+      // save
+      await users.createUser({
+        email,
+        raison_sociale: format.raison_sociale,
+        adresse: `${format.adresse}, ${format.code_postal}, ${format.commune}`,
+        geo_coordonnees: format.geo_coordonnees,
+        nom,
+        prenom,
+        telephone,
+        id_form,
+        siret,
+        type: "CFA",
+      });
+      count.inserted++;
     }
   });
+
+  return count;
 });
