@@ -9,13 +9,13 @@ import {
   Grid,
   GridItem,
   Text,
-  HStack,
   Button,
   Link,
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
   useToast,
+  Stack,
 } from '@chakra-ui/react'
 import { NavLink, useLocation, useHistory } from 'react-router-dom'
 
@@ -24,11 +24,11 @@ import Facet from '../../components/Facet/Facet'
 
 import './search.css'
 
-import { ArrowRightLine } from '../../theme/components/icons'
-import { AiOutlineRight } from 'react-icons/ai'
+import { Edit2Fill, ExclamationCircle, BlocNote } from '../../theme/components/icons'
 import useAuth from '../../common/hooks/useAuth'
 import ExportButton from '../../components/ExportButton/ExportButton'
 import EmptySpace from './components/EmptySpace'
+import { willExpire } from '../../common/utils/dateUtils'
 
 export default memo(() => {
   const { filters, facetDefinition, dataSearchDefinition, exportableColumns, excludedFields } = constants
@@ -74,7 +74,7 @@ export default memo(() => {
     <Layout background='beige'>
       <Container maxW='container.xl' py={4}>
         <Flex justifyContent='space-between' alignItems='center'>
-          <Breadcrumb spacing='4px' separator={<AiOutlineRight />} textStyle='xs' mb={3}>
+          <Breadcrumb spacing='4px' textStyle='xs' mb={3}>
             <BreadcrumbItem isCurrentPage>
               <BreadcrumbLink href='#' textStyle='xs'>
                 Administration des offres
@@ -166,6 +166,7 @@ export default memo(() => {
                   excludeFields={excludedFields}
                   defaultQuery={queryFilter}
                   scrollOnChange={false}
+                  URLParams={true}
                   renderNoResults={() => <EmptySpace />}
                   renderResultStats={(stats) => {
                     return (
@@ -193,6 +194,11 @@ export default memo(() => {
                   }}
                   renderItem={({ offres, ...formulaire }) => {
                     let active = offres.filter((x) => x.statut === 'Active')
+                    let expire = offres.filter((x) => {
+                      if (x.statut === 'Active') {
+                        return willExpire(x.date_expiration)
+                      }
+                    })
 
                     return (
                       <Link as={NavLink} to={`/formulaire/${formulaire.id_form}`} variant='card' key={formulaire._id}>
@@ -204,38 +210,48 @@ export default memo(() => {
                             alignItems='flex-start'
                           >
                             <Box>
-                              <Text fontWeight='700'>{formulaire.raison_sociale}</Text>
-                              <Text fontSize='xs' variant='outline'>
+                              <Badge
+                                sx={{
+                                  backgroundColor: '#E3E3FD',
+                                  borderRadius: '8px',
+                                  paddingX: '10px',
+                                  marginBottom: '8px',
+                                }}
+                              >
+                                {formulaire.raison_sociale}
+                              </Badge>
+                              <Text fontSize='16px' variant='outline'>
                                 SIRET: {formulaire.siret}
                               </Text>
                             </Box>
-                            {active.length > 0 ? (
-                              <Text>
-                                <Badge variant='outline'>{active.length}</Badge> offre(s) active(s)
+                            <Flex align='center'>
+                              <Edit2Fill mr={3} color='bluefrance.500' />
+                              <Link
+                                fontSize='16px'
+                                as={NavLink}
+                                to={`/formulaire/${formulaire.id_form}`}
+                                color='bluefrance.500'
+                              >
+                                Voir les offres
+                              </Link>
+                            </Flex>
+                          </Flex>
+                          <Stack direction='row' spacing={3} mt={10}>
+                            <Flex align='center'>
+                              <BlocNote color='bluefrance.500' w='18px' h='20px' mr={2} />
+                              <Text pr={1} fontWeight={700}>
+                                {active.length} offres
                               </Text>
-                            ) : (
-                              <Text>Aucune offre active</Text>
-                            )}
-                          </Flex>
-                          <Flex justifyContent='space-between' textStyle='sm' py={3}>
-                            <Box>
-                              {formulaire.prenom && (
-                                <Text>
-                                  {formulaire.prenom?.toLowerCase().charAt(0).toUpperCase() +
-                                    formulaire.prenom?.slice(1)}{' '}
-                                  {formulaire.nom?.toUpperCase()}
-                                </Text>
-                              )}
-                              <Text>{formulaire.adresse}</Text>
-                              <HStack gap={3}>
-                                <Text>{formulaire.telephone}</Text>
-                                <Text>—</Text>
-                                <Text>{formulaire.email}</Text>
-                              </HStack>
-                            </Box>
-                            <ArrowRightLine alignSelf='flex-end' color='bluefrance.500' boxSize={5} />
-                          </Flex>
-                          <Text fontSize='xs'>Origine : {formulaire.origine}</Text>
+                              <Text> actuellement en ligne</Text>
+                            </Flex>
+                            <Flex align='center'>
+                              <ExclamationCircle color='bluefrance.500' mr={2} w='20px' h='20px' />
+                              <Text pr={1} fontWeight={700}>
+                                {expire.length} offres
+                              </Text>
+                              <Text> expirent bientôt</Text>
+                            </Flex>
+                          </Stack>
                         </Box>
                       </Link>
                     )
