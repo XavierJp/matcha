@@ -133,6 +133,42 @@ module.exports = ({ formulaire }) => {
   );
 
   /**
+   * Permet de passer une offre en statut ANNULER (mail transactionnel)
+   */
+  router.put(
+    "/offre/:offreId/cancel",
+    tryCatch(async (req, res) => {
+      const exist = formulaire.getOffre(req.params.offreId);
+
+      if (!exist) {
+        return res.status(400).json({ status: "INVALID_RESSOURCE", message: "Offre does not exist" });
+      }
+
+      await formulaire.cancelOffre(req.params.offreId);
+
+      return res.sendStatus(200);
+    })
+  );
+
+  /**
+   * Permet de passer une offre en statut POURVUE (mail transactionnel)
+   */
+  router.put(
+    "/offre/:offreId/provided",
+    tryCatch(async (req, res) => {
+      const exist = formulaire.getOffre(req.params.offreId);
+
+      if (!exist) {
+        return res.status(400).json({ status: "INVALID_RESSOURCE", message: "Offre does not exist" });
+      }
+
+      await formulaire.provideOffre(req.params.offreId);
+
+      return res.sendStatus(200);
+    })
+  );
+
+  /**
    * LBA ENDPOINT
    */
   router.post(

@@ -1,25 +1,23 @@
-import { Switch, Route, Redirect } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
-
+import { Redirect, Route, Switch } from 'react-router-dom'
+import useAuth from './common/hooks/useAuth'
 import {
-  Formulaire,
-  NonTrouve,
   Accueil,
-  Users,
-  Search,
-  Connexion,
   ConfirmationCreationCompte,
-  ValidationToken,
   ConfirmationValidationEmail,
+  Connexion,
   CreationCompte,
+  Formulaire,
   InformationCreationCompte,
   LandingCfa,
   LandingEntreprise,
+  MailActionsOnOffres,
+  NonTrouve,
+  Search,
+  Users,
+  ValidationToken,
 } from './pages'
-
 import { Formulaire as Widget } from './widget'
-
-import useAuth from './common/hooks/useAuth'
 
 function PrivateRoute({ children, ...rest }) {
   let [auth] = useAuth()
@@ -53,6 +51,7 @@ const App = () => {
         <Route exact path='/authentification/verification' component={ValidationToken} />
         <Route exact path='/deleguer-gestion-offre-alternant-of' component={LandingCfa} />
         <Route exact path='/accompagner-entreprise-recherche-alternant' component={LandingEntreprise} />
+        <Route exact path='/offre/:idOffre/:option' component={MailActionsOnOffres} />
         <Route exact path='/:origine/' component={Formulaire} />
         <Route exact path='/widget/:origine/' render={(props) => <Widget {...props} widget={true} />} />
         <PrivateRoute>
