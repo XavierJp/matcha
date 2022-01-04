@@ -1,34 +1,31 @@
-import { memo, useEffect } from 'react'
-import { ReactiveBase, DataSearch, ReactiveList, SelectedFilters } from '@appbaseio/reactivesearch'
-import { Layout } from '../../components'
+import { DataSearch, ReactiveBase, ReactiveList, SelectedFilters } from '@appbaseio/reactivesearch'
 import {
-  Badge,
   Box,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  Button,
   Container,
   Flex,
   Grid,
   GridItem,
-  Text,
-  Button,
+  Heading,
   Link,
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  useToast,
   Stack,
+  Text,
+  useToast,
 } from '@chakra-ui/react'
-import { NavLink, useLocation, useHistory } from 'react-router-dom'
-
-import constants from './admin.constants'
-import Facet from '../../components/Facet/Facet'
-
-import './search.css'
-
-import { Edit2Fill, ExclamationCircle, BlocNote } from '../../theme/components/icons'
+import { memo, useEffect } from 'react'
+import { NavLink, useHistory, useLocation } from 'react-router-dom'
 import useAuth from '../../common/hooks/useAuth'
-import ExportButton from '../../components/ExportButton/ExportButton'
-import EmptySpace from './components/EmptySpace'
 import { willExpire } from '../../common/utils/dateUtils'
+import { Layout } from '../../components'
+import ExportButton from '../../components/ExportButton/ExportButton'
+import Facet from '../../components/Facet/Facet'
+import { BlocNote, Edit2Fill, ExclamationCircle } from '../../theme/components/icons'
+import constants from './admin.constants'
+import EmptySpace from './components/EmptySpace'
+import './search.css'
 
 export default memo(() => {
   const { filters, facetDefinition, dataSearchDefinition, exportableColumns, excludedFields } = constants
@@ -193,12 +190,12 @@ export default memo(() => {
                     )
                   }}
                   renderItem={({ offres, ...formulaire }) => {
-                    let active = offres.filter((x) => x.statut === 'Active')
+                    let active = offres.filter((x) => x.statut === 'Active').length
                     let expire = offres.filter((x) => {
                       if (x.statut === 'Active') {
                         return willExpire(x.date_expiration)
                       }
-                    })
+                    }).length
 
                     return (
                       <Link as={NavLink} to={`/formulaire/${formulaire.id_form}`} variant='card' key={formulaire._id}>
@@ -210,18 +207,11 @@ export default memo(() => {
                             alignItems='flex-start'
                           >
                             <Box>
-                              <Badge
-                                sx={{
-                                  backgroundColor: '#E3E3FD',
-                                  borderRadius: '8px',
-                                  paddingX: '10px',
-                                  marginBottom: '8px',
-                                }}
-                              >
+                              <Heading textStyle='h3' size='md' pb={2}>
                                 {formulaire.raison_sociale}
-                              </Badge>
+                              </Heading>
                               <Text fontSize='16px' variant='outline'>
-                                SIRET: {formulaire.siret}
+                                SIRET : {formulaire.siret}
                               </Text>
                             </Box>
                             <Flex align='center'>
@@ -240,14 +230,14 @@ export default memo(() => {
                             <Flex align='center'>
                               <BlocNote color='bluefrance.500' w='18px' h='20px' mr={2} />
                               <Text pr={1} fontWeight={700}>
-                                {active.length} offres
+                                {active} {active > 1 ? 'offres' : 'offre'}
                               </Text>
                               <Text> actuellement en ligne</Text>
                             </Flex>
                             <Flex align='center'>
                               <ExclamationCircle color='bluefrance.500' mr={2} w='20px' h='20px' />
                               <Text pr={1} fontWeight={700}>
-                                {expire.length} offres
+                                {expire} {expire > 1 ? 'offres' : 'offre'}
                               </Text>
                               <Text> expirent bientôt</Text>
                             </Flex>
