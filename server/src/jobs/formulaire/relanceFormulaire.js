@@ -5,14 +5,12 @@ const logger = require("../../common/logger");
 const { Formulaire, User } = require("../../common/model");
 const { asyncForEach } = require("../../common/utils/asyncUtils");
 
-const relanceFormulaire = async (mail) => {
+const relanceFormulaire = async (mail, threshold) => {
   // number of days to expiration for the reminder email to be sent
-  let threshold = 7;
 
   const forms = await Formulaire.find({
-    "offres.statut": "Active",
-    "offres.relance_mail_sent": false,
     $nor: [{ offres: { $exists: false } }, { offres: { $size: 0 } }],
+    "offres.statut": "Active",
   }).lean();
 
   // reduce formulaire with eligible offers
@@ -22,12 +20,12 @@ const relanceFormulaire = async (mail) => {
     formulaire.offres
       // The query returns all offers included in the form, regardless of the status filter in the query.
       // The payload is smaller than not filtering it.
-      .filter((x) => x.relance_mail_sent === false && x.statut === "Active")
+      .filter((x) => x.statut === "Active")
       .forEach((offre) => {
         let remainingDays = moment(offre.date_expiration).diff(moment(), "days");
 
         // if the number of days to the expiration date is strictly above the threshold, do nothing
-        if (remainingDays > threshold) return;
+        if (remainingDays !== threshold) return;
 
         offre.supprimer = `${config.publicUrl}/offre/${offre._id}/cancel`;
         offre.pourvue = `${config.publicUrl}/offre/${offre._id}/provided`;
@@ -70,6 +68,7 @@ const relanceFormulaire = async (mail) => {
         RAISON_SOCIALE: raison_sociale,
         OFFRES: offres,
         MANDATAIRE: mandataire,
+        THRESHOLD: threshold,
       },
       subject: "Vos offres vont expirer prochainement",
       tags: ["matcha-relance-expiration"],
