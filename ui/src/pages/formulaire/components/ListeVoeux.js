@@ -84,36 +84,22 @@ export default (props) => {
                 </Flex>
                 <Flex align='center'>
                   <ExclamationCircle color='bluefrance.500' mr={2} w='20px' h='20px' />
-                  <Text> Expire {dayjs().to(item.date_expiration)}</Text>
+                  <Text>
+                    <Flex>
+                      Expire
+                      {expire ? (
+                        <Text color='redmarianne' ml={1}>
+                          {dayjs().to(item.date_expiration)}
+                        </Text>
+                      ) : (
+                        dayjs().to(item.date_expiration)
+                      )}
+                    </Flex>
+                  </Text>
                 </Flex>
               </Stack>
-              {/* <VStack spacing={2} align='flex-start' pt={3} pb={9}>
-                <Flex direction={['column', 'row']}>
-                  <Text fontSize='md' fontWeight='400' pr={1}>
-                    Niveau:
-                  </Text>
-                  <Text fontWeight='600'>{item.niveau}</Text>
-                </Flex>
-                <Flex direction={['column', 'row']}>
-                  <Text fontSize='md' fontWeight='400' pr={1}>
-                    Type de contrat:
-                  </Text>
-                  <Text fontWeight='600'>{item.type}</Text>
-                </Flex>
-                {item.date_debut_apprentissage && (
-                  <Flex direction={['column', 'row']}>
-                    <Text fontSize='md' fontWeight='400' pr={1}>
-                      Date de début du contrat:
-                    </Text>
-                    <Text fontWeight='600'>{dayjs(item.date_debut_apprentissage).format('DD/MM/YYYY')}</Text>
-                  </Flex>
-                )}
-              </VStack> */}
-              <Stack direction={['column', 'row']} spacing={5} align='flex-start'>
-                {/* <Button variant='secondary' leftIcon={<AiOutlineEdit />} onClick={() => props.editOffer(item)}>
-                  Modifier l'offre
-                </Button> */}
 
+              <Stack direction={['column', 'row']} spacing={5} align='flex-start' mt={5}>
                 <Tooltip
                   hasArrow
                   label="Disponible une semaine avant l'expiration de l'offre"

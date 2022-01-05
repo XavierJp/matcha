@@ -234,13 +234,15 @@ export default memo(() => {
                               </Text>
                               <Text> actuellement en ligne</Text>
                             </Flex>
-                            <Flex align='center'>
-                              <ExclamationCircle color='bluefrance.500' mr={2} w='20px' h='20px' />
-                              <Text pr={1} fontWeight={700}>
-                                {expire} {expire > 1 ? 'offres' : 'offre'}
-                              </Text>
-                              <Text> expirent bientôt</Text>
-                            </Flex>
+                            {expire > 0 && (
+                              <Flex align='center'>
+                                <ExclamationCircle color='bluefrance.500' mr={2} w='20px' h='20px' />
+                                <Text pr={1} fontWeight={700}>
+                                  {expire} {expire > 1 ? 'offres' : 'offre'}
+                                </Text>
+                                <Text> expirent bientôt</Text>
+                              </Flex>
+                            )}
                           </Stack>
                         </Box>
                       </Link>
