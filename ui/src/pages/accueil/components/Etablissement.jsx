@@ -1,8 +1,8 @@
-import { Box, Heading, Text, Button, Stack, Flex } from '@chakra-ui/react'
-import { useHistory } from 'react-router-dom'
+import { Box, Button, Flex, Heading, Stack, Text } from '@chakra-ui/react'
+import { useNavigate } from 'react-router-dom'
 
 export default ({ title, subtitle, description, buttonLabel, bg, link, type, buttonLabel2, link2 }) => {
-  const history = useHistory()
+  const navigate = useNavigate()
   return (
     <Box
       p={5}
@@ -21,11 +21,11 @@ export default ({ title, subtitle, description, buttonLabel, bg, link, type, but
         </Text>
         <Text>{description}</Text>
         <Flex>
-          <Button variant='primary' onClick={() => history.push(`${link}`, { type })} mr={5}>
+          <Button variant='primary' onClick={() => navigate(`${link}`, { type })} mr={5}>
             {buttonLabel}
           </Button>
           {buttonLabel2 && (
-            <Button variant='secondary' onClick={() => history.push(`${link2}`)}>
+            <Button variant='secondary' onClick={() => navigate(`${link2}`)}>
               {buttonLabel2}
             </Button>
           )}

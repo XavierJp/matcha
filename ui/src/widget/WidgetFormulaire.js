@@ -1,47 +1,43 @@
-import { useParams, useHistory } from 'react-router-dom'
-import { IoIosAddCircleOutline } from 'react-icons/io'
-import { Formik, Form } from 'formik'
-import { AiOutlineEdit } from 'react-icons/ai'
-import { useState, useEffect, useContext, memo } from 'react'
-import { Link } from 'react-router-dom'
-import * as Yup from 'yup'
 import {
-  Button,
+  Alert,
+  AlertIcon,
   Box,
-  Flex,
-  Grid,
-  GridItem,
-  Text,
-  useDisclosure,
-  useBoolean,
-  Container,
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
-  Heading,
-  Spacer,
-  useToast,
-  useBreakpointValue,
-  Image,
+  Button,
   Center,
+  Container,
+  Flex,
+  Grid,
+  GridItem,
+  Heading,
+  Image,
   Link as ChakraLink,
-  AlertIcon,
-  Alert,
+  Spacer,
+  Text,
+  useBoolean,
+  useBreakpointValue,
+  useDisclosure,
+  useToast,
 } from '@chakra-ui/react'
-
-import { getFormulaire, postFormulaire, postOffre, putFormulaire, putOffre, getEntrepriseInformation } from '../api'
-import { Layout, AnimationContainer } from '../components'
-import { ArrowDropRightLine, SearchLine } from '../theme/components/icons'
+import { Form, Formik } from 'formik'
+import { memo, useContext, useEffect, useState } from 'react'
+import { AiOutlineEdit } from 'react-icons/ai'
+import { IoIosAddCircleOutline } from 'react-icons/io'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import * as Yup from 'yup'
+import { getEntrepriseInformation, getFormulaire, postFormulaire, postOffre, putFormulaire, putOffre } from '../api'
 import addOfferImage from '../assets/images/add-offer.svg'
-
-import ConfirmationSuppression from './components/ConfirmationSuppression'
-import FormulaireLectureSeul from './components/FormulaireLectureSeul'
-import AjouterVoeux from './components/AjouterVoeux'
-import CustomInput from './components/CustomInput'
-import ListeVoeux from './components/ListeVoeux'
-
-import { LogoContext } from '../contextLogo'
 import useAuth from '../common/hooks/useAuth'
+import { AnimationContainer, Layout } from '../components'
+import { LogoContext } from '../contextLogo'
+import { ArrowDropRightLine, SearchLine } from '../theme/components/icons'
+import AjouterVoeux from './components/AjouterVoeux'
+import ConfirmationSuppression from './components/ConfirmationSuppression'
+import CustomInput from './components/CustomInput'
+import FormulaireLectureSeul from './components/FormulaireLectureSeul'
+import ListeVoeux from './components/ListeVoeux'
 
 const SiretDetails = ({ raison_sociale, domaine, adresse }) => {
   return (
@@ -124,7 +120,7 @@ export default (props) => {
   const confirmationSuppression = useDisclosure()
   const { id_form, origine } = useParams()
   const toast = useToast()
-  const history = useHistory()
+  const navigate = useNavigate()
   const { setOrganisation } = useContext(LogoContext)
   const [auth] = useAuth()
 
@@ -247,7 +243,7 @@ export default (props) => {
         setFormState(result.data)
         // enable description for AKTO (temporary)
         setOrganisation(result.data.origine)
-        history.push(`/formulaire/${result.data.id_form}`)
+        navigate(`/formulaire/${result.data.id_form}`)
         toast({
           title: 'Formulaire créé !',
           description: "Un mail d'accès vous a été envoyé",
@@ -297,7 +293,7 @@ export default (props) => {
   return (
     <>
       <AnimationContainer>
-        <Layout background='beige' widget={props?.widget ?? false}>
+        <Layout background='beige' widget={true}>
           <AjouterVoeux {...ajouterVoeuxPopup} {...currentOffer} handleSave={saveOffer} />
           <ConfirmationSuppression
             {...confirmationSuppression}

@@ -1,4 +1,4 @@
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 
@@ -13,7 +13,7 @@ import { EditorialContainer, EditorialTextBlock } from './components'
 
 export default () => {
   const toast = useToast()
-  const history = useHistory()
+  const navigate = useNavigate()
 
   return (
     <AnimationContainer>
@@ -23,7 +23,7 @@ export default () => {
             leftIcon={<ArrowLeft />}
             variant='link'
             sx={{ color: 'black', fontSize: '14px', fontWeight: '400' }}
-            onClick={() => history.push('/')}
+            onClick={() => navigate('/')}
           >
             Page d'accueil Matcha
           </Button>

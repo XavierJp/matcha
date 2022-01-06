@@ -1,13 +1,13 @@
 import { useEffect } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Center, VStack, Image, Text, Button } from '@chakra-ui/react'
 import logo from '../../assets/images/logo.svg'
 
 export default () => {
-  const history = useHistory()
+  const navigate = useNavigate()
   useEffect(() => {
     setTimeout(() => {
-      history.push('/')
+      navigate('/')
     }, 3000)
   })
 
@@ -16,7 +16,7 @@ export default () => {
       <VStack>
         <Image src={logo} pb={5} />
         <Text pb={5}>Page inconnue</Text>
-        <Button onClick={() => history.push('/')}>Retour à l'accueil</Button>
+        <Button onClick={() => navigate('/')}>Retour à l'accueil</Button>
       </VStack>
     </Center>
   )

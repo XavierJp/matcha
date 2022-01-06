@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Formik, Form, FieldArray } from 'formik'
 import * as Yup from 'yup'
 
@@ -29,7 +29,7 @@ import { DropdownCombobox } from '../../components'
 
 export default () => {
   const toast = useToast()
-  const history = useHistory()
+  const navigate = useNavigate()
   const [metier, setMetier] = useState([])
 
   const handleJobSearch = async (search) => {
@@ -48,7 +48,7 @@ export default () => {
             leftIcon={<ArrowLeft />}
             variant='link'
             sx={{ color: 'black', fontSize: '14px', fontWeight: '400' }}
-            onClick={() => history.push('/')}
+            onClick={() => navigate('/')}
           >
             Page d'accueil Matcha
           </Button>

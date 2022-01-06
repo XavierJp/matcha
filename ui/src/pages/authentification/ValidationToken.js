@@ -1,11 +1,11 @@
+import { Box, Flex, Spinner, Text } from '@chakra-ui/react'
 import { useEffect } from 'react'
-import { useBoolean, Box, Flex, Spinner, Text } from '@chakra-ui/react'
-import { useHistory, useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { validateToken } from '../../api'
 import useAuth from '../../common/hooks/useAuth'
 
 export default () => {
-  let history = useHistory()
+  let navigate = useNavigate()
   const location = useLocation()
   const [auth, setAuth] = useAuth()
 
@@ -17,7 +17,7 @@ export default () => {
 
   useEffect(() => {
     if (!token) {
-      history.push('/')
+      navigate('/')
     }
 
     // send token to back office
@@ -26,7 +26,7 @@ export default () => {
         setAuth(data?.token)
       })
       .catch(() => {
-        history.push('/')
+        navigate('/')
       })
   }, [token])
 
@@ -34,11 +34,11 @@ export default () => {
     if (auth.sub !== 'anonymous') {
       if (auth.type === 'ENTREPRISE' && auth.id_form) {
         setTimeout(() => {
-          history.push(`/formulaire/${auth.id_form}`, { offerPopup: fromEntrepriseCreation ? true : false })
+          navigate(`/formulaire/${auth.id_form}`, { offerPopup: fromEntrepriseCreation ? true : false })
         }, 3500)
       } else {
         setTimeout(() => {
-          history.push('/admin')
+          navigate('/admin')
         }, 3500)
       }
     }
