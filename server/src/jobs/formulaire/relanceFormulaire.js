@@ -49,12 +49,12 @@ const relanceFormulaire = async (mail, threshold) => {
   const nbOffres = formulaireToExpire.reduce((acc, formulaire) => (acc += formulaire.offres.length), 0);
 
   await asyncForEach(formulaireToExpire, async (formulaire) => {
-    let { email, raison_sociale, _id, nom, prenom, offres, mandataire, origine } = formulaire;
+    let { email, raison_sociale, _id, nom, prenom, offres, mandataire, gestionnaire } = formulaire;
     let contactCFA;
 
     // get CFA informations if formulaire is handled by a CFA
     if (mandataire) {
-      contactCFA = await User.findOne({ scope: origine });
+      contactCFA = await User.findOne({ siret: gestionnaire });
     }
 
     // Send mail with action links to manage offers

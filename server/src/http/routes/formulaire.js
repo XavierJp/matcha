@@ -119,7 +119,7 @@ module.exports = ({ formulaire, mail }) => {
     tryCatch(async (req, res) => {
       const result = await formulaire.createOffre(req.params.id_form, req.body);
 
-      let { email, raison_sociale, prenom, nom, origine, mandataire } = result;
+      let { email, raison_sociale, prenom, nom, mandataire, gestionnaire } = result;
       let offre = req.body;
       let contactCFA;
 
@@ -130,7 +130,7 @@ module.exports = ({ formulaire, mail }) => {
 
       // get CFA informations if formulaire is handled by a CFA
       if (result.mandataire) {
-        contactCFA = await User.findOne({ scope: origine });
+        contactCFA = await User.findOne({ siret: gestionnaire });
       }
 
       // Send mail with action links to manage offers
