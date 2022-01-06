@@ -1,10 +1,11 @@
 const express = require("express");
 const tryCatch = require("../middlewares/tryCatchMiddleware");
 const { getElasticInstance } = require("../../common/esClient");
-
+const config = require("config");
+const { User } = require("../../common/model");
 const esClient = getElasticInstance();
 
-module.exports = ({ formulaire }) => {
+module.exports = ({ formulaire, mail }) => {
   const router = express.Router();
 
   /**
@@ -110,13 +111,52 @@ module.exports = ({ formulaire }) => {
   );
 
   /**
-   * Post new offer to form
+   * Create new offer
    */
 
   router.post(
     "/:id_form/offre",
     tryCatch(async (req, res) => {
       const result = await formulaire.createOffre(req.params.id_form, req.body);
+
+      let { email, raison_sociale, prenom, nom, origine, mandataire } = result;
+      let offre = req.body;
+      let contactCFA;
+
+      offre._id = result.offres.filter((x) => x.libelle === offre.libelle)[0]._id;
+
+      offre.supprimer = `${config.publicUrl}/offre/${offre._id}/cancel`;
+      offre.pourvue = `${config.publicUrl}/offre/${offre._id}/provided`;
+
+      // get CFA informations if formulaire is handled by a CFA
+      if (result.mandataire) {
+        contactCFA = await User.findOne({ scope: origine });
+      }
+
+      // Send mail with action links to manage offers
+      const mailBody = {
+        email: mandataire ? contactCFA.email : email,
+        senderName: mandataire ? `${contactCFA.prenom} ${contactCFA.nom}` : raison_sociale,
+        templateId: 231,
+        params: {
+          PRENOM: mandataire ? contactCFA.prenom : prenom,
+          NOM: mandataire ? contactCFA.nom : nom,
+          RAISON_SOCIALE: raison_sociale,
+          OFFRES: [offre],
+          MANDATAIRE: result.mandataire,
+          URL_LBA: config.publicUrl.includes("production")
+            ? `https://labonnealternance.apprentissage.beta.gouv.fr/recherche-apprentissage?&display=list&page=fiche&type=matcha&itemId=${offre._id}`
+            : `https://labonnealternance-recette.apprentissage.beta.gouv.fr/recherche-apprentissage?&display=list&page=fiche&type=matcha&itemId=${offre._id}`,
+        },
+        subject: mandataire
+          ? `Votre offre d'alternance pour ${raison_sociale} a bien été publiée`
+          : `Votre offre d'alternance a bien été publiée`,
+        tags: ["matcha-nouvelle-offre"],
+      };
+
+      const payload = mail.getEmailBody(mailBody);
+      await mail.sendmail(payload);
+
       return res.json(result);
     })
   );
@@ -129,6 +169,42 @@ module.exports = ({ formulaire }) => {
     tryCatch(async (req, res) => {
       const result = await formulaire.updateOffre(req.params.id_offre, req.body);
       return res.json(result);
+    })
+  );
+
+  /**
+   * Permet de passer une offre en statut ANNULER (mail transactionnel)
+   */
+  router.put(
+    "/offre/:offreId/cancel",
+    tryCatch(async (req, res) => {
+      const exist = formulaire.getOffre(req.params.offreId);
+
+      if (!exist) {
+        return res.status(400).json({ status: "INVALID_RESSOURCE", message: "Offre does not exist" });
+      }
+
+      await formulaire.cancelOffre(req.params.offreId);
+
+      return res.sendStatus(200);
+    })
+  );
+
+  /**
+   * Permet de passer une offre en statut POURVUE (mail transactionnel)
+   */
+  router.put(
+    "/offre/:offreId/provided",
+    tryCatch(async (req, res) => {
+      const exist = formulaire.getOffre(req.params.offreId);
+
+      if (!exist) {
+        return res.status(400).json({ status: "INVALID_RESSOURCE", message: "Offre does not exist" });
+      }
+
+      await formulaire.provideOffre(req.params.offreId);
+
+      return res.sendStatus(200);
     })
   );
 

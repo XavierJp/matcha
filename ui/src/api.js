@@ -26,7 +26,10 @@ export const putFormulaire = (formId, form) => API.put(`/formulaire/${formId}`, 
  * Offre API
  */
 export const postOffre = (formId, offre) => API.post(`/formulaire/${formId}/offre`, offre).catch(errorHandler)
-export const putOffre = (offreId, offre) => API.put(`/formulaire/offre/${offreId}`, offre).catch(errorHandler)
+export const putOffre = (offreId, offre) =>
+  API.put(`/formulaire/offre/${offreId}`, { ...offre, date_mise_a_jour: Date() }).catch(errorHandler)
+export const cancelOffre = (offreId) => API.put(`/formulaire/offre/${offreId}/cancel`)
+export const fillOffre = (offreId) => API.put(`/formulaire/offre/${offreId}/provided`)
 
 /**
  * User API

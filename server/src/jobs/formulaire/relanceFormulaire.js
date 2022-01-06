@@ -2,17 +2,15 @@ const axios = require("axios");
 const config = require("config");
 const moment = require("moment");
 const logger = require("../../common/logger");
-const { Formulaire } = require("../../common/model");
+const { Formulaire, User } = require("../../common/model");
 const { asyncForEach } = require("../../common/utils/asyncUtils");
 
-const relanceFormulaire = async (mail) => {
+const relanceFormulaire = async (mail, threshold) => {
   // number of days to expiration for the reminder email to be sent
-  let threshold = 7;
 
   const forms = await Formulaire.find({
-    "offres.statut": "Active",
-    "offres.relance_mail_sent": false,
     $nor: [{ offres: { $exists: false } }, { offres: { $size: 0 } }],
+    "offres.statut": "Active",
   }).lean();
 
   // reduce formulaire with eligible offers
@@ -22,12 +20,15 @@ const relanceFormulaire = async (mail) => {
     formulaire.offres
       // The query returns all offers included in the form, regardless of the status filter in the query.
       // The payload is smaller than not filtering it.
-      .filter((x) => x.relance_mail_sent === false && x.statut === "Active")
+      .filter((x) => x.statut === "Active")
       .forEach((offre) => {
         let remainingDays = moment(offre.date_expiration).diff(moment(), "days");
 
         // if the number of days to the expiration date is strictly above the threshold, do nothing
-        if (remainingDays > threshold) return;
+        if (remainingDays !== threshold) return;
+
+        offre.supprimer = `${config.publicUrl}/offre/${offre._id}/cancel`;
+        offre.pourvue = `${config.publicUrl}/offre/${offre._id}/provided`;
 
         acc[formulaire._id].offres.push(offre);
       });
@@ -48,15 +49,26 @@ const relanceFormulaire = async (mail) => {
   const nbOffres = formulaireToExpire.reduce((acc, formulaire) => (acc += formulaire.offres.length), 0);
 
   await asyncForEach(formulaireToExpire, async (formulaire) => {
-    let { email, raison_sociale, id_form, _id } = formulaire;
+    let { email, raison_sociale, _id, nom, prenom, offres, mandataire, origine } = formulaire;
+    let contactCFA;
+
+    // get CFA informations if formulaire is handled by a CFA
+    if (mandataire) {
+      contactCFA = await User.findOne({ scope: origine });
+    }
 
     // Send mail with action links to manage offers
     const mailBody = {
-      email,
-      senderName: raison_sociale,
-      templateId: 182,
+      email: mandataire ? contactCFA.email : email,
+      senderName: mandataire ? `${contactCFA.prenom} ${contactCFA.nom}` : raison_sociale,
+      templateId: 230,
       params: {
-        URL: `${config.publicUrl}/formulaire/${id_form}`,
+        PRENOM: mandataire ? contactCFA.prenom : prenom,
+        NOM: mandataire ? contactCFA.nom : nom,
+        RAISON_SOCIALE: raison_sociale,
+        OFFRES: offres,
+        MANDATAIRE: mandataire,
+        THRESHOLD: threshold,
       },
       subject: "Vos offres vont expirer prochainement",
       tags: ["matcha-relance-expiration"],

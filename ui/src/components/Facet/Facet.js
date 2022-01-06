@@ -64,6 +64,7 @@ const Facet = ({
                 showSearch={showSearch}
                 placeholder='Filtrer'
                 loader='Chargement'
+                URLParams={true}
               />
             </AccordionPanel>
           </>

@@ -155,10 +155,26 @@ module.exports = ({ etablissement, users, mail, formulaire }) => {
         });
       }
 
-      // Log the user in directly
       const user = await User.findById(req.body.id);
+
+      const emailBody = mail.getEmailBody({
+        email: user.email,
+        senderName: user.raison_sociale,
+        templateId: user.type === "ENTREPRISE" ? 227 : 229,
+        tags: ["matcha-email-bienvenue"],
+        params: {
+          RAISON_SOCIALE: user.raison_sociale,
+          NOM: user.nom,
+          PRENOM: user.prenom,
+          EMAIL: user.email,
+        },
+      });
+
+      await mail.sendmail(emailBody);
+
       await users.registerUser(user.email);
 
+      // Log the user in directly
       return res.json({ token: createUserToken(user) });
     })
   );
