@@ -347,7 +347,7 @@ export default (props) => {
                   {auth.sub !== 'anonymous' && auth.type !== 'ENTREPRISE' ? (
                     <Breadcrumb separator={<ArrowDropRightLine color='grey.600' />} textStyle='xs'>
                       <BreadcrumbItem>
-                        <BreadcrumbLink textDecoration='underline' as={Link} to='/admin' textStyle='xs'>
+                        <BreadcrumbLink textDecoration='underline' onClick={() => history.goBack()} textStyle='xs'>
                           Administration des offres
                         </BreadcrumbLink>
                       </BreadcrumbItem>

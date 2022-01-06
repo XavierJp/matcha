@@ -22,8 +22,7 @@ export default ({ formState, buttonSize, setEditionMode }) => {
       </Flex>
       <Grid
         templateColumns={gridTemplate}
-        py={6}
-        p={8}
+        p={[4, 8]}
         bg='white'
         border='1px solid'
         borderColor='bluefrance.500'
@@ -34,23 +33,25 @@ export default ({ formState, buttonSize, setEditionMode }) => {
             Renseignements Entreprise
           </Heading>
           <Grid templateRows='repeat(3, 1fr)' gap={4}>
-            <Flex direction={['column', 'row']}>
+            <Flex direction={['column', 'row']} align={['flex-start', 'center']}>
               <Text pr={3} pb={[3, 0]}>
                 Nom de l'enseigne :
               </Text>
               <Badge variant='readOnly'>{formState.raison_sociale}</Badge>
             </Flex>
-            <Flex direction={['column', 'row']}>
+            <Flex direction={['column', 'row']} align={['flex-start', 'center']}>
               <Text pr={3} pb={[3, 0]}>
                 SIRET :
               </Text>
               <Badge variant='readOnly'>{formState.siret}</Badge>
             </Flex>
-            <Flex direction={['column', 'row']}>
+            <Flex direction={['column', 'row']} align={['flex-start', 'center']}>
               <Text pr={3} pb={[3, 0]}>
                 Adresse :
               </Text>
-              <Badge variant='readOnly'>{formState.adresse}</Badge>
+              <Badge variant='readOnly' sx={{ maxWidth: '100%' }}>
+                <Text isTruncated>{formState.adresse}</Text>
+              </Badge>
             </Flex>
           </Grid>
         </GridItem>
@@ -59,25 +60,25 @@ export default ({ formState, buttonSize, setEditionMode }) => {
             Informations de contact
           </Heading>
           <Grid templateRows='repeat(4, 1fr)' gap={4}>
-            <Flex direction={['column', 'row']}>
+            <Flex direction={['column', 'row']} align={['flex-start', 'center']}>
               <Text pr={3} pb={[3, 0]}>
                 Nom :
               </Text>
               <Badge variant='readOnly'>{formState.nom}</Badge>
             </Flex>
-            <Flex direction={['column', 'row']}>
+            <Flex direction={['column', 'row']} align={['flex-start', 'center']}>
               <Text pr={3} pb={[3, 0]}>
                 Prénom :
               </Text>
               <Badge variant='readOnly'>{formState.prenom}</Badge>
             </Flex>
-            <Flex direction={['column', 'row']}>
+            <Flex direction={['column', 'row']} align={['flex-start', 'center']}>
               <Text pr={3} pb={[3, 0]}>
                 Téléphone :
               </Text>
               <Badge variant='readOnly'>{formState.telephone}</Badge>
             </Flex>
-            <Flex direction={['column', 'row']}>
+            <Flex direction={['column', 'row']} align={['flex-start', 'center']}>
               <Text pr={3} pb={[3, 0]}>
                 Email :
               </Text>

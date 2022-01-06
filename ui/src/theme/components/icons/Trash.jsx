@@ -3,7 +3,7 @@ import React from 'react'
 
 export function Trash(props) {
   return (
-    <Icon viewBox='0  0 20 20' width='20' height='20' {...props}>
+    <Icon viewBox='0  0 20 20' {...props}>
       <path
         fillRule='evenodd'
         clipRule='evenodd'

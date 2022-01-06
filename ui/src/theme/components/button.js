@@ -54,7 +54,7 @@ const Button = {
       ...commonButtonStyle,
       borderRadius: 24,
       height: 'auto',
-      fontSize: 'zeta',
+      // fontSize: 'zeta',
       color: 'bluefrance',
       px: 3,
       py: 1,
