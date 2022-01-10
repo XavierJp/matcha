@@ -16,7 +16,7 @@ import {
   useToast,
 } from '@chakra-ui/react'
 import { memo, useEffect } from 'react'
-import { NavLink, useHistory, useLocation } from 'react-router-dom'
+import { NavLink, useNavigate, useLocation } from 'react-router-dom'
 import useAuth from '../../common/hooks/useAuth'
 import { willExpire } from '../../common/utils/dateUtils'
 import { Layout } from '../../components'
@@ -31,7 +31,7 @@ export default memo(() => {
   const { filters, facetDefinition, dataSearchDefinition, exportableColumns, excludedFields } = constants
   const [auth] = useAuth()
   const location = useLocation()
-  const history = useHistory()
+  const navigate = useNavigate()
   const toast = useToast()
 
   useEffect(() => {
@@ -84,9 +84,8 @@ export default memo(() => {
             size='sm'
             mr={3}
             onClick={() =>
-              history.push(`/${auth.scope === 'all' ? 'matcha' : auth.scope}/`, {
-                mandataire: true,
-                gestionnaire: auth.siret,
+              navigate(`/${auth.scope === 'all' ? 'matcha' : auth.scope}/`, {
+                state: { mandataire: true, gestionnaire: auth.siret },
               })
             }
           >

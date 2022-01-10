@@ -1,11 +1,10 @@
-import { useHistory } from 'react-router'
+import { Box, Button, Container, Flex, Heading, Image, Text } from '@chakra-ui/react'
 import { IoIosArrowForward } from 'react-icons/io'
-import { Container, Flex, Box, Heading, Text, Button, Image } from '@chakra-ui/react'
-
+import { useNavigate } from 'react-router'
 import illustrationHero from '../../../assets/images/Illustration-hero.svg'
 
 export default () => {
-  const history = useHistory()
+  const navigate = useNavigate()
 
   return (
     <Container maxW='container.xl'>
@@ -17,7 +16,7 @@ export default () => {
             Matcha vous permet en quelques secondes d'exprimer vos besoins de recrutement en alternance pour les
             afficher sur le site <strong>La Bonne Alternance</strong>
           </Text>
-          <Button variant='primary' rightIcon={<IoIosArrowForward />} px={6} onClick={() => history.push('/matcha/')}>
+          <Button variant='primary' rightIcon={<IoIosArrowForward />} px={6} onClick={() => navigate('/matcha/')}>
             Je poste mon offre
           </Button>
         </Box>

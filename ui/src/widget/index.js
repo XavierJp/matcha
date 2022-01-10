@@ -1,3 +1,3 @@
-import Formulaire from './Formulaire'
+import WidgetFormulaire from './WidgetFormulaire'
 
-export { Formulaire }
+export { WidgetFormulaire }

@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 
 import AuthentificationLayout from './components/Authentification-layout'
 import { validationCompte } from '../../api'
-import { useHistory, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import useAuth from '../../common/hooks/useAuth'
 
 /**
@@ -30,7 +30,7 @@ const EmailInvalide = () => (
 export default (props) => {
   const [isValid, setIsValid] = useBoolean(true)
   const { id } = useParams()
-  const history = useHistory()
+  const navigate = useNavigate()
   const [auth, setAuth] = useAuth()
 
   useEffect(() => {
@@ -46,11 +46,11 @@ export default (props) => {
     if (auth.sub !== 'anonymous') {
       if (auth.id_form) {
         setTimeout(() => {
-          history.push(`/formulaire/${auth.id_form}`, { newUser: true })
+          navigate(`/formulaire/${auth.id_form}`, { state: { newUser: true } })
         }, 3500)
       } else {
         setTimeout(() => {
-          history.push('/admin', { newUser: true })
+          navigate('/admin', { state: { newUser: true } })
         }, 3500)
       }
     }

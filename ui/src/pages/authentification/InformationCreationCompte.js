@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react'
 import { memo } from 'react'
 import { Form, Formik } from 'formik'
-import { useHistory, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import * as Yup from 'yup'
 import { createPartenaire } from '../../api'
@@ -79,7 +79,7 @@ const ContactField = memo(({ values }) => {
 
 const Formulaire = () => {
   const buttonSize = useBreakpointValue(['sm', 'md'])
-  let history = useHistory()
+  let navigate = useNavigate()
   let location = useLocation()
   const { raison_sociale, adresse, contacts, siret, geo_coordonnees, uai } = location.state?.informationSiret
   const { type } = location.state
@@ -89,9 +89,9 @@ const Formulaire = () => {
     createPartenaire(values)
       .then(({ data }) => {
         if (type === 'ENTREPRISE') {
-          history.push(`/authentification/verification?token=${data.token}`, { fromEntrepriseCreation: true })
+          navigate(`/authentification/verification?token=${data.token}`, { state: { fromEntrepriseCreation: true } })
         } else {
-          history.push('/authentification/confirmation', { email: data.email })
+          navigate('/authentification/confirmation', { state: { email: data.email } })
         }
         setSubmitting(false)
       })

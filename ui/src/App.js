@@ -1,5 +1,5 @@
 import { AnimatePresence } from 'framer-motion'
-import { Redirect, Route, Switch } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import useAuth from './common/hooks/useAuth'
 import {
   Accueil,
@@ -17,52 +17,58 @@ import {
   Users,
   ValidationToken,
 } from './pages'
-import { Formulaire as Widget } from './widget'
+import { WidgetFormulaire } from './widget'
 
-function PrivateRoute({ children, ...rest }) {
+function PrivateRoute({ children }) {
   let [auth] = useAuth()
 
-  return (
-    <Route
-      {...rest}
-      render={() => {
-        return auth.sub !== 'anonymous' ? children : <Redirect to='/' />
-      }}
-    />
-  )
+  return auth.sub !== 'anonymous' ? children : <Navigate to='/authentification' />
 }
 
 const App = () => {
   return (
     <AnimatePresence>
-      <Switch>
-        <PrivateRoute exact path='/admin'>
-          <Search />
-        </PrivateRoute>
-        <PrivateRoute exact path='/admin/users'>
-          <Users />
-        </PrivateRoute>
-        <Route exact path='/' component={Accueil} />
-        <Route exact path='/authentification' component={Connexion} />
-        <Route exact path='/creation-compte' component={CreationCompte} />
-        <Route exact path='/creation-compte/detail' component={InformationCreationCompte} />
-        <Route exact path='/authentification/confirmation' component={ConfirmationCreationCompte} />
-        <Route exact path='/authentification/validation/:id' component={ConfirmationValidationEmail} />
-        <Route exact path='/authentification/verification' component={ValidationToken} />
-        <Route exact path='/deleguer-gestion-offre-alternant-of' component={LandingCfa} />
-        <Route exact path='/accompagner-entreprise-recherche-alternant' component={LandingEntreprise} />
-        <Route exact path='/offre/:idOffre/:option' component={MailActionsOnOffres} />
-        <Route exact path='/:origine/' component={Formulaire} />
-        <Route exact path='/widget/:origine/' render={(props) => <Widget {...props} widget={true} />} />
-        <PrivateRoute>
+      <Routes>
+        <Route
+          path='/admin'
+          element={
+            <PrivateRoute>
+              <Search />
+            </PrivateRoute>
+          }
+        ></Route>
+        <Route
+          path='/admin/users'
+          element={
+            <PrivateRoute>
+              <Users />
+            </PrivateRoute>
+          }
+        ></Route>
+        <Route path='/' element={<Accueil />} />
+        <Route path='/authentification' element={<Connexion />} />
+        <Route path='/creation-compte' element={<CreationCompte />} />
+        <Route path='/creation-compte/detail' element={<InformationCreationCompte />} />
+        <Route path='/authentification/confirmation' element={<ConfirmationCreationCompte />} />
+        <Route path='/authentification/validation/:id' element={<ConfirmationValidationEmail />} />
+        <Route path='/authentification/verification' element={<ValidationToken />} />
+        <Route path='/deleguer-gestion-offre-alternant-of' element={<LandingCfa />} />
+        <Route path='/accompagner-entreprise-recherche-alternant' element={<LandingEntreprise />} />
+        <Route path='/offre/:idOffre/:option' element={<MailActionsOnOffres />} />
+        <Route path='/:origine/' element={<Formulaire />} />
+        <Route path='/widget/:origine/' element={<WidgetFormulaire />} />
+        <Route>
           <Route
-            exact
             path='/formulaire/:id_form'
-            render={(props) => <Formulaire {...props} byId={true} widget={false} />}
+            element={
+              <PrivateRoute>
+                <Formulaire />
+              </PrivateRoute>
+            }
           />
-        </PrivateRoute>
-        <Route component={NonTrouve} />
-      </Switch>
+        </Route>
+        <Route path='*' element={<NonTrouve />} />
+      </Routes>
     </AnimatePresence>
   )
 }
