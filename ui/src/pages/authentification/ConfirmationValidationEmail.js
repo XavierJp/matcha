@@ -46,11 +46,11 @@ export default (props) => {
     if (auth.sub !== 'anonymous') {
       if (auth.id_form) {
         setTimeout(() => {
-          navigate(`/formulaire/${auth.id_form}`, { newUser: true })
+          navigate(`/formulaire/${auth.id_form}`, { state: { newUser: true } })
         }, 3500)
       } else {
         setTimeout(() => {
-          navigate('/admin', { newUser: true })
+          navigate('/admin', { state: { newUser: true } })
         }, 3500)
       }
     }

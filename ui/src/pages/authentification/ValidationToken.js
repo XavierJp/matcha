@@ -34,7 +34,7 @@ export default () => {
     if (auth.sub !== 'anonymous') {
       if (auth.type === 'ENTREPRISE' && auth.id_form) {
         setTimeout(() => {
-          navigate(`/formulaire/${auth.id_form}`, { offerPopup: fromEntrepriseCreation ? true : false })
+          navigate(`/formulaire/${auth.id_form}`, { state: { offerPopup: fromEntrepriseCreation ? true : false } })
         }, 3500)
       } else {
         setTimeout(() => {

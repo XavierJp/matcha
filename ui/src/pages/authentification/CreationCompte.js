@@ -24,7 +24,7 @@ const CreationCompte = () => {
       getEntrepriseInformation(siret)
         .then(({ data }) => {
           setSubmitting(false)
-          navigate('/creation-compte/detail', { informationSiret: data, type })
+          navigate('/creation-compte/detail', { state: { informationSiret: data, type } })
         })
         .catch(({ response }) => {
           setFieldError('siret', response.data.message)
@@ -34,7 +34,7 @@ const CreationCompte = () => {
       getCfaInformation(siret)
         .then(({ data }) => {
           setSubmitting(false)
-          navigate('/creation-compte/detail', { informationSiret: data, type })
+          navigate('/creation-compte/detail', { state: { informationSiret: data, type } })
         })
         .catch(({ response }) => {
           setFieldError('siret', response.data.message)

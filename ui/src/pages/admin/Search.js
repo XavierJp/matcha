@@ -85,8 +85,7 @@ export default memo(() => {
             mr={3}
             onClick={() =>
               navigate(`/${auth.scope === 'all' ? 'matcha' : auth.scope}/`, {
-                mandataire: true,
-                gestionnaire: auth.siret,
+                state: { mandataire: true, gestionnaire: auth.siret },
               })
             }
           >

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 
 export default ({ title, subtitle, description, buttonLabel, bg, link, type, buttonLabel2, link2 }) => {
   const navigate = useNavigate()
+
   return (
     <Box
       p={5}
@@ -21,7 +22,7 @@ export default ({ title, subtitle, description, buttonLabel, bg, link, type, but
         </Text>
         <Text>{description}</Text>
         <Flex>
-          <Button variant='primary' onClick={() => navigate(`${link}`, { type })} mr={5}>
+          <Button variant='primary' onClick={() => navigate(`${link}`, { state: { type } })} mr={5}>
             {buttonLabel}
           </Button>
           {buttonLabel2 && (

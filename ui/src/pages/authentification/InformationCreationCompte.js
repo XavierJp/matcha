@@ -89,9 +89,9 @@ const Formulaire = () => {
     createPartenaire(values)
       .then(({ data }) => {
         if (type === 'ENTREPRISE') {
-          navigate(`/authentification/verification?token=${data.token}`, { fromEntrepriseCreation: true })
+          navigate(`/authentification/verification?token=${data.token}`, { state: { fromEntrepriseCreation: true } })
         } else {
-          navigate('/authentification/confirmation', { email: data.email })
+          navigate('/authentification/confirmation', { state: { email: data.email } })
         }
         setSubmitting(false)
       })
