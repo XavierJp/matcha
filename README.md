@@ -10,7 +10,7 @@
 
 ## Présentation
 
-Ce repository contient l'application Matchat
+Ce repository contient l'application Matcha
 
 ## Infrastructure & Déploiement
 
