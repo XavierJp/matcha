@@ -44,12 +44,12 @@ import ListeVoeux from './components/ListeVoeux'
 import { LogoContext } from '../../contextLogo'
 import useAuth from '../../common/hooks/useAuth'
 
-const SiretDetails = ({ raison_sociale, domaine, adresse }) => {
+const SiretDetails = ({ raison_sociale, domaine, fullAdresse }) => {
   return (
     <>
       <CustomInput label='Raison Sociale' value={raison_sociale} name='raison_sociale' isDisabled required={false} />
       <CustomInput label="Domaine d'activité" value={domaine} name='domaine' isDisabled required={false} />
-      <CustomInput label='Adresse' value={adresse} name='adresse' isDisabled required={false} />
+      <CustomInput label='Adresse' value={fullAdresse} name='adresse' isDisabled required={false} />
     </>
   )
 }
@@ -91,8 +91,9 @@ const RechercheSiret = memo(({ submitSiret, validSIRET, siretInformation }) => {
                     onClick={() => siretForm.submitForm()}
                     size={buttonSize}
                     variant='form'
+                    isLoading={siretForm.isSubmitting}
                     leftIcon={<SearchLine width={5} />}
-                    isActive={siretForm.isValid}
+                    isActive={siretForm.isValid && !siretForm.isSubmitting}
                     isDisabled={!siretForm.isValid || siretForm.isSubmitting}
                   >
                     Chercher
@@ -254,6 +255,7 @@ export default (props) => {
     // validate SIRET
     getEntrepriseInformation(siret)
       .then(({ data }) => {
+        setSubmitting(true)
         setSiretInformation(data)
         setValidSIRET.on()
       })
@@ -388,7 +390,7 @@ export default (props) => {
                   gestionnaire,
                   raison_sociale: siretInformation.raison_sociale || formState?.raison_sociale,
                   siret: siretInformation.siret || formState?.siret,
-                  adresse: siretInformation.adresse || formState?.adresse,
+                  adresse: siretInformation.fullAdresse || formState?.adresse,
                   geo_coordonnees: siretInformation.geo_coordonnees || formState?.geo_coordonnees,
                   nom: formState?.nom ?? '',
                   prenom: formState?.prenom ?? '',
