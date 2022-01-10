@@ -1,17 +1,18 @@
-import { Button, Box, Flex, Text, Heading, Spacer, Icon, Badge, VStack, Stack, Tooltip, Link } from '@chakra-ui/react'
-import {
-  AiOutlineEdit,
-  AiOutlineExclamationCircle,
-  AiOutlineDelete,
-  AiOutlineArrowRight,
-  AiOutlineRetweet,
-} from 'react-icons/ai'
-
-import { RiSendPlaneFill } from 'react-icons/ri'
-
+import { Badge, Box, Button, Flex, Heading, Link, Spacer, Stack, Text, Tooltip } from '@chakra-ui/react'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import useAuth from '../../../common/hooks/useAuth'
+import { willExpire } from '../../../common/utils/dateUtils'
+import {
+  ArrowRightLine,
+  BlocNote,
+  Clock,
+  Edit2Fill,
+  ExclamationCircle,
+  Repeat,
+  SendPlaneFill,
+  Trash,
+} from '../../../theme/components/icons'
 
 const getStatusBadge = (status) => {
   let [statut] = Object.keys(status).filter((x) => status[x])
@@ -44,26 +45,19 @@ export default (props) => {
       {props.data
         .filter((x) => x.statut === 'Active')
         .map((item) => {
-          let remainingDays = () => {
-            if (dayjs().to(item.date_expiration, true) === 'un mois') {
-              return 30
-            }
-            return dayjs().to(item.date_expiration, true)
-          }
-          let remainingDaysAsNumber = parseFloat(remainingDays(), 2)
-          let isExtendable = remainingDaysAsNumber > 7 ? false : true
+          const expire = willExpire(item.date_expiration)
 
           return (
             <Box bg='white' p={8} border='1px solid' borderColor='bluefrance.500' key={item._id}>
-              <Flex alignItems='flex-start'>
-                <Text fontSize='sm' pr={9} pb={[3, 0]}>
-                  Postée le {dayjs(item.date_creation).format('DD/MM/YYYY')}
-                </Text>
-                <Flex alignItems='center' pb={[3, 0]}>
-                  <Icon as={AiOutlineExclamationCircle} color='bluefrance.500' w={5} h={5} />
-                  <Text fontSize='sm' pl={3}>
-                    Expire {dayjs().to(item.date_expiration)}
-                  </Text>
+              <Flex alignItems='flex-start' direction={['column', 'row']}>
+                <Heading textStyle='h3' size='md' pr={3}>
+                  <Text isTruncated>{item.libelle}</Text>
+                </Heading>
+                <Flex align='center' pr={5}>
+                  <Edit2Fill mr={3} color='bluefrance.500' />
+                  <Link fontSize='16px' onClick={() => props.editOffer(item)} color='bluefrance.500'>
+                    Modifier l'offre
+                  </Link>
                 </Flex>
                 <Spacer />
                 <Flex alignItems='center' display={['none', 'block']}>
@@ -73,90 +67,92 @@ export default (props) => {
                     href={`https://labonnealternance.apprentissage.beta.gouv.fr/recherche-apprentissage-formation?&caller=matcha&romes=${item.romes}&lon=${lon}&lat=${lat}`}
                   >
                     Voir les centres de formations
-                    <Icon ml={1} as={AiOutlineArrowRight} color='bluefrance.500' />
+                    <ArrowRightLine ml={1} color='bluefrance.500' />
                   </Link>
                 </Flex>
               </Flex>
-              <VStack spacing={2} align='flex-start' pt={3} pb={9}>
-                <Heading textStyle='h3' size='md'>
-                  {item.libelle}
-                </Heading>
-                <Flex direction={['column', 'row']}>
-                  <Text fontSize='md' fontWeight='400' pr={1}>
-                    Niveau:
+              <Stack direction={['column', 'row']} spacing={3} py={5}>
+                <Flex align='center'>
+                  <BlocNote color='bluefrance.500' w='18px' h='22px' mr={2} />
+                  <Text>
+                    {item.type} en {item.niveau}
                   </Text>
-                  <Text fontWeight='600'>{item.niveau}</Text>
                 </Flex>
-                <Flex direction={['column', 'row']}>
-                  <Text fontSize='md' fontWeight='400' pr={1}>
-                    Type de contrat:
+                <Flex align='center'>
+                  <Clock color='bluefrance.500' w='18px' h='22px' mr={2} />
+                  <Text> Postée le {dayjs(item.date_creation).format('DD/MM/YYYY')}</Text>
+                </Flex>
+                <Flex align='center'>
+                  <ExclamationCircle color='bluefrance.500' mr={2} w='20px' h='20px' />
+                  <Text>
+                    <Flex>
+                      Expire
+                      {expire ? (
+                        <Text color='redmarianne' ml={1}>
+                          {dayjs().to(item.date_expiration)}
+                        </Text>
+                      ) : (
+                        <Text ml={1}>{dayjs().to(item.date_expiration)}</Text>
+                      )}
+                    </Flex>
                   </Text>
-                  <Text fontWeight='600'>{item.type}</Text>
                 </Flex>
-                {item.date_debut_apprentissage && (
-                  <Flex direction={['column', 'row']}>
-                    <Text fontSize='md' fontWeight='400' pr={1}>
-                      Date de début du contrat:
-                    </Text>
-                    <Text fontWeight='600'>{dayjs(item.date_debut_apprentissage).format('DD/MM/YYYY')}</Text>
-                  </Flex>
-                )}
-              </VStack>
-              <Stack direction={['column', 'row']} spacing={5}>
-                <Button variant='secondary' leftIcon={<AiOutlineEdit />} onClick={() => props.editOffer(item)}>
-                  Modifier l'offre
-                </Button>
+              </Stack>
 
+              <Stack direction={['column', 'row']} spacing={5} align='flex-start' mt={5}>
                 <Tooltip
                   hasArrow
                   label="Disponible une semaine avant l'expiration de l'offre"
-                  placement='top'
-                  isDisabled={isExtendable}
+                  placement='top-end'
+                  isDisabled={expire}
                 >
-                  <Box>
+                  <Flex align='center'>
                     <Button
                       w={['100%', 'inherit']}
-                      variant='secondary'
-                      isDisabled={!isExtendable}
-                      leftIcon={<AiOutlineRetweet />}
+                      variant='link'
+                      sx={{
+                        color: 'bluefrance.500',
+                        fontWeight: 400,
+                      }}
+                      isDisabled={!expire}
+                      leftIcon={<Repeat w='20px' h='20px' color='bluefrance.500' />}
                       onClick={() =>
                         props.extendOffer(item._id, {
                           ...item,
                           date_expiration: dayjs().add(1, 'month').format('YYYY-MM-DD'),
+                          date_derniere_prolongation: Date(),
+                          nombre_prolongation: item.nombre_prolongation >= 0 ? item.nombre_prolongation + 1 : 1,
                         })
                       }
                     >
                       Prolonger l'échéance
                     </Button>
-                  </Box>
+                  </Flex>
                 </Tooltip>
-                <Button
-                  variant='outline'
-                  color='redmarianne'
-                  borderColor='redmarianne'
-                  borderRadius='none'
-                  fontWeight='400'
-                  leftIcon={<AiOutlineDelete />}
-                  _focus={{
-                    boxShadow: '0px 0px 0px 3px #E1000F',
-                  }}
-                  onClick={() => props.removeOffer(item)}
-                >
-                  Supprimer l'offre
-                </Button>
+                <Flex align='center'>
+                  <Trash w='19px' h='19px' mr={3} color='bluefrance.500' />
+                  <Link fontSize='16px' onClick={() => props.removeOffer(item)} color='bluefrance.500'>
+                    Supprimer l'offre
+                  </Link>
+                </Flex>
+
                 {auth.type === 'ENTREPRISE' && (
                   <Tooltip
                     hasArrow
                     label='Assurez-vous de trouver le bon apprenti(e) en transmettant votre besoin auprès des OF (organismes de formation) de votre région.'
-                    placement='top'
-                    isDisabled={isExtendable}
+                    placement='top-start'
+                    isDisabled={expire}
                   >
                     <Box>
                       <Button
+                        variant='link'
+                        sx={{
+                          color: 'bluefrance.500',
+                          fontWeight: 400,
+                        }}
                         w={['100%', 'inherit']}
-                        variant='secondary'
                         isDisabled={item.delegate}
-                        leftIcon={<RiSendPlaneFill />}
+                        leftIcon={<SendPlaneFill w='20px' h='20px' />}
                         onClick={() => props.delegateOffer(item._id, { ...item, delegate: true })}
                       >
                         Déléguer l'offre

@@ -1,6 +1,6 @@
 import { Flex, Button, Heading, Text, Box, Stack, useBreakpointValue } from '@chakra-ui/react'
 
-import { useHistory, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 
@@ -13,7 +13,7 @@ import AuthentificationLayout from './components/Authentification-layout'
 
 const CreationCompte = () => {
   const buttonSize = useBreakpointValue(['sm', 'md'])
-  const history = useHistory()
+  const navigate = useNavigate()
   const location = useLocation()
 
   const { type } = location.state
@@ -24,7 +24,7 @@ const CreationCompte = () => {
       getEntrepriseInformation(siret)
         .then(({ data }) => {
           setSubmitting(false)
-          history.push('/creation-compte/detail', { informationSiret: data, type })
+          navigate('/creation-compte/detail', { state: { informationSiret: data, type } })
         })
         .catch(({ response }) => {
           setFieldError('siret', response.data.message)
@@ -34,7 +34,7 @@ const CreationCompte = () => {
       getCfaInformation(siret)
         .then(({ data }) => {
           setSubmitting(false)
-          history.push('/creation-compte/detail', { informationSiret: data, type })
+          navigate('/creation-compte/detail', { state: { informationSiret: data, type } })
         })
         .catch(({ response }) => {
           setFieldError('siret', response.data.message)

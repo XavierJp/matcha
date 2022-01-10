@@ -72,10 +72,10 @@ cli
   });
 
 cli
-  .command("relance-formulaire")
+  .command("relance-formulaire <threshold>")
   .description("Envoie une relance par mail pour les offres expirant dans 7 jours")
-  .action(() => {
-    runScript(({ mail }) => relanceFormulaire(mail));
+  .action((threshold) => {
+    runScript(({ mail }) => relanceFormulaire(mail, parseInt(threshold)));
   });
 
 cli

@@ -24,3 +24,11 @@ export const escapeDiacritics = (str) =>
     .replace(/[\u0300-\u036f]/g, '')
     .replace(/\s+/g, ' ')
     .replaceAll(';', ',')
+
+const regex = /^(.*) (\d{4,5}) (.*)$/
+
+const splitter = (str) => str.split(regex).filter(String)
+
+export const getStreet = (str) => splitter(str)[0]
+export const getPostcode = (str) => splitter(str)[1]
+export const getLocation = (str) => splitter(str)[2]

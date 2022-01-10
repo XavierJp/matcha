@@ -20,6 +20,7 @@ const Badge = {
       pl: 2,
       pr: 2,
       borderRadius: 0,
+      fontSize: ['sm', 'md'],
     },
     notRelevant: {
       ...commonStatusBadgeStyle,

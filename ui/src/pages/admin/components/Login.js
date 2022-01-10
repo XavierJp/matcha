@@ -1,4 +1,4 @@
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Field, Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import {
@@ -19,13 +19,13 @@ import { _post } from '../../../common/httpClient'
 
 const LoginPage = () => {
   const [, setAuth] = useAuth()
-  const history = useHistory()
+  const navigate = useNavigate()
 
   const login = async (values, { setStatus }) => {
     try {
       let { token } = await _post('/api/login', values)
       setAuth(token)
-      history.push('/admin')
+      navigate('/admin')
     } catch (e) {
       console.error(e)
       setStatus({ error: e.prettyMessage })
@@ -78,7 +78,7 @@ const LoginPage = () => {
                     </Text>
                   )}
                   <HStack spacing='2w' justify='flex-end'>
-                    <Button variant='link' onClick={() => history.push('/')}>
+                    <Button variant='link' onClick={() => navigate('/')}>
                       Annuler
                     </Button>
                     <Button variant='primary' type='submit'>

@@ -34,6 +34,20 @@ const offresSchema = new Schema({
     default: null,
     description: "Date d'expiration de l'offre",
   },
+  date_mise_a_jour: {
+    type: Date,
+    default: Date.now,
+    description: "Date de dernière mise à jour",
+  },
+  date_derniere_prolongation: {
+    type: Date,
+    description: "Date de dernière prolongation de l'offre",
+  },
+  nombre_prolongation: {
+    type: Number,
+    default: 0,
+    description: "Nombre de fois ou l'offre a été prolongé",
+  },
   relance_mail_sent: {
     type: Boolean,
     default: false,

@@ -1,35 +1,34 @@
 import {
-  Box,
-  Flex,
-  Image,
-  Container,
-  Spacer,
-  Button,
-  Menu,
-  MenuButton,
-  MenuList,
-  Icon,
-  Text,
-  MenuItem,
-  MenuDivider,
   Alert,
   AlertIcon,
+  Box,
+  Button,
+  Container,
+  Flex,
+  Icon,
+  Image,
+  Menu,
+  MenuButton,
+  MenuDivider,
+  MenuItem,
+  MenuList,
+  Spacer,
+  Text,
 } from '@chakra-ui/react'
-import { RiAccountCircleLine } from 'react-icons/ri'
-
-import logo from '../assets/images/logo.svg'
-import logoMinistere from '../assets/images/logo-ministere.svg'
-import LogoAkto from '../assets/images/akto'
-import useAuth from '../common/hooks/useAuth'
-import { useHistory } from 'react-router'
 import { useContext } from 'react'
+import { RiAccountCircleLine } from 'react-icons/ri'
+import { useNavigate } from 'react-router-dom'
+import LogoAkto from '../assets/images/akto'
+import logoMinistere from '../assets/images/logo-ministere.svg'
+import logo from '../assets/images/logo.svg'
+import useAuth from '../common/hooks/useAuth'
 import { LogoContext } from '../contextLogo'
-import { ArrowRightLine, ChevronRight } from '../theme/components/icons'
+import { ChevronRight } from '../theme/components/icons'
 
 export default () => {
   const { organisation } = useContext(LogoContext)
   const [auth, setAuth] = useAuth()
-  const history = useHistory()
+  const navigate = useNavigate()
 
   return (
     <Box pb={3}>
@@ -48,7 +47,7 @@ export default () => {
           {auth.sub === 'anonymous' && (
             <Button
               display={['none', 'flex']}
-              onClick={() => history.push('/authentification')}
+              onClick={() => navigate('/authentification')}
               fontWeight='normal'
               variant='link'
               color='bluefrance.500'
@@ -72,13 +71,13 @@ export default () => {
               <MenuList>
                 {auth.sub !== 'anonymous' && auth.type !== 'ENTREPRISE' && (
                   <>
-                    <MenuItem onClick={() => history.push('/admin')}>Gestion des offres</MenuItem>
+                    <MenuItem onClick={() => navigate('/admin')}>Gestion des offres</MenuItem>
                     <MenuDivider />
                   </>
                 )}
                 {auth.permissions.isAdmin && (
                   <>
-                    <MenuItem onClick={() => history.push('/admin/users')}>Gestion des utilisateurs</MenuItem>
+                    <MenuItem onClick={() => navigate('/admin/users')}>Gestion des utilisateurs</MenuItem>
                     <MenuDivider />
                   </>
                 )}
