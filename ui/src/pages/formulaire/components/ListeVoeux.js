@@ -92,7 +92,7 @@ export default (props) => {
                           {dayjs().to(item.date_expiration)}
                         </Text>
                       ) : (
-                        <Text ml={1}>dayjs().to(item.date_expiration)</Text>
+                        <Text ml={1}>{dayjs().to(item.date_expiration)}</Text>
                       )}
                     </Flex>
                   </Text>
