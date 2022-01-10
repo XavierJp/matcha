@@ -44,7 +44,7 @@ const exportableColumns = [
     },
   },
   {
-    Header: 'Region',
+    Header: 'Commune',
     accessor: 'adresse',
     exportable: true,
     formatter: (value) => {
