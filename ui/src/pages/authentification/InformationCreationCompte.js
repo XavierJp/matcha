@@ -239,7 +239,7 @@ const InformationLegale = () => {
             <Text mr={3}>UAI :</Text>
             {uai.map((x) => (
               <Badge mr={3} fontSize='md' key={x.uai}>
-                {x.uai}
+                {x}
               </Badge>
             ))}
             <InfoTooltip description='"La donnée “UAI” est collectée au niveau des Carif-Oref ou renseignée par la Mission apprentissage. Une modification de l’UAI peut donc entraîner un changement de statut des formations qui s’y rattachent, et ainsi les rendre éligibles.' />
