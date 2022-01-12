@@ -12,7 +12,7 @@ const apiParams = {
 
 module.exports = () => {
   return {
-    getEtablissement: (siret) => User.findOne({ siret }),
+    getEtablissement: (query) => User.findOne(query),
     getValidationUrl: (_id) => `${config.publicUrl}/authentification/validation/${_id}`,
     validateEtablissementEmail: async (_id) => {
       let exist = await User.findById(_id);

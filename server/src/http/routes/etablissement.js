@@ -2,6 +2,7 @@ const express = require("express");
 const tryCatch = require("../middlewares/tryCatchMiddleware");
 const { createUserToken, createMagicLinkToken } = require("../../common/utils/jwtUtils");
 const { User } = require("../../common/model");
+const { CFA } = require("../../common/constants");
 
 module.exports = ({ etablissement, users, mail, formulaire }) => {
   const router = express.Router();
@@ -55,7 +56,7 @@ module.exports = ({ etablissement, users, mail, formulaire }) => {
         return res.status(400).json({ error: true, message: "Le numéro siret est obligatoire." });
       }
 
-      const exist = await etablissement.getEtablissement(req.params.siret);
+      const exist = await etablissement.getEtablissement({ siret: req.params.siret, type: CFA });
 
       if (exist) {
         return res
