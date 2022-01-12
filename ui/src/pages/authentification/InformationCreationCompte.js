@@ -9,6 +9,8 @@ import {
   Box,
   SimpleGrid,
   Badge,
+  Wrap,
+  WrapItem,
 } from '@chakra-ui/react'
 import { memo } from 'react'
 import { Form, Formik } from 'formik'
@@ -89,9 +91,12 @@ const Formulaire = () => {
     createPartenaire(values)
       .then(({ data }) => {
         if (type === 'ENTREPRISE') {
-          navigate(`/authentification/verification?token=${data.token}`, { state: { fromEntrepriseCreation: true } })
+          navigate(`/authentification/verification?token=${data.token}`, {
+            replace: true,
+            state: { fromEntrepriseCreation: true },
+          })
         } else {
-          navigate('/authentification/confirmation', { state: { email: data.email } })
+          navigate('/authentification/confirmation', { replace: true, state: { email: data.email } })
         }
         setSubmitting(false)
       })
@@ -235,13 +240,19 @@ const InformationLegale = () => {
           <InfoTooltip description='La donnée “Adresse” provient de l’INSEE puis est déduite du SIRET. Si cette information est erronée, merci de leur signaler.' />
         </Flex>
         {uai && (
-          <Flex align='center'>
-            <Text mr={3}>UAI :</Text>
-            {uai.map((x) => (
-              <Badge mr={3} fontSize='md' key={x.uai}>
-                {x}
-              </Badge>
-            ))}
+          <Flex align='flex-start'>
+            <Text width='45px' mr={3}>
+              UAI :
+            </Text>
+            <Wrap maxW='450px'>
+              {uai.map((x) => (
+                <WrapItem>
+                  <Badge mr={3} fontSize='md' key={x}>
+                    {x}
+                  </Badge>
+                </WrapItem>
+              ))}
+            </Wrap>
             <InfoTooltip description='"La donnée “UAI” est collectée au niveau des Carif-Oref ou renseignée par la Mission apprentissage. Une modification de l’UAI peut donc entraîner un changement de statut des formations qui s’y rattachent, et ainsi les rendre éligibles.' />
           </Flex>
         )}
