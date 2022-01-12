@@ -47,8 +47,9 @@ const App = () => {
         ></Route>
         <Route path='/' element={<Accueil />} />
         <Route path='/authentification' element={<Connexion />} />
-        <Route path='/creation-compte' element={<CreationCompte />} />
-        <Route path='/creation-compte/detail' element={<InformationCreationCompte />} />
+        <Route path='/creation/entreprise' element={<CreationCompte type='ENTREPRISE' />} />
+        <Route path='/creation/cfa' element={<CreationCompte type='CFA' />} />
+        <Route path='/creation/detail' element={<InformationCreationCompte />} />
         <Route path='/authentification/confirmation' element={<ConfirmationCreationCompte />} />
         <Route path='/authentification/validation/:id' element={<ConfirmationValidationEmail />} />
         <Route path='/authentification/verification' element={<ValidationToken />} />
