@@ -148,7 +148,7 @@ export default (props) => {
           setOffersList(result.data.offres)
           if (newUser) {
             toast({
-              title: 'Vérification réussi',
+              title: 'Vérification réussie',
               description: 'Votre adresse mail a été validée avec succès.',
               position: 'top-right',
               status: 'success',

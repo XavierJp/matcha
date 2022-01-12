@@ -156,7 +156,7 @@ export default () => {
                     "Développez des relations de confiance avec les entreprises de votre région en les accompagnants dans leurs recherches d'alternants",
                 },
                 {
-                  title: 'Démultipliez les débouchées pour vos alternants',
+                  title: 'Démultipliez les débouchés pour vos alternants',
                   description:
                     "Facilitez l'entrée des jeunes en alternance et en formation en leurs proposant des offres complètes : formation et entreprise d'accueil.",
                 },

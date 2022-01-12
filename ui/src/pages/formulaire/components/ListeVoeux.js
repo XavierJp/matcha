@@ -60,16 +60,18 @@ export default (props) => {
                   </Link>
                 </Flex>
                 <Spacer />
-                <Flex alignItems='center' display={['none', 'block']}>
-                  <Link
-                    color='bluefrance.500'
-                    isExternal
-                    href={`https://labonnealternance.apprentissage.beta.gouv.fr/recherche-apprentissage-formation?&caller=matcha&romes=${item.romes}&lon=${lon}&lat=${lat}`}
-                  >
-                    Voir les centres de formations
-                    <ArrowRightLine ml={1} color='bluefrance.500' />
-                  </Link>
-                </Flex>
+                {auth.type !== 'CFA' && (
+                  <Flex alignItems='center' display={['none', 'block']}>
+                    <Link
+                      color='bluefrance.500'
+                      isExternal
+                      href={`https://labonnealternance.apprentissage.beta.gouv.fr/recherche-apprentissage-formation?&caller=matcha&romes=${item.romes}&lon=${lon}&lat=${lat}`}
+                    >
+                      Voir les centres de formations
+                      <ArrowRightLine ml={1} color='bluefrance.500' />
+                    </Link>
+                  </Flex>
+                )}
               </Flex>
               <Stack direction={['column', 'row']} spacing={3} py={5}>
                 <Flex align='center'>

@@ -17,4 +17,6 @@ module.exports = {
     ACTIF: "actif",
     FERME: "fermé",
   },
+  ENTREPRISE: "ENTREPRISE",
+  CFA: "CFA",
 };

@@ -1,6 +1,6 @@
 import { Flex, Button, Heading, Text, Box, Stack, useBreakpointValue } from '@chakra-ui/react'
 
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 
@@ -11,12 +11,11 @@ import { getCfaInformation, getEntrepriseInformation } from '../../api'
 import AnimationContainer from '../../components/AnimationContainer'
 import AuthentificationLayout from './components/Authentification-layout'
 
-const CreationCompte = () => {
+const CreationCompte = (props) => {
   const buttonSize = useBreakpointValue(['sm', 'md'])
   const navigate = useNavigate()
-  const location = useLocation()
 
-  const { type } = location.state
+  const { type } = props
 
   const submitSiret = ({ siret }, { setSubmitting, setFieldError }) => {
     // validate SIRET
@@ -24,7 +23,7 @@ const CreationCompte = () => {
       getEntrepriseInformation(siret)
         .then(({ data }) => {
           setSubmitting(false)
-          navigate('/creation-compte/detail', { state: { informationSiret: data, type } })
+          navigate('/creation/detail', { state: { informationSiret: data, type } })
         })
         .catch(({ response }) => {
           setFieldError('siret', response.data.message)
@@ -34,7 +33,7 @@ const CreationCompte = () => {
       getCfaInformation(siret)
         .then(({ data }) => {
           setSubmitting(false)
-          navigate('/creation-compte/detail', { state: { informationSiret: data, type } })
+          navigate('/creation/detail', { state: { informationSiret: data, type } })
         })
         .catch(({ response }) => {
           setFieldError('siret', response.data.message)
@@ -96,12 +95,12 @@ const CreationCompte = () => {
   )
 }
 
-export default () => {
+export default (props) => {
   return (
     <AnimationContainer>
       <AuthentificationLayout>
         <Flex align='center' justify='center' flex='1'>
-          <CreationCompte />
+          <CreationCompte {...props} />
         </Flex>
       </AuthentificationLayout>
     </AnimationContainer>
