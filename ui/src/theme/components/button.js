@@ -58,7 +58,18 @@ const Button = {
       color: 'bluefrance',
       px: 3,
       py: 1,
-      _hover: { bg: 'grey.200', textDecoration: 'none' },
+      _hover: { bg: 'bluefrance.100', textDecoration: 'none' },
+    },
+    navdot: {
+      _focus: {
+        boxShadow: 'none',
+      },
+      borderRadius: '0px',
+      p: '2px',
+      _hover: { bg: 'bluefrance.100', textDecoration: 'none' },
+      _active: {
+        bg: 'bluefrance.100',
+      },
     },
   },
 }

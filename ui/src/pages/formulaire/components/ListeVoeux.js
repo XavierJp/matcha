@@ -1,4 +1,22 @@
-import { Badge, Box, Button, Flex, Heading, Link, Spacer, Stack, Text, Tooltip } from '@chakra-ui/react'
+import {
+  Badge,
+  Box,
+  Button,
+  Flex,
+  Heading,
+  IconButton,
+  Link,
+  Spacer,
+  Stack,
+  Text,
+  Tooltip,
+  Menu,
+  MenuItem,
+  MenuButton,
+  MenuList,
+  MenuDivider,
+  Icon,
+} from '@chakra-ui/react'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import useAuth from '../../../common/hooks/useAuth'
@@ -12,12 +30,16 @@ import {
   Repeat,
   SendPlaneFill,
   Trash,
+  NavVerticalDots,
+  ExternalLinkLine,
 } from '../../../theme/components/icons'
 
 const Card = ({ offre, ...props }) => {
   const [auth] = useAuth()
 
   const [lat, lon] = props.geo_coordonnees.split(',')
+
+  const env = process.env.NODE_ENV
 
   return (
     <>
@@ -26,29 +48,57 @@ const Card = ({ offre, ...props }) => {
 
         return (
           <Box bg='white' p={8} border='1px solid' borderColor='bluefrance.500' key={offre._id}>
-            <Flex alignItems='flex-start' direction={['column', 'row']}>
+            <Flex align='center' direction={['column', 'row']}>
               <Heading textStyle='h3' size='md' pr={3}>
                 <Text isTruncated>{offre.libelle}</Text>
               </Heading>
-              <Flex align='center' pr={5}>
+              <Flex align='center' ml={10}>
                 <Edit2Fill mr={3} color='bluefrance.500' />
                 <Link fontSize='16px' onClick={() => props.editOffer(offre)} color='bluefrance.500'>
                   Modifier l'offre
                 </Link>
               </Flex>
               <Spacer />
-              {auth.type !== 'CFA' && (
-                <Flex alignItems='center' display={['none', 'block']}>
-                  <Link
-                    color='bluefrance.500'
-                    isExternal
-                    href={`https://labonnealternance.apprentissage.beta.gouv.fr/recherche-apprentissage-formation?&caller=matcha&romes=${offre.romes}&lon=${lon}&lat=${lat}`}
-                  >
-                    Voir les centres de formations
-                    <ArrowRightLine ml={1} color='bluefrance.500' />
-                  </Link>
-                </Flex>
-              )}
+
+              <Menu>
+                {({ isOpen }) => (
+                  <>
+                    <MenuButton isActive={isOpen} as={Button} variant='navdot'>
+                      <Icon as={NavVerticalDots} w='16px' h='16px' />
+                    </MenuButton>
+                    <MenuList>
+                      {auth.type !== 'CFA' && (
+                        <>
+                          <MenuItem>
+                            <Link
+                              color='bluefrance.500'
+                              isExternal
+                              href={`https://labonnealternance.apprentissage.beta.gouv.fr/recherche-apprentissage-formation?&caller=matcha&romes=${offre.romes}&lon=${lon}&lat=${lat}`}
+                            >
+                              Voir les centres de formations
+                            </Link>
+                          </MenuItem>
+                          <MenuDivider />
+                        </>
+                      )}
+                      <MenuItem>
+                        <Link
+                          color='bluefrance.500'
+                          isExternal
+                          href={`https://labonnealternance${
+                            env === 'production' ? '' : '-recette'
+                          }.apprentissage.beta.gouv.fr/recherche-apprentissage-formation?&type=matcha&itemId=${
+                            offre._id
+                          }`}
+                        >
+                          Voir l'offre en ligne
+                          <ExternalLinkLine ml={1} color='bluefrance.500' />
+                        </Link>
+                      </MenuItem>
+                    </MenuList>
+                  </>
+                )}
+              </Menu>
             </Flex>
             <Stack direction={['column', 'row']} spacing={3} py={5}>
               <Flex align='center'>
