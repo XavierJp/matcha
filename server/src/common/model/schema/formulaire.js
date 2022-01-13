@@ -76,6 +76,16 @@ const offresSchema = new Schema({
   },
 });
 
+const opcoSchema = new Schema(
+  {
+    libelle: {
+      type: String,
+      description: "Nom de l'opco",
+    },
+  },
+  { _id: false }
+);
+
 module.exports = new Schema(
   {
     id_form: {
@@ -144,6 +154,10 @@ module.exports = new Schema(
       type: String,
       default: null,
       description: "Origine/organisme lié au formulaire",
+    },
+    opco: {
+      type: opcoSchema,
+      description: "Information sur l'opco de l'entreprise",
     },
   },
   {

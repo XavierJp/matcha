@@ -13,6 +13,7 @@ const apiParams = {
 module.exports = () => {
   return {
     getEtablissement: (query) => User.findOne(query),
+    getOpco: (siret) => axios.get(`https://www.cfadock.fr/api/opcos?siret=${siret}`),
     getValidationUrl: (_id) => `${config.publicUrl}/authentification/validation/${_id}`,
     validateEtablissementEmail: async (_id) => {
       let exist = await User.findById(_id);
