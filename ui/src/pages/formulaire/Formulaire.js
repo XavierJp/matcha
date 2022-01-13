@@ -39,12 +39,13 @@ import CustomInput from './components/CustomInput'
 import FormulaireLectureSeul from './components/FormulaireLectureSeul'
 import ListeVoeux from './components/ListeVoeux'
 
-const SiretDetails = ({ raison_sociale, domaine, fullAdresse }) => {
+const SiretDetails = ({ raison_sociale, domaine, fullAdresse, opco }) => {
   return (
     <>
       <CustomInput label='Raison Sociale' value={raison_sociale} name='raison_sociale' isDisabled required={false} />
       <CustomInput label="Domaine d'activité" value={domaine} name='domaine' isDisabled required={false} />
       <CustomInput label='Adresse' value={fullAdresse} name='adresse' isDisabled required={false} />
+      {opco && <CustomInput label='Opco de référence' value={opco} name='opco' isDisabled required={false} />}
     </>
   )
 }
@@ -344,7 +345,7 @@ export default (props) => {
                   {auth.sub !== 'anonymous' && auth.type !== 'ENTREPRISE' ? (
                     <Breadcrumb separator={<ArrowDropRightLine color='grey.600' />} textStyle='xs'>
                       <BreadcrumbItem>
-                        <BreadcrumbLink textDecoration='underline' onClick={() => navigate(-1)} textStyle='xs'>
+                        <BreadcrumbLink textDecoration='underline' onClick={() => navigate('/admin')} textStyle='xs'>
                           Administration des offres
                         </BreadcrumbLink>
                       </BreadcrumbItem>
@@ -383,6 +384,9 @@ export default (props) => {
                 initialValues={{
                   mandataire,
                   gestionnaire,
+                  opco: {
+                    libelle: siretInformation.opco?.libelle || formState?.opco?.libelle,
+                  },
                   raison_sociale: siretInformation.raison_sociale || formState?.raison_sociale,
                   siret: siretInformation.siret || formState?.siret,
                   adresse: siretInformation.fullAdresse || formState?.adresse,
@@ -461,6 +465,15 @@ export default (props) => {
                                     value={values.adresse}
                                     isDisabled={true}
                                   />
+                                  {values.opco && (
+                                    <CustomInput
+                                      name='opco'
+                                      label='Opco de référence'
+                                      type='text'
+                                      value={values.opco.libelle}
+                                      isDisabled={true}
+                                    />
+                                  )}
                                 </>
                               ) : (
                                 <RechercheSiret

@@ -2,7 +2,7 @@ import { Button, Box, Flex, Grid, GridItem, Text, Heading, Spacer, useBreakpoint
 import { AiOutlineEdit } from 'react-icons/ai'
 
 export default ({ formState, buttonSize, setEditionMode }) => {
-  const gridTemplate = useBreakpointValue(['1fr', formState.mandataire ? 'repeat(3, 1fr)' : 'repeat(2, 1fr)'])
+  const gridTemplate = useBreakpointValue(['1fr', 'repeat(2, 1fr)'])
   return (
     <>
       <Flex py={6} alignItems='center'>
@@ -51,6 +51,14 @@ export default ({ formState, buttonSize, setEditionMode }) => {
               </Text>
               <Badge variant='readOnly' sx={{ maxWidth: '100%' }}>
                 <Text isTruncated>{formState.adresse}</Text>
+              </Badge>
+            </Flex>
+            <Flex direction={['column', 'row']} align={['flex-start', 'center']}>
+              <Text pr={3} pb={[3, 0]}>
+                Opco de référence :
+              </Text>
+              <Badge variant='readOnly' sx={{ maxWidth: '100%' }}>
+                <Text isTruncated>{formState.opco.libelle}</Text>
               </Badge>
             </Flex>
           </Grid>
