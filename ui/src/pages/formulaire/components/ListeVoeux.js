@@ -41,6 +41,8 @@ const Card = ({ offre, ...props }) => {
 
   const env = process.env.NODE_ENV
 
+  console.log(process.env)
+
   return (
     <>
       {offre.map((offre) => {

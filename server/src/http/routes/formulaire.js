@@ -278,34 +278,37 @@ module.exports = ({ formulaire, mail, etablissement }) => {
 
       const result = await esClient.search({ index: "formulaires", body });
 
-      const filtered = result.body.hits.hits.map(async (x) => {
-        let offres = [];
-        let cfa = {};
+      const filtered = await Promise.all(
+        result.body.hits.hits.map(async (x) => {
+          let offres = [];
+          let cfa = {};
 
-        if (x._source.offres.length === 0) {
-          return;
-        }
-
-        x._source.mailing = undefined;
-        x._source.events = undefined;
-
-        if (x._source.mandataire === true) {
-          cfa = await etablissement.getEtablissement({ siret: x._source.gestionnaire });
-
-          x._source.telephone = cfa.telephone;
-          x._source.email = cfa.email;
-          x._source.nom = cfa.nom;
-          x._source.prenom = cfa.prenom;
-        }
-
-        x._source.offres.forEach((o) => {
-          if (romes.some((item) => o.romes.includes(item)) && o.statut === "Active") {
-            offres.push(o);
+          if (x._source.offres.length === 0) {
+            return;
           }
-        });
-        x._source.offres = offres;
-        return x;
-      });
+
+          x._source.mailing = undefined;
+          x._source.events = undefined;
+
+          if (x._source.mandataire === true) {
+            cfa = await etablissement.getEtablissement({ siret: x._source.gestionnaire });
+
+            x._source.telephone = cfa.telephone;
+            x._source.email = cfa.email;
+            x._source.nom = cfa.nom;
+            x._source.prenom = cfa.prenom;
+          }
+
+          x._source.offres.forEach((o) => {
+            if (romes.some((item) => o.romes.includes(item)) && o.statut === "Active") {
+              offres.push(o);
+            }
+          });
+
+          x._source.offres = offres;
+          return x;
+        })
+      );
 
       return res.json(filtered);
     })
