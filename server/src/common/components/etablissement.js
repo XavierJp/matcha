@@ -76,7 +76,8 @@ module.exports = () => {
       uai: d.uai_potentiels.filter((x) => x.valide === true).map((x) => x.uai),
       raison_sociale: d.raison_sociale,
       contacts: d.contacts,
-      adresse:
+      adresse: d.adresse?.label,
+      rue:
         d.adresse?.label?.split(`${d.adresse?.code_postal}`)[0].trim() ||
         d.lieux_de_formation[0].adresse.label.split(`${d.lieux_de_formation[0].adresse.code_postal}`)[0].trim(),
       commune: d.adresse?.localite || d.lieux_de_formation[0].adresse.localite,
