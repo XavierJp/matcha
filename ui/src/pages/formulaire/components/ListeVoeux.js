@@ -39,10 +39,6 @@ const Card = ({ offre, ...props }) => {
 
   const [lat, lon] = props.geo_coordonnees.split(',')
 
-  const env = process.env.NODE_ENV
-
-  console.log(process.env)
-
   return (
     <>
       {offre.map((offre) => {
@@ -88,7 +84,7 @@ const Card = ({ offre, ...props }) => {
                           color='bluefrance.500'
                           isExternal
                           href={`https://labonnealternance${
-                            env === 'production' ? '' : '-recette'
+                            window.location.href.includes('recette') ? '-recette' : ''
                           }.apprentissage.beta.gouv.fr/recherche-apprentissage-formation?&type=matcha&itemId=${
                             offre._id
                           }`}
