@@ -5,7 +5,7 @@ const config = require("config");
 const { User } = require("../../common/model");
 const esClient = getElasticInstance();
 
-module.exports = ({ formulaire, mail }) => {
+module.exports = ({ formulaire, mail, etablissement }) => {
   const router = express.Router();
 
   /**
@@ -278,8 +278,9 @@ module.exports = ({ formulaire, mail }) => {
 
       const result = await esClient.search({ index: "formulaires", body });
 
-      const filtered = result.body.hits.hits.map((x) => {
+      const filtered = result.body.hits.hits.map(async (x) => {
         let offres = [];
+        let cfa = {};
 
         if (x._source.offres.length === 0) {
           return;
@@ -287,6 +288,15 @@ module.exports = ({ formulaire, mail }) => {
 
         x._source.mailing = undefined;
         x._source.events = undefined;
+
+        if (x._source.mandataire === true) {
+          cfa = await etablissement.getEtablissement({ siret: x._source.gestionnaire });
+
+          x._source.telephone = cfa.telephone;
+          x._source.email = cfa.email;
+          x._source.nom = cfa.nom;
+          x._source.prenom = cfa.prenom;
+        }
 
         x._source.offres.forEach((o) => {
           if (romes.some((item) => o.romes.includes(item)) && o.statut === "Active") {
