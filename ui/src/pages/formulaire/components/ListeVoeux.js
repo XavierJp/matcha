@@ -85,9 +85,7 @@ const Card = ({ offre, ...props }) => {
                           isExternal
                           href={`https://labonnealternance${
                             window.location.href.includes('recette') ? '-recette' : ''
-                          }.apprentissage.beta.gouv.fr/recherche-apprentissage-formation?&type=matcha&itemId=${
-                            offre._id
-                          }`}
+                          }.apprentissage.beta.gouv.fr/recherche-apprentissage?&type=matcha&itemId=${offre._id}`}
                         >
                           Voir l'offre en ligne
                           <ExternalLinkLine ml={1} color='bluefrance.500' />
