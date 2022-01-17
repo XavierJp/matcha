@@ -190,7 +190,7 @@ const Formulaire = () => {
 
 const InformationLegale = () => {
   let location = useLocation()
-  const { raison_sociale, uai, adresse, siret, commune, code_postal } = location.state?.informationSiret
+  const { raison_sociale, uai, rue, siret, commune, code_postal } = location.state?.informationSiret
 
   const RAISON_SOCIALE = raison_sociale.length > 30 ? raison_sociale.substring(0, 30) + '...' : raison_sociale
 
@@ -221,7 +221,7 @@ const InformationLegale = () => {
         <Flex align='center'>
           <Text mr={3}>Adresse :</Text>
           <Badge mr={3} fontSize='md'>
-            {adresse}
+            {rue}
           </Badge>
           <InfoTooltip description='La donnée “Adresse” provient de l’INSEE puis est déduite du SIRET. Si cette information est erronée, merci de leur signaler.' />
         </Flex>{' '}

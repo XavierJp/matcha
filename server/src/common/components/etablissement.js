@@ -64,8 +64,8 @@ module.exports = () => {
       siret: d.siret,
       raison_sociale: d.adresse.l1,
       domaine: d.libelle_naf,
-      fullAdresse: `${d.adresse.l4} ${d.adresse.code_postal} ${d.adresse.localite}`,
-      adresse: d.adresse.l4,
+      adresse: `${d.adresse.l4} ${d.adresse.code_postal} ${d.adresse.localite}`,
+      rue: d.adresse.l4,
       commune: d.adresse.localite,
       code_postal: d.adresse.code_postal,
       contacts: [], // conserve la coherence avec l'UI
