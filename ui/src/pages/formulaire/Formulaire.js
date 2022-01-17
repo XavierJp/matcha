@@ -387,7 +387,7 @@ export default (props) => {
                   },
                   raison_sociale: siretInformation.raison_sociale || formState?.raison_sociale,
                   siret: siretInformation.siret || formState?.siret,
-                  adresse: siretInformation.fullAdresse || formState?.adresse,
+                  adresse: siretInformation.adresse || formState?.adresse,
                   geo_coordonnees: siretInformation.geo_coordonnees || formState?.geo_coordonnees,
                   nom: formState?.nom ?? '',
                   prenom: formState?.prenom ?? '',
