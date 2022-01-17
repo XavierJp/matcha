@@ -39,12 +39,12 @@ import CustomInput from './components/CustomInput'
 import FormulaireLectureSeul from './components/FormulaireLectureSeul'
 import ListeVoeux from './components/ListeVoeux'
 
-const SiretDetails = ({ raison_sociale, domaine, fullAdresse, opco }) => {
+const SiretDetails = ({ raison_sociale, domaine, adresse, opco }) => {
   return (
     <>
       <CustomInput label='Raison Sociale' value={raison_sociale} name='raison_sociale' isDisabled required={false} />
       <CustomInput label="Domaine d'activité" value={domaine} name='domaine' isDisabled required={false} />
-      <CustomInput label='Adresse' value={fullAdresse} name='adresse' isDisabled required={false} />
+      <CustomInput label='Adresse' value={adresse} name='adresse' isDisabled required={false} />
       {opco && <CustomInput label='Opco de référence' value={opco} name='opco' isDisabled required={false} />}
     </>
   )
