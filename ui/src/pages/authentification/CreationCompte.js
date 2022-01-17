@@ -1,21 +1,19 @@
-import { Flex, Button, Heading, Text, Box, Stack, useBreakpointValue } from '@chakra-ui/react'
+import { Flex, Button, Heading, Text, Box, Stack, useBreakpointValue, Link } from '@chakra-ui/react'
 
 import { useNavigate } from 'react-router-dom'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 
-import { SearchLine } from '../../theme/components/icons'
+import { SearchLine, InfoCircle } from '../../theme/components/icons'
 import CustomInput from '../formulaire/components/CustomInput'
 
 import { getCfaInformation, getEntrepriseInformation } from '../../api'
 import AnimationContainer from '../../components/AnimationContainer'
 import AuthentificationLayout from './components/Authentification-layout'
 
-const CreationCompte = (props) => {
+const CreationCompte = ({ type }) => {
   const buttonSize = useBreakpointValue(['sm', 'md'])
   const navigate = useNavigate()
-
-  const { type } = props
 
   const submitSiret = ({ siret }, { setSubmitting, setFieldError }) => {
     // validate SIRET
@@ -43,7 +41,7 @@ const CreationCompte = (props) => {
   }
 
   return (
-    <Stack direction='column' spacing={7} bg='grey.150' p={['4', '8']} py={10} pr={12}>
+    <Stack direction='column' spacing={7} p={['4', '8']} py={10} pr={12}>
       <Heading size='lg' as='h2'>
         {type === 'ENTREPRISE' ? 'Retrouvez votre entreprise' : 'Créez votre compte sur Matcha'}
       </Heading>
@@ -72,19 +70,20 @@ const CreationCompte = (props) => {
                     type='text'
                     value={values.siret}
                     maxLength='14'
-                    width='90%'
                   />
-                  <Button
-                    mt={5}
-                    type='submit'
-                    size={buttonSize}
-                    variant='form'
-                    leftIcon={<SearchLine width={5} />}
-                    isActive={isValid}
-                    isDisabled={!isValid || isSubmitting}
-                  >
-                    Chercher
-                  </Button>
+                  <Flex justify='flex-end'>
+                    <Button
+                      mt={5}
+                      type='submit'
+                      size={buttonSize}
+                      variant='form'
+                      leftIcon={<SearchLine width={5} />}
+                      isActive={isValid}
+                      isDisabled={!isValid || isSubmitting}
+                    >
+                      Chercher
+                    </Button>
+                  </Flex>
                 </Form>
               </>
             )
@@ -95,13 +94,50 @@ const CreationCompte = (props) => {
   )
 }
 
+const InformationSiret = ({ type }) => {
+  return (
+    <Box border='1px solid #000091' px={6} py={5} flex='1'>
+      <Heading fontSize='24px' mb={3}>
+        Où trouver votre SIRET ?
+      </Heading>
+      <Flex alignItems='flex-start' alignItems='flex-start'>
+        <InfoCircle mr={2} mt={1} />
+        {type === 'ENTREPRISE' ? (
+          <Text>
+            Le numéro d’identification de votre entreprise peut être trouvé sur
+            <Link href='https://annuaire-entreprises.data.gouv.fr/' variant='classic' isExternal>
+              l’annuaire des entreprises
+            </Link>
+            ou bien sur les registres de votre entreprises
+          </Text>
+        ) : (
+          <Text>
+            Le numéro d’identification de votre entreprise peut être trouvé sur le site
+            <Link
+              href='https://catalogue.apprentissage.beta.gouv.fr/recherche/etablissements'
+              variant='classic'
+              isExternal
+            >
+              Le catalogue des offres de formations en apprentissage
+            </Link>
+            ou bien sur les registres de votre entreprise.
+          </Text>
+        )}
+      </Flex>
+    </Box>
+  )
+}
+
 export default (props) => {
   return (
     <AnimationContainer>
       <AuthentificationLayout>
-        <Flex align='center' justify='center' flex='1'>
+        {/* <Flex align='center'> */}
+        <Stack direction={['column', 'row']} spacing='27px' align='center' mt={10}>
           <CreationCompte {...props} />
-        </Flex>
+          <InformationSiret {...props} />
+        </Stack>
+        {/* </Flex> */}
       </AuthentificationLayout>
     </AnimationContainer>
   )
