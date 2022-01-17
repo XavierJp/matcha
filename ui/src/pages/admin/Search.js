@@ -83,11 +83,7 @@ export default memo(() => {
             variant='primary'
             size='sm'
             mr={3}
-            onClick={() =>
-              navigate(`/${auth.scope === 'all' ? 'matcha' : auth.scope}/`, {
-                state: { mandataire: true, gestionnaire: auth.siret },
-              })
-            }
+            onClick={() => navigate(`/${auth.scope === 'all' ? 'matcha' : auth.scope}/`)}
           >
             Nouvelle entreprise
           </Button>

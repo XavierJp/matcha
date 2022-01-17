@@ -133,8 +133,6 @@ export default (props) => {
 
   const newUser = location.state?.newUser ?? false
   const offerPopup = location.state?.offerPopup ?? false
-  const gestionnaire = location.state?.gestionnaire ?? undefined
-  const mandataire = location.state?.mandataire ?? false
 
   const hasActiveOffers = offersList.filter((x) => x.statut === 'Active')
 
@@ -382,8 +380,8 @@ export default (props) => {
                 validateOnMount={true}
                 enableReinitialize={true}
                 initialValues={{
-                  mandataire,
-                  gestionnaire,
+                  mandataire: auth.mandataire,
+                  gestionnaire: auth.gestionnaire,
                   opco: {
                     libelle: siretInformation.opco?.libelle || formState?.opco?.libelle,
                   },
