@@ -96,12 +96,22 @@ module.exports = ({ formulaire, mail, etablissement }) => {
     "/offre/:id_offre",
     tryCatch(async (req, res) => {
       let result = await formulaire.getOffre(req.params.id_offre);
+      let cfa = {};
 
       if (!result) {
         return res.status(400).json({ error: true, message: "Not found" });
       }
 
       result.offres = result.offres.filter((x) => x._id == req.params.id_offre);
+
+      if (result.mandataire === true) {
+        cfa = await etablissement.getEtablissement({ siret: result.gestionnaire });
+
+        result.telephone = cfa.telephone;
+        result.email = cfa.email;
+        result.nom = cfa.nom;
+        result.prenom = cfa.prenom;
+      }
 
       result.events = undefined;
       result.mailing = undefined;
