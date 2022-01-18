@@ -1,14 +1,11 @@
-import { Flex, Button, Heading, Text, Box, Stack, useBreakpointValue, Link } from '@chakra-ui/react'
-
+import { Box, Button, Flex, Heading, Link, Stack, Text, useBreakpointValue } from '@chakra-ui/react'
+import { Form, Formik } from 'formik'
 import { useNavigate } from 'react-router-dom'
-import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
-
-import { SearchLine, InfoCircle } from '../../theme/components/icons'
-import CustomInput from '../formulaire/components/CustomInput'
-
 import { getCfaInformation, getEntrepriseInformation } from '../../api'
 import AnimationContainer from '../../components/AnimationContainer'
+import { InfoCircle, SearchLine } from '../../theme/components/icons'
+import CustomInput from '../formulaire/components/CustomInput'
 import AuthentificationLayout from './components/Authentification-layout'
 
 const CreationCompte = ({ type }) => {
@@ -20,7 +17,7 @@ const CreationCompte = ({ type }) => {
     if (type === 'ENTREPRISE') {
       getEntrepriseInformation(siret)
         .then(({ data }) => {
-          setSubmitting(false)
+          setSubmitting(true)
           navigate('/creation/detail', { state: { informationSiret: data, type } })
         })
         .catch(({ response }) => {
@@ -82,6 +79,7 @@ const CreationCompte = ({ type }) => {
                       leftIcon={<SearchLine width={5} />}
                       isActive={isValid}
                       isDisabled={!isValid || isSubmitting}
+                      isLoading={isSubmitting}
                     >
                       Chercher
                     </Button>
