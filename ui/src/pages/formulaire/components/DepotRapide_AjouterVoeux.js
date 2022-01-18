@@ -1,34 +1,32 @@
-import { useState, useContext } from 'react'
 import {
+  Box,
   Button,
-  FormControl,
-  FormLabel,
-  FormHelperText,
-  Select,
-  Textarea,
-  FormErrorMessage,
-  Input,
-  Text,
-  Heading,
   Flex,
+  FormControl,
+  FormErrorMessage,
+  FormHelperText,
+  FormLabel,
+  Heading,
+  Input,
+  Link,
   Radio,
   RadioGroup,
+  Select,
   Stack,
-  Link,
-  Box,
+  Text,
+  Textarea,
 } from '@chakra-ui/react'
-import { Formik } from 'formik'
-
-import * as Yup from 'yup'
 import dayjs from 'dayjs'
-
-import { AnimationContainer, DropdownCombobox } from '../../../components'
-import { ExternalLinkLine, ThumbDown, ThumbUp, InfoCircle, ArrowRightLine } from '../../../theme/components/icons'
-import { LogoContext } from '../../../contextLogo'
-import AuthentificationLayout from '../../authentification/components/Authentification-layout'
-import { J1S, Lba, Parcoursup } from '../../../theme/components/logos'
+import { Formik } from 'formik'
+import { useContext, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
+import * as Yup from 'yup'
 import { postOffre } from '../../../api'
+import { AnimationContainer, DropdownCombobox } from '../../../components'
+import { LogoContext } from '../../../contextLogo'
+import { ArrowRightLine, ExternalLinkLine, InfoCircle, ThumbDown, ThumbUp } from '../../../theme/components/icons'
+import { J1S, Lba, Parcoursup } from '../../../theme/components/logos'
+import AuthentificationLayout from '../../authentification/components/Authentification-layout'
 
 const DATE_FORMAT = 'YYYY-MM-DD'
 
@@ -155,7 +153,7 @@ const AjoutVoeux = (props) => {
 
               <FormControl mt={4} isRequired>
                 <FormLabel>Niveau de formation</FormLabel>
-                <Select size='md' name='niveau' defaultValue={values.niveau} onChange={handleChange}>
+                <Select variant='outline' size='md' name='niveau' defaultValue={values.niveau} onChange={handleChange}>
                   <option value='' hidden>
                     Choisissez un niveau
                   </option>
