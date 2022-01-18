@@ -1,6 +1,6 @@
 const express = require("express");
 const tryCatch = require("../middlewares/tryCatchMiddleware");
-const { createUserToken, createMagicLinkToken } = require("../../common/utils/jwtUtils");
+const { createUserToken } = require("../../common/utils/jwtUtils");
 const { User } = require("../../common/model");
 const { CFA } = require("../../common/constants");
 
@@ -134,7 +134,12 @@ module.exports = ({ etablissement, users, mail, formulaire }) => {
       await mail.sendmail(emailBody);
 
       if (ENTREPRISE) {
-        return res.json({ token: createMagicLinkToken(email) });
+        // Dépot simplifié : retourner les informations nécessaire à la suite du parcour
+        return res.json({ formulaire: formulaireInfo, user: partenaire });
+        /**
+         * Comportement précédent ; authentifier l'utilisateur dès la creation
+         * return res.json({ token: createMagicLinkToken(email) });
+         */
       } else {
         return res.json({ partenaire });
       }
