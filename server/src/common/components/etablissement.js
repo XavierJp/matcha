@@ -64,8 +64,8 @@ module.exports = () => {
       siret: d.siret,
       raison_sociale: d.adresse.l1,
       domaine: d.libelle_naf,
-      fullAdresse: `${d.adresse.l4} ${d.adresse.code_postal} ${d.adresse.localite}`,
-      adresse: d.adresse.l4,
+      adresse: `${d.adresse.l4} ${d.adresse.code_postal} ${d.adresse.localite}`,
+      rue: d.adresse.l4,
       commune: d.adresse.localite,
       code_postal: d.adresse.code_postal,
       contacts: [], // conserve la coherence avec l'UI
@@ -76,7 +76,8 @@ module.exports = () => {
       uai: d.uai_potentiels.filter((x) => x.valide === true).map((x) => x.uai),
       raison_sociale: d.raison_sociale,
       contacts: d.contacts,
-      adresse:
+      adresse: d.adresse?.label,
+      rue:
         d.adresse?.label?.split(`${d.adresse?.code_postal}`)[0].trim() ||
         d.lieux_de_formation[0].adresse.label.split(`${d.lieux_de_formation[0].adresse.code_postal}`)[0].trim(),
       commune: d.adresse?.localite || d.lieux_de_formation[0].adresse.localite,

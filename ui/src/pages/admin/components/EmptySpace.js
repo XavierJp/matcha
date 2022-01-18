@@ -23,11 +23,7 @@ export default () => {
         variant='primary'
         size={buttonSize}
         leftIcon={<IoIosAddCircleOutline />}
-        onClick={() =>
-          navigate(`/${auth.scope === 'all' ? 'matcha' : auth.scope}/`, {
-            state: { mandataire: true, gestionnaire: auth.siret },
-          })
-        }
+        onClick={() => navigate(`/${auth.scope === 'all' ? 'matcha' : auth.scope}/`)}
       >
         Ajouter une entreprise
       </Button>

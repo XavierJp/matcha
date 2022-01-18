@@ -53,7 +53,7 @@ export default ({ formState, buttonSize, setEditionMode }) => {
                 <Text isTruncated>{formState.adresse}</Text>
               </Badge>
             </Flex>
-            {formState.opco && (
+            {formState.opco?.libelle && (
               <Flex direction={['column', 'row']} align={['flex-start', 'center']}>
                 <Text pr={3} pb={[3, 0]}>
                   Opco de référence :
