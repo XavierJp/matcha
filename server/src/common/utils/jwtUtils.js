@@ -2,6 +2,8 @@ const pick = require("lodash").pick;
 const jwt = require("jsonwebtoken");
 const config = require("config");
 
+const { CFA } = require("../constants");
+
 const createToken = (type, subject, options = {}) => {
   const defaults = config.auth[type];
   const secret = options.secret || defaults.jwtSecret;
@@ -28,6 +30,8 @@ module.exports = {
       type: user.type,
       siret: user.siret,
       id_form: user.id_form,
+      mandataire: user.type === CFA ? true : false,
+      gestionnaire: user.type === CFA ? user.siret : undefined,
     };
 
     return createToken("user", user.email, { payload, ...options });

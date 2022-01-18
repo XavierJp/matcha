@@ -5,7 +5,7 @@ const config = require("config");
 const { User } = require("../../common/model");
 const esClient = getElasticInstance();
 
-module.exports = ({ formulaire, mail }) => {
+module.exports = ({ formulaire, mail, etablissement }) => {
   const router = express.Router();
 
   /**
@@ -96,12 +96,22 @@ module.exports = ({ formulaire, mail }) => {
     "/offre/:id_offre",
     tryCatch(async (req, res) => {
       let result = await formulaire.getOffre(req.params.id_offre);
+      let cfa = {};
 
       if (!result) {
         return res.status(400).json({ error: true, message: "Not found" });
       }
 
       result.offres = result.offres.filter((x) => x._id == req.params.id_offre);
+
+      if (result.mandataire === true) {
+        cfa = await etablissement.getEtablissement({ siret: result.gestionnaire });
+
+        result.telephone = cfa.telephone;
+        result.email = cfa.email;
+        result.nom = cfa.nom;
+        result.prenom = cfa.prenom;
+      }
 
       result.events = undefined;
       result.mailing = undefined;
@@ -278,24 +288,37 @@ module.exports = ({ formulaire, mail }) => {
 
       const result = await esClient.search({ index: "formulaires", body });
 
-      const filtered = result.body.hits.hits.map((x) => {
-        let offres = [];
+      const filtered = await Promise.all(
+        result.body.hits.hits.map(async (x) => {
+          let offres = [];
+          let cfa = {};
 
-        if (x._source.offres.length === 0) {
-          return;
-        }
-
-        x._source.mailing = undefined;
-        x._source.events = undefined;
-
-        x._source.offres.forEach((o) => {
-          if (romes.some((item) => o.romes.includes(item)) && o.statut === "Active") {
-            offres.push(o);
+          if (x._source.offres.length === 0) {
+            return;
           }
-        });
-        x._source.offres = offres;
-        return x;
-      });
+
+          x._source.mailing = undefined;
+          x._source.events = undefined;
+
+          if (x._source.mandataire === true) {
+            cfa = await etablissement.getEtablissement({ siret: x._source.gestionnaire });
+
+            x._source.telephone = cfa.telephone;
+            x._source.email = cfa.email;
+            x._source.nom = cfa.nom;
+            x._source.prenom = cfa.prenom;
+          }
+
+          x._source.offres.forEach((o) => {
+            if (romes.some((item) => o.romes.includes(item)) && o.statut === "Active") {
+              offres.push(o);
+            }
+          });
+
+          x._source.offres = offres;
+          return x;
+        })
+      );
 
       return res.json(filtered);
     })

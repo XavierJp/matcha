@@ -36,11 +36,15 @@ module.exports = ({ etablissement, users, mail, formulaire }) => {
         });
       }
 
+      let opcoResult = await etablissement.getOpco(req.params.siret);
+
       let response = etablissement.formatEntrepriseData(result.data.etablissement);
 
       response.geo_coordonnees = await etablissement.getGeoCoordinates(
         `${response.adresse}, ${response.code_postal}, ${response.commune}`
       );
+
+      response.opco = opcoResult.data?.opcoName ?? undefined;
 
       return res.json(response);
     })
