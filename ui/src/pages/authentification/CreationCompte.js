@@ -41,12 +41,15 @@ const CreationCompte = ({ type }) => {
   }
 
   return (
-    <Stack direction='column' spacing={7} p={['4', '8']} py={10} pr={12}>
+    <Stack direction='column' align='stretch' spacing={7} p={['4', '8']} py={[5, 10]} pr={[6, 12]} flex='1'>
       <Heading size='lg' as='h2'>
         {type === 'ENTREPRISE' ? 'Retrouvez votre entreprise' : 'Créez votre compte sur Matcha'}
       </Heading>
-      <Text fontSize='xl'>Nous avons besoin du numéro SIRET afin de vous identifier.</Text>
-      <Box mr={4}>
+      <Text fontSize='xl'>
+        Nous avons besoin du numéro SIRET de votre {type === 'ENTREPRISE' ? 'entreprise' : 'organisme de formation'}{' '}
+        afin de vous identifier.
+      </Text>
+      <Box mt={[1, 5]}>
         <Formik
           validateOnMount
           initialValues={{ siret: undefined }}
@@ -71,9 +74,8 @@ const CreationCompte = ({ type }) => {
                     value={values.siret}
                     maxLength='14'
                   />
-                  <Flex justify='flex-end'>
+                  <Flex justify='flex-end' mt={5}>
                     <Button
-                      mt={5}
                       type='submit'
                       size={buttonSize}
                       variant='form'
@@ -96,14 +98,14 @@ const CreationCompte = ({ type }) => {
 
 const InformationSiret = ({ type }) => {
   return (
-    <Box border='1px solid #000091' px={6} py={5} flex='1'>
+    <Box border='1px solid #000091' p={['4', '8']} py={[5, 10]} pr={[6, 12]} flex='1'>
       <Heading fontSize='24px' mb={3}>
         Où trouver votre SIRET ?
       </Heading>
       <Flex alignItems='flex-start' alignItems='flex-start'>
         <InfoCircle mr={2} mt={1} />
         {type === 'ENTREPRISE' ? (
-          <Text>
+          <Text textAlign='justify'>
             Le numéro d’identification de votre entreprise peut être trouvé sur
             <Link href='https://annuaire-entreprises.data.gouv.fr/' variant='classic' isExternal>
               l’annuaire des entreprises
@@ -133,7 +135,7 @@ export default (props) => {
     <AnimationContainer>
       <AuthentificationLayout>
         {/* <Flex align='center'> */}
-        <Stack direction={['column', 'row']} spacing='27px' align='center' mt={10}>
+        <Stack direction={['column', 'row']} spacing={[10, 5]} align='center' mt={[5, 10]} mr={[0, 8]} p={[2, 0]}>
           <CreationCompte {...props} />
           <InformationSiret {...props} />
         </Stack>
