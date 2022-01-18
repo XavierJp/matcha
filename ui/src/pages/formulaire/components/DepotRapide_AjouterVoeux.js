@@ -27,11 +27,17 @@ import { ExternalLinkLine, ThumbDown, ThumbUp, InfoCircle, ArrowRightLine } from
 import { LogoContext } from '../../../contextLogo'
 import AuthentificationLayout from '../../authentification/components/Authentification-layout'
 import { J1S, Lba, Parcoursup } from '../../../theme/components/logos'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { postOffre } from '../../../api'
 
 const DATE_FORMAT = 'YYYY-MM-DD'
 
 const AjoutVoeux = (props) => {
   const [inputJobItems, setInputJobItems] = useState([])
+  const location = useLocation()
+  const navigate = useNavigate()
+
+  const { id_form, email } = location.state
 
   const minDate = dayjs().format(DATE_FORMAT)
   const { organisation } = useContext(LogoContext)
@@ -83,7 +89,11 @@ const AjoutVoeux = (props) => {
           type: Yup.string().required('Champ obligatoire'),
           multi_diffuser: Yup.boolean(),
         })}
-        onSubmit={async (values, { resetForm }) => {}}
+        onSubmit={async (values) => {
+          postOffre(id_form, values).then(({ data }) => {
+            navigate('/creation/fin', { replace: true, state: { offre: data.offres[0], email } })
+          })
+        }}
       >
         {(props) => {
           let { values, setFieldValue, handleChange, errors, touched, isValid, isSubmitting, dirty, submitForm } = props

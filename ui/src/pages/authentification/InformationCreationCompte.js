@@ -91,10 +91,21 @@ const Formulaire = () => {
     createPartenaire(values)
       .then(({ data }) => {
         if (type === 'ENTREPRISE') {
-          navigate(`/authentification/verification?token=${data.token}`, {
+          // Dépot simplifié
+          navigate('/creation/offre', {
             replace: true,
-            state: { fromEntrepriseCreation: true },
+            state: { id_form: data.formulaire.id_form, email: data.user.email },
           })
+
+          /**
+           * Comportement précédent : authentification de l'utilisateur et redirection vers son formulaire, popup offre ouverte
+           *
+           * navigate(`/authentification/verification?token=${data.token}`, {
+           *   replace: true,
+           *   state: { fromEntrepriseCreation: true },
+           * })
+           *
+           **/
         } else {
           navigate('/authentification/confirmation', { replace: true, state: { email: data.email } })
         }
