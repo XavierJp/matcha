@@ -17,6 +17,8 @@ import {
   Users,
   ValidationToken,
 } from './pages'
+import DepotRapide_AjouterVoeux from './pages/formulaire/components/DepotRapide_AjouterVoeux'
+import DepotRapide_Fin from './pages/formulaire/components/DepotRapide_Fin'
 import { WidgetFormulaire } from './widget'
 
 function PrivateRoute({ children }) {
@@ -50,6 +52,8 @@ const App = () => {
         <Route path='/creation/entreprise' element={<CreationCompte type='ENTREPRISE' />} />
         <Route path='/creation/cfa' element={<CreationCompte type='CFA' />} />
         <Route path='/creation/detail' element={<InformationCreationCompte />} />
+        <Route path='/creation/offre' element={<DepotRapide_AjouterVoeux />} />
+        <Route path='/creation/fin' element={<DepotRapide_Fin />} />
         <Route path='/authentification/confirmation' element={<ConfirmationCreationCompte />} />
         <Route path='/authentification/validation/:id' element={<ConfirmationValidationEmail />} />
         <Route path='/authentification/verification' element={<ValidationToken />} />
