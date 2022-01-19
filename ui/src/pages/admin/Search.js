@@ -15,8 +15,8 @@ import {
   Text,
   useToast,
 } from '@chakra-ui/react'
-import { memo, useEffect } from 'react'
-import { NavLink, useNavigate, useLocation } from 'react-router-dom'
+import { memo, useEffect, useState } from 'react'
+import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import useAuth from '../../common/hooks/useAuth'
 import { willExpire } from '../../common/utils/dateUtils'
 import { Layout } from '../../components'
@@ -29,10 +29,13 @@ import './search.css'
 
 export default memo(() => {
   const { filters, facetDefinition, dataSearchDefinition, exportableColumns, excludedFields } = constants
+  const [filterVisible, setFilterVisible] = useState()
   const [auth] = useAuth()
   const location = useLocation()
   const navigate = useNavigate()
   const toast = useToast()
+
+  console.log(filterVisible)
 
   useEffect(() => {
     if (location.state?.newUser) {
@@ -46,6 +49,17 @@ export default memo(() => {
       })
     }
   }, [])
+
+  // useEffect(() => {
+  //   if (filterVisible === false) {
+  //     console.log('coucou')
+  //     getFormulaires({ origine: auth.scope }).then(({ data }) => {
+  //       if (data.data.length > 0) {
+  //         setFilterVisible(true)
+  //       }
+  //     })
+  //   }
+  // }, [])
 
   const queryFilter = () => {
     if (auth.scope === 'all') return {}
@@ -71,7 +85,7 @@ export default memo(() => {
     <Layout background='beige'>
       <Container maxW='container.xl' py={4}>
         <Flex justifyContent='space-between' alignItems='center'>
-          <Breadcrumb spacing='4px' textStyle='xs' mb={3}>
+          <Breadcrumb spacing='4px' textStyle='xs'>
             <BreadcrumbItem isCurrentPage>
               <BreadcrumbLink href='#' textStyle='xs'>
                 Administration des offres
@@ -90,40 +104,24 @@ export default memo(() => {
         </Flex>
         <div className='search-page'>
           <ReactiveBase url={`${process.env.REACT_APP_BASE_URL}/es/search`} app='formulaires'>
-            <Grid templateColumns='1fr 3fr' gap={3} pt={3}>
-              <GridItem>
-                <Text fontWeight='700'>RECHERCHER</Text>
-              </GridItem>
-              <GridItem sx={{ margin: '0 .7em' }}>
-                <div className='search-container'>
-                  <DataSearch {...dataSearchDefinition} defaultQuery={queryFilter} />
-                </div>
-              </GridItem>
-              <GridItem>
-                <Text fontWeight='700'>FILTRER</Text>
-                {auth.permissions.isAdmin
-                  ? facetDefinition.map((f, i) => {
-                      return (
-                        <Facet
-                          key={i}
-                          title={f.title}
-                          filterLabel={f.filterLabel}
-                          filters={filters}
-                          selectAllLabel={f.selectAllLabel}
-                          sortBy={f.sortBy}
-                          componentId={f.componentId}
-                          dataField={f.dataField}
-                          nestedField={f.nestedField}
-                          showSearch={f.showSearch}
-                          showCount={f.showCount}
-                          defaultQuery={queryFilter}
-                          excludeFields={excludedFields}
-                        />
-                      )
-                    })
-                  : facetDefinition
-                      .filter((x) => x.componentId !== 'origineFilter')
-                      .map((f, i) => {
+            <Grid templateColumns={filterVisible ? '1fr 3fr' : '1fr'} gap={3} pt={3}>
+              {filterVisible && (
+                <>
+                  <GridItem>
+                    <Text fontWeight='700'>RECHERCHER</Text>
+                  </GridItem>
+                  <GridItem sx={{ margin: '0 .7em' }}>
+                    <div className='search-container'>
+                      <DataSearch {...dataSearchDefinition} defaultQuery={queryFilter} />
+                    </div>
+                  </GridItem>
+                </>
+              )}
+              {filterVisible && (
+                <GridItem>
+                  <Text fontWeight='700'>FILTRER</Text>
+                  {auth.permissions.isAdmin
+                    ? facetDefinition.map((f, i) => {
                         return (
                           <Facet
                             key={i}
@@ -141,8 +139,30 @@ export default memo(() => {
                             excludeFields={excludedFields}
                           />
                         )
-                      })}
-              </GridItem>
+                      })
+                    : facetDefinition
+                        .filter((x) => x.componentId !== 'origineFilter')
+                        .map((f, i) => {
+                          return (
+                            <Facet
+                              key={i}
+                              title={f.title}
+                              filterLabel={f.filterLabel}
+                              filters={filters}
+                              selectAllLabel={f.selectAllLabel}
+                              sortBy={f.sortBy}
+                              componentId={f.componentId}
+                              dataField={f.dataField}
+                              nestedField={f.nestedField}
+                              showSearch={f.showSearch}
+                              showCount={f.showCount}
+                              defaultQuery={queryFilter}
+                              excludeFields={excludedFields}
+                            />
+                          )
+                        })}
+                </GridItem>
+              )}
               <GridItem m={3}>
                 <SelectedFilters clearAllLabel='Supprimer tous' />
                 <ReactiveList
@@ -159,7 +179,10 @@ export default memo(() => {
                   defaultQuery={queryFilter}
                   scrollOnChange={false}
                   URLParams={true}
-                  renderNoResults={() => <EmptySpace />}
+                  renderNoResults={() => {
+                    setFilterVisible(false)
+                    return <EmptySpace />
+                  }}
                   renderResultStats={(stats) => {
                     return (
                       <div
@@ -185,6 +208,7 @@ export default memo(() => {
                     )
                   }}
                   renderItem={({ offres, ...formulaire }) => {
+                    setFilterVisible(true)
                     let active = offres.filter((x) => x.statut === 'Active').length
                     let expire = offres.filter((x) => {
                       if (x.statut === 'Active') {
