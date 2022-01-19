@@ -111,6 +111,8 @@ module.exports = ({ formulaire, mail, etablissement }) => {
         result.email = cfa.email;
         result.nom = cfa.nom;
         result.prenom = cfa.prenom;
+        result.raison_sociale = cfa.raison_sociale;
+        result.adresse = cfa.adresse;
       }
 
       result.events = undefined;
@@ -307,6 +309,8 @@ module.exports = ({ formulaire, mail, etablissement }) => {
             x._source.email = cfa.email;
             x._source.nom = cfa.nom;
             x._source.prenom = cfa.prenom;
+            x._source.raison_sociale = cfa.raison_sociale;
+            x._source.adresse = cfa.adresse;
           }
 
           x._source.offres.forEach((o) => {
