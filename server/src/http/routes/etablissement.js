@@ -111,29 +111,7 @@ module.exports = ({ etablissement, users, mail, formulaire }) => {
       if (ENTREPRISE) {
         formulaireInfo = await formulaire.createFormulaire(req.body);
         partenaire = await users.createUser({ ...req.body, id_form: formulaireInfo.id_form });
-      } else {
-        partenaire = await users.createUser(req.body);
-      }
 
-      let { email, raison_sociale, _id, nom, prenom, type } = partenaire;
-
-      const url = etablissement.getValidationUrl(_id);
-
-      const emailBody = mail.getEmailBody({
-        email,
-        senderName: raison_sociale,
-        templateId: type === "ENTREPRISE" ? 226 : 218,
-        tags: ["matcha-confirmation-email"],
-        params: {
-          URL_CONFIRMATION: url,
-          NOM: nom,
-          PRENOM: prenom,
-        },
-      });
-
-      await mail.sendmail(emailBody);
-
-      if (ENTREPRISE) {
         // Dépot simplifié : retourner les informations nécessaire à la suite du parcour
         return res.json({ formulaire: formulaireInfo, user: partenaire });
         /**
@@ -141,6 +119,26 @@ module.exports = ({ etablissement, users, mail, formulaire }) => {
          * return res.json({ token: createMagicLinkToken(email) });
          */
       } else {
+        partenaire = await users.createUser(req.body);
+
+        let { email, raison_sociale, _id, nom, prenom } = partenaire;
+
+        const url = etablissement.getValidationUrl(_id);
+
+        const emailBody = mail.getEmailBody({
+          email,
+          senderName: raison_sociale,
+          templateId: 218,
+          tags: ["matcha-confirmation-email"],
+          params: {
+            URL_CONFIRMATION: url,
+            NOM: nom,
+            PRENOM: prenom,
+          },
+        });
+
+        await mail.sendmail(emailBody);
+
         return res.json({ partenaire });
       }
     })

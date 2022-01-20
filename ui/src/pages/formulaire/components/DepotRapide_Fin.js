@@ -1,14 +1,31 @@
-import { Flex, Box, Text, Heading, Spacer, Link, Stack } from '@chakra-ui/react'
+import { Box, Button, Flex, Heading, Link, Spacer, Stack, Text, useToast } from '@chakra-ui/react'
+import dayjs from 'dayjs'
+import { useState } from 'react'
 import { useLocation } from 'react-router-dom'
+import { sendMagiclink } from '../../../api'
 import { InfoCircle } from '../../../theme/components/icons'
 import { MailCloud } from '../../../theme/components/logos'
 import AuthentificationLayout from '../../authentification/components/Authentification-layout'
-import dayjs from 'dayjs'
 
 export default (props) => {
   const location = useLocation()
+  const [disableLink, setDisableLink] = useState(false)
+  const toast = useToast()
 
   const { offre, email } = location.state
+
+  const resendMail = (email) => {
+    sendMagiclink({ email }).catch(() => {
+      toast({
+        title: 'Email envoyé.',
+        description: "Un lien d'activiation personnalisé vous a été envoyé par mail.",
+        position: 'top-right',
+        status: 'success',
+        duration: 5000,
+      })
+      setDisableLink(true)
+    })
+  }
 
   return (
     <AuthentificationLayout>
@@ -28,14 +45,18 @@ export default (props) => {
               <span style={{ fontWeight: '700' }}>{email}</span>.
             </Text>
           </Flex>
-          <Box ml={5} mb='16px'>
-            <Text>
-              Vous n’avez pas reçu le mail ?{' '}
-              <Link variant='classic' onClick={() => {}}>
-                Renvoyer le mail
-              </Link>
-            </Text>
-          </Box>
+          <Flex align='center' ml={5} mb='16px'>
+            <Text>Vous n’avez pas reçu le mail ? </Text>
+            <Button
+              as={Link}
+              variant='classic'
+              textDecoration='underline'
+              onClick={() => resendMail(email)}
+              isDisabled={disableLink}
+            >
+              Renvoyer le mail
+            </Button>
+          </Flex>
           <Stack direction='column' spacing='16px'>
             <Heading fontSize='20px'>Récapitulatif de votre besoin</Heading>
             <Text>{offre.libelle}</Text>
