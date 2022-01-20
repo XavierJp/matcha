@@ -60,7 +60,7 @@ const AjoutVoeux = (props) => {
       <Heading fontSize='32px' mb={2}>
         Votre besoin de recrutement
       </Heading>
-      <Text>Baseline explicative</Text>
+      <Text>Merci de renseigner les champs ci-dessous pour créer votre offre</Text>
       <Formik
         validateOnMount
         enableReinitialize={true}
