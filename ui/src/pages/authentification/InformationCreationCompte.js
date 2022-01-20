@@ -1,28 +1,26 @@
 import {
-  Heading,
-  Text,
-  Flex,
-  useBreakpointValue,
-  Button,
-  Link as ChakraLink,
-  Stack,
-  Box,
-  SimpleGrid,
   Badge,
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Link as ChakraLink,
+  SimpleGrid,
+  Stack,
+  Text,
+  useBreakpointValue,
   Wrap,
   WrapItem,
 } from '@chakra-ui/react'
-import { memo } from 'react'
 import { Form, Formik } from 'formik'
-import { useNavigate, useLocation } from 'react-router-dom'
-import { Link } from 'react-router-dom'
+import { memo } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import * as Yup from 'yup'
 import { createPartenaire } from '../../api'
-
+import { AnimationContainer, InfoTooltip } from '../../components'
 import { ArrowRightLine, InfoCircle } from '../../theme/components/icons'
 import CustomInput from '../formulaire/components/CustomInput'
 import CustomSelect from '../formulaire/components/CustomSelect'
-import { AnimationContainer, InfoTooltip } from '../../components'
 import AuthentificationLayout from './components/Authentification-layout'
 
 const ContactField = memo(({ values }) => {
@@ -38,7 +36,7 @@ const ContactField = memo(({ values }) => {
         info={
           <>
             Il s’agit de l’adresse qui vous permettra de vous connecter à Matcha. Si vous souhaitez ajouter, corriger ou
-            modifier celles-ci,{' '}
+            modifier celle-ci,{' '}
             <ChakraLink href='mailto:contact@matcha.apprentissage.beta.gouv.fr' textDecoration='underline'>
               contactez l’équipe ici
             </ChakraLink>
@@ -208,7 +206,7 @@ const InformationLegale = () => {
   return (
     <Box border='1px solid #000091' p={5} pb={12} h='100%'>
       <Heading mb={3} fontSize='2xl'>
-        Information légales
+        Informations légales
       </Heading>
       <Flex alignItems='flex-start' alignItems='flex-start' mb={10}>
         <InfoCircle mr={2} mt={1} />

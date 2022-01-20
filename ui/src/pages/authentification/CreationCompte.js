@@ -112,7 +112,7 @@ const InformationSiret = ({ type }) => {
           </Text>
         ) : (
           <Text>
-            Le numéro d’identification de votre entreprise peut être trouvé sur le site
+            Le numéro d’identification de votre organisme peut être trouvé sur le site
             <Link
               href='https://catalogue.apprentissage.beta.gouv.fr/recherche/etablissements'
               variant='classic'
@@ -120,7 +120,7 @@ const InformationSiret = ({ type }) => {
             >
               Le catalogue des offres de formations en apprentissage
             </Link>
-            ou bien sur les registres de votre entreprise.
+            ou bien sur les registres de votre organisme de formation.
           </Text>
         )}
       </Flex>

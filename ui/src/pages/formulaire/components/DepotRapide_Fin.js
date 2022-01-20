@@ -34,12 +34,12 @@ export default (props) => {
         <Spacer />
         <Box>
           <Heading fontSize='24px' mb='16px'>
-            Félicitations, votre offre a bien été créé!
+            Félicitations, votre offre a bien été créée!
           </Heading>
           <Flex alignItems='flex-start' mb={6}>
             <InfoCircle mr={2} mt={1} />
             <Text textAlign='justify'>
-              Afin de finaliser la diffusion de votre besoin auprès des jeunes et vous connectez à votre espace de
+              Afin de finaliser la diffusion de votre besoin auprès des jeunes et vous connecter à votre espace de
               gestion, <span style={{ fontWeight: '700' }}>veuillez valider votre adresse mail</span> en cliquant sur le
               lien que nous venons de vous transmettre à l’adresse suivante:{' '}
               <span style={{ fontWeight: '700' }}>{email}</span>.
@@ -62,9 +62,9 @@ export default (props) => {
             <Text>{offre.libelle}</Text>
             <Text>{offre.niveau}</Text>
             <Text>
-              Date de début d'apprentissage souhaité : {dayjs(offre.date_debut_apprentissage).format('DD/MM/YYYY')}
+              Date de début d'apprentissage souhaitée : {dayjs(offre.date_debut_apprentissage).format('DD/MM/YYYY')}
             </Text>
-            <Text fontSize='14px'>Votre annonce sera visible pendant 30 jours, renouvelable.</Text>
+            <Text fontSize='14px'>Votre annonce sera visible pendant 30 jours, renouvelables.</Text>
           </Stack>
         </Box>
       </Flex>
