@@ -108,7 +108,7 @@ const InformationSiret = ({ type }) => {
             <Link href='https://annuaire-entreprises.data.gouv.fr/' variant='classic' isExternal>
               l’annuaire des entreprises
             </Link>
-            ou bien sur les registres de votre entreprises
+            ou bien sur les registres de votre entreprise.
           </Text>
         ) : (
           <Text>
