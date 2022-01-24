@@ -15,7 +15,7 @@ module.exports = ({ users }) => {
       },
       (jwt_payload, done) => {
         return users
-          .getUser(jwt_payload.sub)
+          .getUser({ email: jwt_payload.sub })
           .then((user) => {
             if (!user) {
               return done(null, false);

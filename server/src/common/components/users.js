@@ -5,7 +5,7 @@ const { KEY_GENERATOR_PARAMS } = require("../constants");
 module.exports = async () => {
   return {
     createApiKey: () => `mna-${passwordGenerator.generate(KEY_GENERATOR_PARAMS())}`,
-    getUser: (email) => User.findOne({ email }),
+    getUser: (query) => User.findOne(query),
     createUser: async (values) => {
       let scope = values.scope ?? undefined;
 

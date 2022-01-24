@@ -39,7 +39,7 @@ runScript(async ({ users, etablissement }) => {
     if (result.data?.etablissement.naf.startsWith("85")) {
       // search CFA
       const [catalogue, referentiel] = await Promise.all([
-        etablissement.getEtablissementFromTCO(siret),
+        etablissement.getEtablissementFromCatalogue(siret),
         etablissement.getEtablissementFromReferentiel(siret),
       ]);
 
@@ -54,7 +54,7 @@ runScript(async ({ users, etablissement }) => {
       }
 
       if (!referentiel) {
-        format = etablissement.formatTCOData(catalogue.data.etablissements[0]);
+        format = etablissement.formatCatalogueData(catalogue.data.etablissements[0]);
       } else {
         format = etablissement.formatReferentielData(referentiel.data);
       }
@@ -104,7 +104,7 @@ runScript(async ({ users, etablissement }) => {
       count.inserted++;
     } else {
       const [catalogue, referentiel] = await Promise.all([
-        etablissement.getEtablissementFromTCO(siret),
+        etablissement.getEtablissementFromCatalogue(siret),
         etablissement.getEtablissementFromReferentiel(siret),
       ]);
 
@@ -119,7 +119,7 @@ runScript(async ({ users, etablissement }) => {
       }
 
       if (!referentiel) {
-        format = etablissement.formatTCOData(catalogue.data.etablissements[0]);
+        format = etablissement.formatCatalogueData(catalogue.data.etablissements[0]);
       } else {
         format = etablissement.formatReferentielData(referentiel.data);
       }

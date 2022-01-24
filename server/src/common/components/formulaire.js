@@ -61,7 +61,9 @@ module.exports = () => {
         {
           $set: {
             "offres.$.date_expiration": moment().add(1, "months").format("YYYY-MM-DD"),
+            "offres.$.date_derniere_prolongation": Date.now(),
           },
+          $inc: { "offres.$.nombre_prolongation": 1 },
         }
       );
       return true;

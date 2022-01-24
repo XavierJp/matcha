@@ -46,7 +46,7 @@ module.exports = () => {
         }
       }
     },
-    getEtablissementFromTCO: (siret) =>
+    getEtablissementFromCatalogue: (siret) =>
       axios.get("https://catalogue.apprentissage.beta.gouv.fr/api/v1/entity/etablissements/", {
         params: {
           query: { siret },
@@ -86,7 +86,7 @@ module.exports = () => {
         ? `${d.adresse?.geojson.geometry.coordinates[0]},${d.adresse?.geojson.geometry.coordinates[0]}`
         : `${d.lieux_de_formation[0].adresse.geojson?.geometry.coordinates[0]},${d.lieux_de_formation[0].adresse.geojson?.geometry.coordinates[1]}`,
     }),
-    formatTCOData: (d) => ({
+    formatCatalogueData: (d) => ({
       etat: d.ferme === false ? etat_etablissements.FERME : etat_etablissements.ACTIF,
       siret: d.siret,
       uai: d.uai,

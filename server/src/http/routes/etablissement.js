@@ -69,7 +69,7 @@ module.exports = ({ etablissement, users, mail, formulaire }) => {
       }
 
       const [catalogue, referentiel] = await Promise.all([
-        etablissement.getEtablissementFromTCO(req.params.siret),
+        etablissement.getEtablissementFromCatalogue(req.params.siret),
         etablissement.getEtablissementFromReferentiel(req.params.siret),
       ]);
 
@@ -86,7 +86,7 @@ module.exports = ({ etablissement, users, mail, formulaire }) => {
       // return res.json({ referentiel: referentiel?.data, catalogue: catalogue?.data?.etablissements[0] });
 
       if (!referentiel) {
-        return res.json({ ...etablissement.formatTCOData(catalogue.data.etablissements[0]) });
+        return res.json({ ...etablissement.formatCatalogueData(catalogue.data.etablissements[0]) });
       }
 
       return res.json({ ...etablissement.formatReferentielData(referentiel.data) });
@@ -100,7 +100,7 @@ module.exports = ({ etablissement, users, mail, formulaire }) => {
   router.post(
     "/creation",
     tryCatch(async (req, res) => {
-      let exist = await users.getUser(req.body.email);
+      let exist = await users.getUser({ email: req.body.email });
       let formulaireInfo, partenaire;
       let ENTREPRISE = req.body.type === "ENTREPRISE";
 

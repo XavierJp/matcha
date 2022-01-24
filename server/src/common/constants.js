@@ -19,4 +19,9 @@ module.exports = {
   },
   ENTREPRISE: "ENTREPRISE",
   CFA: "CFA",
+  REGEX: {
+    SIRET: /^([0-9]{9}|[0-9]{14})$/,
+    GEO: /^(-?\d+(\.\d+)?),\s*(-?\d+(\.\d+)?)$/,
+    TELEPHONE: /^[0-9]{10}$/,
+  },
 };
