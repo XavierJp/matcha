@@ -200,6 +200,7 @@ const Formulaire = () => {
 const InformationLegale = () => {
   let location = useLocation()
   const { raison_sociale, uai, rue, siret, commune, code_postal } = location.state?.informationSiret
+  const { type } = location.state
 
   const RAISON_SOCIALE = raison_sociale.length > 30 ? raison_sociale.substring(0, 30) + '...' : raison_sociale
 
@@ -218,7 +219,11 @@ const InformationLegale = () => {
           <Badge mr={3} fontSize='md'>
             {siret}
           </Badge>
-          <InfoTooltip description='La donnée “SIRET Organisme”  provient des bases “Carif-Oref”. Si cette information est erronée, merci de le signaler au Carif-Oref de votre région.' />
+          {type === 'ENTREPRISE' ? (
+            <InfoTooltip description='La donnée “SIRET Organisme”  provient de l’INSEE puis est déduite du SIREN. Si cette information est erronée, merci de leur signaler.' />
+          ) : (
+            <InfoTooltip description='La donnée “SIRET Organisme”  provient des bases “Carif-Oref”. Si cette information est erronée, merci de le signaler au Carif-Oref de votre région.' />
+          )}
         </Flex>
         <Flex align='center'>
           <Text mr={3}>Raison sociale :</Text>
@@ -278,11 +283,16 @@ export default () => {
     <AuthentificationLayout>
       <Box pb={10}>
         <AnimationContainer>
-          <Box w={['100%', '50%']} pb={12} pt={12} px={['6', '8']}>
+          <Box w={['100%', '50%']} pb={10} pt={12} px={['6', '8']}>
             <Heading fontSize='32px' pb={3}>
               {type === 'ENTREPRISE' ? 'Vos informations de contact' : 'Créez votre compte sur Matcha'}
             </Heading>
-            <Text fontSize='xl'>Vérifiez vos informations légales et renseignez vos informations de contact.</Text>
+            <Box maxW='90%'>
+              <Text fontSize='xl' pt={3}>
+                Ces informations seront visibles sur vos offres et vous permettrons de recevoir les différentes
+                candidatures.
+              </Text>
+            </Box>
           </Box>
           <Box px={['6', '8']}>
             <SimpleGrid columns={['1', '2']} gap={10} flex='1' alignItems='center'>
