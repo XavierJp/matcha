@@ -81,7 +81,7 @@ const Formulaire = () => {
   const buttonSize = useBreakpointValue(['sm', 'md'])
   let navigate = useNavigate()
   let location = useLocation()
-  const { raison_sociale, adresse, contacts, siret, geo_coordonnees, uai } = location.state?.informationSiret
+  const { raison_sociale, adresse, contacts, siret, geo_coordonnees, uai, opco } = location.state?.informationSiret
   const { type } = location.state
 
   const submitForm = (values, { setSubmitting, setFieldError }) => {
@@ -126,6 +126,7 @@ const Formulaire = () => {
           contacts: contacts,
           geo_coordonnees: geo_coordonnees,
           uai: uai,
+          opco: opco,
           type: type,
           nom: undefined,
           prenom: undefined,
@@ -208,7 +209,7 @@ const Formulaire = () => {
 
 const InformationLegale = () => {
   let location = useLocation()
-  const { raison_sociale, uai, rue, siret, commune, code_postal } = location.state?.informationSiret
+  const { raison_sociale, uai, rue, siret, commune, code_postal, opco } = location.state?.informationSiret
   const { type } = location.state
 
   const RAISON_SOCIALE = raison_sociale.length > 30 ? raison_sociale.substring(0, 30) + '...' : raison_sociale
@@ -262,6 +263,15 @@ const InformationLegale = () => {
           </Badge>
           <InfoTooltip description='La donnée “Adresse” provient de l’INSEE puis est déduite du SIRET. Si cette information est erronée, merci de leur signaler.' />
         </Flex>
+        {opco && (
+          <Flex align='center'>
+            <Text mr={3}>Opco de référence :</Text>
+            <Badge mr={3} fontSize='md' maxW='50%'>
+              <Text isTruncated>{opco}</Text>
+            </Badge>
+            <InfoTooltip description='La donnée "Opco" provient de CFADOCK puis est déduite du SIRET. Si cette information est erronée, merci de leur signaler.' />
+          </Flex>
+        )}
         {uai && (
           <Flex align='flex-start'>
             <Text width='45px' mr={3}>

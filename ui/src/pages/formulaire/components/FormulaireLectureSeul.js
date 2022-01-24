@@ -1,4 +1,4 @@
-import { Button, Box, Flex, Grid, GridItem, Text, Heading, Spacer, useBreakpointValue, Badge } from '@chakra-ui/react'
+import { Badge, Box, Button, Flex, Grid, GridItem, Heading, Spacer, Text, useBreakpointValue } from '@chakra-ui/react'
 import { AiOutlineEdit } from 'react-icons/ai'
 
 export default ({ formState, buttonSize, setEditionMode }) => {
@@ -53,13 +53,13 @@ export default ({ formState, buttonSize, setEditionMode }) => {
                 <Text isTruncated>{formState.adresse}</Text>
               </Badge>
             </Flex>
-            {formState.opco?.libelle && (
+            {formState.opco && (
               <Flex direction={['column', 'row']} align={['flex-start', 'center']}>
                 <Text pr={3} pb={[3, 0]}>
                   Opco de référence :
                 </Text>
                 <Badge variant='readOnly' sx={{ maxWidth: '100%' }}>
-                  <Text isTruncated>{formState.opco.libelle}</Text>
+                  <Text isTruncated>{formState.opco}</Text>
                 </Badge>
               </Flex>
             )}

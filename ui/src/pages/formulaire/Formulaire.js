@@ -376,9 +376,7 @@ export default (props) => {
                 initialValues={{
                   mandataire: auth.mandataire,
                   gestionnaire: auth.gestionnaire,
-                  opco: {
-                    libelle: siretInformation.opco?.libelle || formState?.opco?.libelle,
-                  },
+                  opco: siretInformation.opco || formState?.opco,
                   raison_sociale: siretInformation.raison_sociale || formState?.raison_sociale,
                   siret: siretInformation.siret || formState?.siret,
                   adresse: siretInformation.adresse || formState?.adresse,
@@ -468,7 +466,7 @@ export default (props) => {
                                       name='opco'
                                       label='Opco de référence'
                                       type='text'
-                                      value={values.opco.libelle}
+                                      value={values.opco}
                                       isDisabled={true}
                                     />
                                   )}
