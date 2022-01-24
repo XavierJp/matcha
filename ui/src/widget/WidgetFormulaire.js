@@ -89,6 +89,7 @@ const RechercheSiret = memo(({ submitSiret, validSIRET, siretInformation }) => {
                     leftIcon={<SearchLine width={5} />}
                     isActive={siretForm.isValid}
                     isDisabled={!siretForm.isValid || siretForm.isSubmitting}
+                    isLoading={siretForm.isSubmitting}
                   >
                     Chercher
                   </Button>
@@ -211,6 +212,7 @@ export default (props) => {
 
   const submitSiret = ({ siret }, { setSubmitting, setFieldError, setFieldValue }) => {
     // validate SIRET
+    setSubmitting(true)
     getEntrepriseInformation(siret)
       .then(({ data }) => {
         setSiretInformation(data)
@@ -243,7 +245,7 @@ export default (props) => {
         setFormState(result.data)
         // enable description for AKTO (temporary)
         setOrganisation(result.data.origine)
-        navigate(`/formulaire/${result.data.id_form}`)
+        navigate(`/widget/formulaire/${result.data.id_form}`)
         toast({
           title: 'Formulaire créé !',
           description: "Un mail d'accès vous a été envoyé",

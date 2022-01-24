@@ -62,6 +62,7 @@ const App = () => {
         <Route path='/offre/:idOffre/:option' element={<MailActionsOnOffres />} />
         <Route path='/:origine/' element={<Formulaire />} />
         <Route path='/widget/:origine/' element={<WidgetFormulaire />} />
+        <Route path='/widget/formulaire/:id_form' element={<WidgetFormulaire />} />
         <Route>
           <Route
             path='/formulaire/:id_form'
