@@ -172,7 +172,16 @@ const Formulaire = () => {
                   maxLength='10'
                   value={informationForm.values.telephone}
                 />
-                <ContactField values={informationForm.values} />
+                {/* Quick fix */}
+                <CustomInput
+                  required={false}
+                  name='email'
+                  label='Email'
+                  type='email'
+                  value={informationForm.values.email}
+                  info='Il s’agit de l’adresse qui vous permettra de vous connecter à Matcha. Privilégiez votre adresse professionnelle'
+                />
+                {/* <ContactField values={informationForm.values} /> */}
                 <Flex justifyContent='flex-end' alignItems='center' pt={8}>
                   <ChakraLink as={Link} size={buttonSize} variant='secondary' mr={5} to='/'>
                     Annuler
