@@ -27,6 +27,10 @@
       "jwtSecret": "MATCHA_AUTH_MAGICLINK_JWT_SECRET"
     }
   },
+  "lba": {
+    "application": "MATCHA_LBA_APPLICATION_NAME",
+    "apiKey": "MATCHA_LBA_ACCESS_KEY"
+  },
   "log": {
     "type": "MATCHA_LOG_TYPE",
     "level": "MATCHA_LOG_LEVEL"
