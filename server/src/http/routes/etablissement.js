@@ -86,7 +86,7 @@ module.exports = ({ etablissement, users, mail, formulaire }) => {
       // return res.json({ referentiel: referentiel?.data, catalogue: catalogue?.data?.etablissements[0] });
 
       if (!referentiel) {
-        return res.json({ ...etablissement.formatTCOData(catalogue.data.etablissements[0]) });
+        return res.json({ ...etablissement.formatCatalogueData(catalogue.data.etablissements[0]) });
       }
 
       return res.json({ ...etablissement.formatReferentielData(referentiel.data) });

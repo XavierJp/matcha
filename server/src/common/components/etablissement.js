@@ -86,7 +86,7 @@ module.exports = () => {
         ? `${d.adresse?.geojson.geometry.coordinates[0]},${d.adresse?.geojson.geometry.coordinates[0]}`
         : `${d.lieux_de_formation[0].adresse.geojson?.geometry.coordinates[0]},${d.lieux_de_formation[0].adresse.geojson?.geometry.coordinates[1]}`,
     }),
-    formatTCOData: (d) => ({
+    formatCatalogueData: (d) => ({
       etat: d.ferme === false ? etat_etablissements.FERME : etat_etablissements.ACTIF,
       siret: d.siret,
       uai: d.uai,
@@ -94,7 +94,10 @@ module.exports = () => {
       contacts: [], // les tco n'ont pas d'information de contact, mais conserve un standard pour l'ui,
       commune: d.localite,
       code_postal: d.code_postal,
-      adresse: `${d.numero_voie === null ? "" : d.numero_voie} ${d.type_voie} ${d.nom_voie}`,
+      adresse: `${d.numero_voie === null ? "" : d.numero_voie} ${d.type_voie} ${d.nom_voie} ${d.code_postal} ${
+        d.localite
+      }`,
+      rue: `${d.numero_voie === null ? "" : d.numero_voie} ${d.type_voie} ${d.nom_voie}`,
       geo_coordonnees: d.geo_coordonnees,
     }),
   };
