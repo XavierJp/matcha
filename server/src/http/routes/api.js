@@ -3,27 +3,6 @@ const Joi = require("joi");
 const { REGEX } = require("../../common/constants");
 const tryCatch = require("../middlewares/tryCatchMiddleware");
 
-/**
- * 
-GET /api/v1/formulaire/
-GET /api/v1/formulaire/:id
-GET /api/v1/formulaire/offre/:id
-POST /api/v1/formulaire
-POST /api/v1/formulaire/:userId
-POST /api/v1/:formulaireId/offre
-PATCH /api/v1/formulaire/:id
-PATCH /api/v1/:formulaireId/:offreId
-DELETE /api/v1/:formulaireId
-DELETE /api/v1/:formulaireId/:offreId
-
-GET /api/v1/user/:id
-POST /api/v1/user/:id
-PATCH /api/v1/user/:id
-DELETE /api/v1/user/:id
-
-
- */
-
 module.exports = ({ formulaire, etablissement, users }) => {
   const router = express.Router();
 
@@ -36,25 +15,32 @@ module.exports = ({ formulaire, etablissement, users }) => {
     email: Joi.string().email(),
   });
 
-  const formulaireValidationSchema = Joi.object({
-    raison_sociale: Joi.string().required(),
-    siret: Joi.string().pattern(REGEX.SIRET).required(),
-    adresse: Joi.string().required(),
-    coordonnees_geo: Joi.string().regex(REGEX.GEO).required(),
+  const formulaireCreationValidationSchema = Joi.object({
     nom: Joi.string().required(),
     prenom: Joi.string().required(),
     email: Joi.string().email().required(),
     telephone: Joi.string().regex(REGEX.TELEPHONE).required(),
-    mandataire: Joi.boolean().default(false),
-    gestionnaire: Joi.string()
-      .pattern(REGEX.SIRET)
-      .when("mandataire", { is: Joi.equal(true), then: Joi.required() }),
-    opco: Joi.object(),
+    siret: Joi.string().pattern(REGEX.SIRET).required(),
+  });
+
+  const formulaireEditionValidationSchema = Joi.object({
+    nom: Joi.string().required(),
+    prenom: Joi.string().required(),
+    email: Joi.string().email().required(),
+    telephone: Joi.string().regex(REGEX.TELEPHONE).required(),
   });
 
   const offreValidationSchema = Joi.object({
     libelle: Joi.string().required(),
-    niveau: Joi.string().required(),
+    niveau: Joi.string()
+      .valid(
+        "Cap, autres formations niveau (Infrabac)",
+        "BP, Bac, autres formations niveau (Bac)",
+        "BTS, DEUST, autres formations niveau (Bac+2)",
+        "Licence, autres formations niveau (Bac+3)",
+        "Master, titre ingénieur, autres formations niveau (Bac+5)"
+      )
+      .required(),
     date_debut_apprentissage: Joi.date().required(),
     romes: Joi.array().items(Joi.string()).required(),
     description: Joi.string(),
@@ -72,13 +58,13 @@ module.exports = ({ formulaire, etablissement, users }) => {
 
   /**
    * @swagger
-   * "/":
+   * "/formulaire":
    *  get:
-   *    summary: Permet de récupérer l'ensemble des formulaires
+   *    summary: Permet de récupérer les données concernant les entreprises à partir d'une requête mongoDB
    *    tags:
    *     - Formulaire
    *    description:
-   *       Permet de récupérer les formulaires correspondant aux critères de filtrage <br/><br/>
+   *       Permet de récupérer les entreprises correspondant aux critères de filtrage <br/><br/>
    *       Le champ Query est une query Mongo stringify<br/><br/>
    *       **Pour definir vos critères de recherche veuillez regarder le schéma de la collection formulaire (en bas de cette page)**
    *    parameters:
@@ -99,7 +85,7 @@ module.exports = ({ formulaire, etablissement, users }) => {
    *        content:
    *          application/json:
    *            schema:
-   *              $ref: "#/components/schemas/formulaire"
+   *              $ref: "#/components/schemas/entreprise"
    */
 
   router.get(
@@ -124,9 +110,9 @@ module.exports = ({ formulaire, etablissement, users }) => {
 
   /**
    * @swagger
-   * "/:formulaireId":
+   * "/formulaire/:formulaireId":
    *  get:
-   *    summary: Permet de récupérer un formulaire à partir de son identifiant
+   *    summary: Permet de récupérer une entreprise à partir de son identifiant
    *    tags:
    *     - Formulaire
    *    parameters:
@@ -147,10 +133,10 @@ module.exports = ({ formulaire, etablissement, users }) => {
    *        content:
    *          application/json:
    *            schema:
-   *              $ref: "#/components/schemas/formulaire"
+   *              $ref: "#/components/schemas/entreprise"
    */
   router.get(
-    "/:formulaireId",
+    "/formulaire/:formulaireId",
     tryCatch(async (req, res) => {
       const response = await formulaire.getFormulaire(req.params.formulaireId);
       return res.json(response);
@@ -161,7 +147,7 @@ module.exports = ({ formulaire, etablissement, users }) => {
    * @swagger
    * "/offre/:offreId":
    *  get:
-   *    summary: Permet de récupérer le formulaire contant l'offre recherché à partir de son identifiant mongoDB
+   *    summary: Permet de récupérer l'entreprise contant l'offre recherché à partir de son identifiant mongoDB
    *    tags:
    *     - Offre
    *    parameters:
@@ -178,11 +164,11 @@ module.exports = ({ formulaire, etablissement, users }) => {
    *               example: '60646425184afd00e017c188'
    *    responses:
    *      200:
-   *        description: un objet contenant le formulaire dont l'offre est recherché
+   *        description: un objet contenant l'entreprise dont l'offre est recherché
    *        content:
    *          application/json:
    *            schema:
-   *              $ref: "#/components/schemas/formulaire"
+   *              $ref: "#/components/schemas/entreprise"
    */
   router.get(
     "/offre/:offreId",
@@ -194,9 +180,9 @@ module.exports = ({ formulaire, etablissement, users }) => {
 
   /**
    * @swagger
-   * "/:userId":
+   * "/formulaire/:userId":
    *  post:
-   *    summary: Permet de créer un nouveau formulaire pour un utilisateur donné
+   *    summary: Permet de créer une entreprise mandaté pour un utilisateur donné
    *    tags:
    *     - Formulaire
    *    parameters:
@@ -204,25 +190,46 @@ module.exports = ({ formulaire, etablissement, users }) => {
    *         name: userId
    *         required: true
    *    requestBody:
-   *       description: L'objet JSON du formulaire
+   *       description: L'objet JSON de l'entreprise
    *       required: true
    *       content:
    *         application/json:
    *          schema:
-   *           $ref: "#/components/schemas/formulaire"
+   *            type: object
+   *            properties:
+   *              siret:
+   *                type: string
+   *              nom:
+   *                type: string
+   *              prenom:
+   *                type: string
+   *              email:
+   *                type: string
+   *              telephone:
+   *                type: string
+   *              offres:
+   *                type: array
+   *                items:
+   *                  type: object
+   *            required:
+   *              - nom
+   *              - prenom
+   *              - telephone
+   *              - email
+   *              - siret
    *    responses:
    *      200:
-   *        description: un objet contenant le formulaire créé
+   *        description: un objet contenant l'entreprise créé
    *        content:
    *          application/json:
    *            schema:
-   *              $ref: "#/components/schemas/formulaire"
+   *              $ref: "#/components/schemas/entreprise"
    */
   router.post(
-    "/:userId",
+    "/formulaire/:userId",
     tryCatch(async (req, res) => {
       // update validation info
-      const { error } = formulaireValidationSchema.validate(req.body, { abortEarly: false });
+      const { error } = formulaireCreationValidationSchema.validate(req.body, { abortEarly: false });
 
       if (error) {
         return res.status(400).json({ status: "INPUT_VALIDATION_ERROR", message: error.message, error: true });
@@ -273,9 +280,9 @@ module.exports = ({ formulaire, etablissement, users }) => {
 
   /**
    * @swagger
-   * "/:formulaireId/offre":
+   * "/offre/:formulaireId":
    *  post:
-   *    summary: Permet de créer une offre pour un formulaire donné
+   *    summary: Permet de créer une offre pour une entreprise donné
    *    tags:
    *     - Offre
    *    parameters:
@@ -291,14 +298,14 @@ module.exports = ({ formulaire, etablissement, users }) => {
    *           $ref: "#/components/schemas/offre"
    *    responses:
    *      200:
-   *        description: un objet contenant le formulaire dont l'offre a été créé
+   *        description: un objet contenant l'entreprise dont l'offre a été créé
    *        content:
    *          application/json:
    *            schema:
-   *              $ref: "#/components/schemas/formulaire"
+   *              $ref: "#/components/schemas/entreprise"
    */
   router.post(
-    "/:formulaireId/offre",
+    "/offre/:formulaireId",
     tryCatch(async (req, res) => {
       const exist = await formulaire.getFormulaire(req.params.formulaireId);
 
@@ -320,9 +327,9 @@ module.exports = ({ formulaire, etablissement, users }) => {
 
   /**
    * @swagger
-   * "/:formulaireId":
+   * "/formulaire/:formulaireId":
    *  put:
-   *    summary: Permet de modifier un formulaire
+   *    summary: Permet de modifier les informations de l'entreprise
    *    tags:
    *     - Formulaire
    *    parameters:
@@ -330,22 +337,35 @@ module.exports = ({ formulaire, etablissement, users }) => {
    *         name: formulaireId
    *         required: true
    *    requestBody:
-   *       description: L'objet JSON du formulaire
+   *       description: L'objet JSON de l'entreprise
    *       required: true
    *       content:
    *         application/json:
    *          schema:
-   *           $ref: "#/components/schemas/formulaire"
+   *            type: object
+   *            properties:
+   *              nom:
+   *                type: string
+   *              prenom:
+   *                type: string
+   *              email:
+   *                type: string
+   *              telephone:
+   *                type: string
+   *              offres:
+   *                type: array
+   *                items:
+   *                  type: object
    *    responses:
    *      200:
    *        description: un objet contenant le formulaire modifié
    *        content:
    *          application/json:
    *            schema:
-   *              $ref: "#/components/schemas/formulaire"
+   *              $ref: "#/components/schemas/entreprise"
    */
   router.put(
-    "/:formulaireId",
+    "/formulaire/:formulaireId",
     tryCatch(async (req, res) => {
       const exist = await formulaire.getFormulaire(req.params.formulaireId);
 
@@ -353,7 +373,7 @@ module.exports = ({ formulaire, etablissement, users }) => {
         return res.status(400).json({ status: "INVALID_RESSOURCE", message: "Formulaire does not exist" });
       }
 
-      const { error } = formulaireValidationSchema.validate(req.body, { abortEarly: false });
+      const { error } = formulaireEditionValidationSchema.validate(req.body, { abortEarly: false });
 
       if (error) {
         return res.status(400).json({ status: "INPUT_VALIDATION_ERROR", message: error.message });
@@ -366,9 +386,9 @@ module.exports = ({ formulaire, etablissement, users }) => {
   );
   /**
    * @swagger
-   * "/:formulaireId/offre/:offreId":
+   * "/offre/:offreId":
    *  put:
-   *    summary: Permet de modifier une offre pour un formulaire donné
+   *    summary: Permet de modifier une offre
    *    tags:
    *     - Offre
    *    parameters:
@@ -376,22 +396,34 @@ module.exports = ({ formulaire, etablissement, users }) => {
    *         name: offreId
    *         required: true
    *    requestBody:
-   *       description: L'objet JSON de l'offre
-   *       required: true
-   *       content:
-   *         application/json:
+   *      description: L'objet JSON de l'offre
+   *      required: true
+   *      content:
+   *        application/json:
    *          schema:
-   *           $ref: "#/components/schemas/offre"
+   *            type: object
+   *            properties:
+   *              libelle:
+   *                type: string
+   *              niveau:
+   *                type: string
+   *              type:
+   *                type: string
+   *              date_debut_apprentissage:
+   *                type: string
+   *                format: date
+   *              multi_diffuse:
+   *                type: boolean
    *    responses:
    *      200:
-   *        description: un objet contenant le formulaire dont l'offre a été modifié
+   *        description: un objet contenant l'entreprise dont l'offre a été modifié
    *        content:
    *          application/json:
    *            schema:
-   *              $ref: "#/components/schemas/formulaire"
+   *              $ref: "#/components/schemas/entreprise"
    */
   router.put(
-    "/:formulaireId/offre/:offreId",
+    "/offre/:offreId",
     tryCatch(async (req, res) => {
       const checkFormulaire = await formulaire.getFormulaire(req.params.formulaireId);
 
@@ -405,7 +437,7 @@ module.exports = ({ formulaire, etablissement, users }) => {
         return res.status(400).json({ status: "INVALID_RESSOURCE", message: "Offer does not exist" });
       }
 
-      const { error } = formulaireValidationSchema.validate(req.body, { abortEarly: false });
+      const { error } = offreValidationSchema.validate(req.body, { abortEarly: false });
 
       if (error) {
         return res.status(400).json({ status: "INPUT_VALIDATION_ERROR", message: error.message });
@@ -508,17 +540,6 @@ module.exports = ({ formulaire, etablissement, users }) => {
   );
 
   /**
-   *
-   *
-   * GET /api/v1/user/:id
-   * POST /api/v1/user/
-   * PATCH /api/v1/user/:id
-   * DELETE /api/v1/user/:id
-   *
-   *
-   */
-
-  /**
    * @swagger
    * "/user/:userId":
    *  get:
@@ -527,7 +548,7 @@ module.exports = ({ formulaire, etablissement, users }) => {
    *     - Utilisateur
    *    parameters:
    *       - in: _id
-   *         name: offreId
+   *         name: userIf
    *         required: true
    *    responses:
    *      200:
@@ -633,8 +654,24 @@ module.exports = ({ formulaire, etablissement, users }) => {
    *     - Utilisateur
    *    parameters:
    *       - in: _id
-   *         name: offreId
+   *         name: userId
    *         required: true
+   *    requestBody:
+   *       description: L'objet JSON de l'utilisateur.
+   *       required: true
+   *       content:
+   *         application/json:
+   *          schema:
+   *            type: object
+   *            properties:
+   *              prenom:
+   *                type: string
+   *              nom:
+   *                type: string
+   *              email:
+   *                type: string
+   *              telephone:
+   *                type: string
    *    responses:
    *      200:
    *        description: un objet contenant le l'utilisateur
@@ -644,8 +681,24 @@ module.exports = ({ formulaire, etablissement, users }) => {
    *              $ref: "#/components/schemas/user"
    */
   router.put(
-    "/user/:id",
-    tryCatch(async () => {})
+    "/user/:userId",
+    tryCatch(async (req, res) => {
+      if (!req.params.userId) {
+        return res
+          .status(400)
+          .json({ status: "MISSING_PARAM", message: "L'identifiant utilisateur est absent", error: true });
+      }
+
+      const exist = await users.getUser({ _id: req.params.userId });
+
+      if (!exist) {
+        return res.status(400).json({ statut: "NOT_FOUND", message: "L'utilisateur n'existe pas", error: true });
+      }
+
+      const updated = await users.updateUser(req.params.userId, req.body);
+
+      return res.json(updated);
+    })
   );
 
   /**
@@ -657,15 +710,31 @@ module.exports = ({ formulaire, etablissement, users }) => {
    *     - Utilisateur
    *    parameters:
    *       - in: _id
-   *         name: offreId
+   *         name: userId
    *         required: true
    *    responses:
    *      200:
    *        description: le statut 200 (Success)
    */
   router.delete(
-    "/user/:id",
-    tryCatch(async () => {})
+    "/user/:userId",
+    tryCatch(async (req, res) => {
+      if (!req.params.userId) {
+        return res
+          .status(400)
+          .json({ status: "MISSING_PARAM", message: "L'identifiant utilisateur est absent", error: true });
+      }
+
+      const exist = await users.getUser({ _id: req.params.userId });
+
+      if (!exist) {
+        return res.status(400).json({ statut: "NOT_FOUND", message: "L'utilisateur n'existe pas", error: true });
+      }
+
+      await users.removeUser(req.params.userId);
+
+      return res.sendStatus(200);
+    })
   );
 
   return router;

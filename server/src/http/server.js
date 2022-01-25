@@ -40,7 +40,7 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: `${config.publicUrl}/api/v1/formulaire`,
+        url: `${config.publicUrl}/api/v1`,
       },
     ],
   },
@@ -60,6 +60,10 @@ swaggerSpecification.components = {
   },
 };
 
+const swaggerUIOptions = {
+  customCss: ".swagger-ui .topbar { display: none }",
+};
+
 module.exports = async (components) => {
   const { db } = components;
   const app = express();
@@ -71,7 +75,7 @@ module.exports = async (components) => {
   app.use(corsMiddleware());
   app.use(logMiddleware());
 
-  app.use("/api/v1/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpecification));
+  app.use("/api/v1/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpecification, swaggerUIOptions));
 
   app.use("/api/user", user(components));
   app.use("/api/login", login(components));
@@ -80,7 +84,7 @@ module.exports = async (components) => {
   app.use("/api/etablissement", etablissement(components));
   app.use("/api/es/search", esSearch());
   app.use("/api/landing", landing());
-  app.use("/api/v1/formulaire", apiMiddleware, externalAPI(components));
+  app.use("/api/v1", apiMiddleware, externalAPI(components));
 
   app.get(
     "/api",

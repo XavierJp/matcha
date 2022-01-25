@@ -1,7 +1,7 @@
 const { offre } = require("./offre");
 
 module.exports = {
-  formulaire: {
+  entreprise: {
     type: "object",
     properties: {
       id_form: {
