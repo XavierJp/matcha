@@ -232,7 +232,7 @@ const AjoutVoeux = (props) => {
                   isActive={isValid}
                   onClick={submitForm}
                 >
-                  Enregistrer
+                  Créer l'offre
                 </Button>
               </Flex>
             </>
