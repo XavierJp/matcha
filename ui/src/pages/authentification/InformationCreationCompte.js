@@ -3,9 +3,10 @@ import {
   Box,
   Button,
   Flex,
+  Grid,
+  GridItem,
   Heading,
   Link as ChakraLink,
-  SimpleGrid,
   Stack,
   Text,
   useBreakpointValue,
@@ -116,94 +117,90 @@ const Formulaire = () => {
   }
 
   return (
-    <>
-      <Formik
-        validateOnMount={true}
-        initialValues={{
-          siret: siret,
-          raison_sociale: raison_sociale,
-          adresse: adresse,
-          contacts: contacts,
-          geo_coordonnees: geo_coordonnees,
-          uai: uai,
-          opco: opco,
-          type: type,
-          nom: undefined,
-          prenom: undefined,
-          telephone: undefined,
-          email: contacts.length === 1 ? contacts[0].email : undefined,
-        }}
-        validationSchema={Yup.object().shape({
-          raison_sociale: Yup.string().required('champs obligatoire'),
-          siret: Yup.string()
-            .matches(/^[0-9]+$/, 'Le siret est composé uniquement de chiffres')
-            .min(14, 'le siret est sur 14 chiffres')
-            .max(14, 'le siret est sur 14 chiffres')
-            .required('champs obligatoire'),
-          adresse: Yup.string().required('champ obligatoire'),
-          email: Yup.string().email('Insérez un email valide').required('champ obligatoire'),
-          nom: Yup.string().required('champ obligatoire'),
-          prenom: Yup.string().required('champ obligatoire'),
-          telephone: Yup.string()
-            .matches(/^[0-9]+$/, 'Le téléphone est composé uniquement de chiffres')
-            .min(10, 'le téléphone est sur 10 chiffres')
-            .max(10, 'le téléphone est sur 10 chiffres')
-            .required('champ obligatoire'),
-        })}
-        onSubmit={submitForm}
-      >
-        {(informationForm) => {
-          return (
-            <Box maxW='90%'>
-              <Form>
-                <CustomInput required={false} name='nom' label='Nom' type='text' value={informationForm.values.nom} />
-                <CustomInput
-                  required={false}
-                  name='prenom'
-                  label='Prénom'
-                  type='text'
-                  value={informationForm.values.prenom}
-                />
-                <CustomInput
-                  required={false}
-                  name='telephone'
-                  label='Numéro de téléphone'
-                  type='tel'
-                  pattern='[0-9]{10}'
-                  maxLength='10'
-                  value={informationForm.values.telephone}
-                />
-                {/* Quick fix */}
-                <CustomInput
-                  required={false}
-                  name='email'
-                  label='Email'
-                  type='email'
-                  value={informationForm.values.email}
-                  info='Il s’agit de l’adresse qui vous permettra de vous connecter à Matcha. Privilégiez votre adresse professionnelle'
-                />
-                {/* <ContactField values={informationForm.values} /> */}
-                <Flex justifyContent='flex-end' alignItems='center' pt={8}>
-                  <ChakraLink as={Link} size={buttonSize} variant='secondary' mr={5} to='/'>
-                    Annuler
-                  </ChakraLink>
-                  <Button
-                    type='submit'
-                    size={buttonSize}
-                    variant='form'
-                    leftIcon={<ArrowRightLine width={5} />}
-                    isActive={informationForm.isValid}
-                    isDisabled={!informationForm.isValid || informationForm.isSubmitting}
-                  >
-                    Suivant
-                  </Button>
-                </Flex>
-              </Form>
-            </Box>
-          )
-        }}
-      </Formik>
-    </>
+    <Formik
+      validateOnMount={true}
+      initialValues={{
+        siret: siret,
+        raison_sociale: raison_sociale,
+        adresse: adresse,
+        contacts: contacts,
+        geo_coordonnees: geo_coordonnees,
+        uai: uai,
+        opco: opco,
+        type: type,
+        nom: undefined,
+        prenom: undefined,
+        telephone: undefined,
+        email: contacts.length === 1 ? contacts[0].email : undefined,
+      }}
+      validationSchema={Yup.object().shape({
+        raison_sociale: Yup.string().required('champs obligatoire'),
+        siret: Yup.string()
+          .matches(/^[0-9]+$/, 'Le siret est composé uniquement de chiffres')
+          .min(14, 'le siret est sur 14 chiffres')
+          .max(14, 'le siret est sur 14 chiffres')
+          .required('champs obligatoire'),
+        adresse: Yup.string().required('champ obligatoire'),
+        email: Yup.string().email('Insérez un email valide').required('champ obligatoire'),
+        nom: Yup.string().required('champ obligatoire'),
+        prenom: Yup.string().required('champ obligatoire'),
+        telephone: Yup.string()
+          .matches(/^[0-9]+$/, 'Le téléphone est composé uniquement de chiffres')
+          .min(10, 'le téléphone est sur 10 chiffres')
+          .max(10, 'le téléphone est sur 10 chiffres')
+          .required('champ obligatoire'),
+      })}
+      onSubmit={submitForm}
+    >
+      {(informationForm) => {
+        return (
+          <Form>
+            <CustomInput required={false} name='nom' label='Nom' type='text' value={informationForm.values.nom} />
+            <CustomInput
+              required={false}
+              name='prenom'
+              label='Prénom'
+              type='text'
+              value={informationForm.values.prenom}
+            />
+            <CustomInput
+              required={false}
+              name='telephone'
+              label='Numéro de téléphone'
+              type='tel'
+              pattern='[0-9]{10}'
+              maxLength='10'
+              value={informationForm.values.telephone}
+            />
+            {/* Quick fix */}
+            <CustomInput
+              required={false}
+              name='email'
+              label='Email'
+              type='email'
+              value={informationForm.values.email}
+              info='Il s’agit de l’adresse qui vous permettra de vous connecter à Matcha. Privilégiez votre adresse professionnelle'
+            />
+            {/* <ContactField values={informationForm.values} /> */}
+            <Flex justifyContent='flex-end' alignItems='center' mt={5}>
+              <ChakraLink as={Link} size={buttonSize} variant='secondary' mr={5} to='/'>
+                Annuler
+              </ChakraLink>
+              <Button
+                type='submit'
+                size={buttonSize}
+                variant='form'
+                leftIcon={<ArrowRightLine width={5} />}
+                isActive={informationForm.isValid}
+                isDisabled={!informationForm.isValid || informationForm.isSubmitting}
+              >
+                Suivant
+              </Button>
+            </Flex>
+          </Form>
+        )
+      }}
+    </Formik>
   )
 }
 
@@ -215,7 +212,7 @@ const InformationLegale = () => {
   const RAISON_SOCIALE = raison_sociale.length > 30 ? raison_sociale.substring(0, 30) + '...' : raison_sociale
 
   return (
-    <Box border='1px solid #000091' p={5} pb={12} h='100%'>
+    <Box border='1px solid #000091' p={5}>
       <Heading mb={3} fontSize='2xl'>
         Informations légales
       </Heading>
@@ -299,28 +296,26 @@ export default () => {
   const { type } = location.state
 
   return (
-    <AuthentificationLayout>
-      <Box pb={10}>
-        <AnimationContainer>
-          <Box w={['100%', '50%']} pb={10} pt={12} px={['6', '8']}>
-            <Heading fontSize='32px' pb={3}>
+    <AnimationContainer>
+      <AuthentificationLayout>
+        <Grid templateRows={['1fr', '.5fr 2fr']} templateColumns={['1fr', '4fr 5fr']} gap={4}>
+          <GridItem px={[4, 8]} pt={[6, 12]}>
+            <Heading fontSize='32px'>
               {type === 'ENTREPRISE' ? 'Vos informations de contact' : 'Créez votre compte sur Matcha'}
             </Heading>
-            <Box maxW='90%'>
-              <Text fontSize='xl' pt={3}>
-                Ces informations seront visibles sur vos offres et vous permettrons de recevoir les différentes
-                candidatures.
-              </Text>
-            </Box>
-          </Box>
-          <Box px={['6', '8']}>
-            <SimpleGrid columns={['1', '2']} gap={10} flex='1' alignItems='center'>
-              <Formulaire />
-              <InformationLegale />
-            </SimpleGrid>
-          </Box>
-        </AnimationContainer>
-      </Box>
-    </AuthentificationLayout>
+            <Text fontSize='20px' pt='32px'>
+              Ces informations seront visibles sur vos offres et vous permettrons de recevoir les différentes
+              candidatures.
+            </Text>
+          </GridItem>
+          <GridItem rowStart={2} p={[4, 8]}>
+            <Formulaire />
+          </GridItem>
+          <GridItem rowStart={['auto', 2]} pt={[4, 8]} px={[4, 'auto']}>
+            <InformationLegale />
+          </GridItem>
+        </Grid>
+      </AuthentificationLayout>
+    </AnimationContainer>
   )
 }
