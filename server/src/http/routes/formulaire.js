@@ -40,7 +40,7 @@ module.exports = ({ formulaire, mail, etablissement, application, users }) => {
       await Promise.all(
         result.offres.map(async (offre) => {
           let candidatures = await application.getApplication(offre._id);
-          offre.candidatures = candidatures.data.length ?? undefined;
+          offre.candidatures = candidatures.data.length > 0 ? candidatures.data.length : undefined;
 
           return offre;
         })
