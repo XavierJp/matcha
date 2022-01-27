@@ -21,7 +21,6 @@ const formulaire = require("./routes/formulaire");
 const etablissement = require("./routes/etablissement");
 const externalAPI = require("./routes/api");
 const landing = require("./routes/landing");
-const application = require("./routes/application");
 
 const swaggerOptions = {
   definition: {
@@ -81,7 +80,6 @@ module.exports = async (components) => {
   app.use("/api/etablissement", etablissement(components));
   app.use("/api/es/search", esSearch());
   app.use("/api/landing", landing());
-  app.use("/api/application", application());
   app.use("/api/v1/formulaire", apiMiddleware, externalAPI(components));
 
   app.get(
