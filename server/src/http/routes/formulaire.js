@@ -5,7 +5,7 @@ const config = require("config");
 const { User } = require("../../common/model");
 const esClient = getElasticInstance();
 
-module.exports = ({ formulaire, mail, etablissement, users }) => {
+module.exports = ({ formulaire, mail, etablissement, application, users }) => {
   const router = express.Router();
 
   /**
@@ -36,6 +36,15 @@ module.exports = ({ formulaire, mail, etablissement, users }) => {
       if (!result) {
         return res.sendStatus(401);
       }
+
+      await Promise.all(
+        result.offres.map(async (offre) => {
+          let candidatures = await application.getApplication(offre._id);
+          offre.candidatures = candidatures.data.length ?? undefined;
+
+          return offre;
+        })
+      );
 
       return res.json(result);
     })

@@ -16,7 +16,7 @@ module.exports = () => {
         },
       };
     },
-    getFormulaire: (id_form) => Formulaire.findOne({ id_form }),
+    getFormulaire: (id_form) => Formulaire.findOne({ id_form }).lean(),
     createFormulaire: (payload) => Formulaire.create(payload),
     updateFormulaire: (id_form, payload) => Formulaire.findOneAndUpdate({ id_form }, payload, { new: true }),
     deleteFormulaire: (id_form) => Formulaire.deleteOne({ id_form }),
