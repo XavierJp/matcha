@@ -35,8 +35,6 @@ export default memo(() => {
   const navigate = useNavigate()
   const toast = useToast()
 
-  console.log(filterVisible)
-
   useEffect(() => {
     if (location.state?.newUser) {
       toast({
@@ -50,17 +48,6 @@ export default memo(() => {
     }
   }, [])
 
-  // useEffect(() => {
-  //   if (filterVisible === false) {
-  //     console.log('coucou')
-  //     getFormulaires({ origine: auth.scope }).then(({ data }) => {
-  //       if (data.data.length > 0) {
-  //         setFilterVisible(true)
-  //       }
-  //     })
-  //   }
-  // }, [])
-
   const queryFilter = () => {
     if (auth.scope === 'all') return {}
 
@@ -71,14 +58,6 @@ export default memo(() => {
         },
       },
     }
-
-    // return {
-    //   query: {
-    //     regexp: {
-    //       origine: { value: `${auth.scope}*`, flags: 'ALL', case_insensitive: true, max_determinized_states: 100000 },
-    //     },
-    //   },
-    // }
   }
 
   return (
@@ -209,6 +188,7 @@ export default memo(() => {
                   }}
                   renderItem={({ offres, ...formulaire }) => {
                     setFilterVisible(true)
+
                     let active = offres.filter((x) => x.statut === 'Active').length
                     let expire = offres.filter((x) => {
                       if (x.statut === 'Active') {
