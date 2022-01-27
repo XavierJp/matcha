@@ -4,34 +4,32 @@ import {
   Button,
   Flex,
   Heading,
-  IconButton,
+  Icon,
   Link,
+  Menu,
+  MenuButton,
+  MenuDivider,
+  MenuItem,
+  MenuList,
   Spacer,
   Stack,
   Text,
   Tooltip,
-  Menu,
-  MenuItem,
-  MenuButton,
-  MenuList,
-  MenuDivider,
-  Icon,
 } from '@chakra-ui/react'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import useAuth from '../../../common/hooks/useAuth'
 import { willExpire } from '../../../common/utils/dateUtils'
 import {
-  ArrowRightLine,
   BlocNote,
   Clock,
   Edit2Fill,
   ExclamationCircle,
+  ExternalLinkLine,
+  NavVerticalDots,
   Repeat,
   SendPlaneFill,
   Trash,
-  NavVerticalDots,
-  ExternalLinkLine,
 } from '../../../theme/components/icons'
 
 const Card = ({ offre, ...props }) => {
@@ -46,6 +44,11 @@ const Card = ({ offre, ...props }) => {
 
         return (
           <Box bg='white' p={8} border='1px solid' borderColor='bluefrance.500' key={offre._id}>
+            {offre.candidatures && (
+              <Badge sx={{ py: '6px', px: '16px', borderRadius: '40px', backgroundColor: '#E3E3FD', color: '#000091' }}>
+                {offre.candidatures} {offre.candidatures > 1 ? 'candidatures' : 'candidature'}
+              </Badge>
+            )}
             <Flex align='center' direction={['column', 'row']}>
               <Heading textStyle='h3' size='md' pr={3}>
                 <Text isTruncated>{offre.libelle}</Text>
