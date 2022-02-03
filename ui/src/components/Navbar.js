@@ -7,6 +7,7 @@ import {
   Flex,
   Icon,
   Image,
+  Link,
   Menu,
   MenuButton,
   MenuDivider,
@@ -38,6 +39,15 @@ export default () => {
           Environnement de test
         </Alert>
       )}
+      <Alert status='info' variant='top-accent' justifyContent='center'>
+        <AlertIcon />
+        <Link
+          href='https://mission-apprentissage.notion.site/M-fiez-vous-des-arnaques-comment-reconna-tre-des-e-mails-ou-SMS-de-fraude-et-de-phishing-fd4c2f6498a74f3f9377b669ecedb9ba'
+          isExternal
+        >
+          Des emails frauduleux circulent et dirigent vers de faux sites en lien avec des précédentes campagnes Matcha.
+        </Link>
+      </Alert>
       <Container maxW='container.xl'>
         <Flex justifyContent='flex-start' alignItems='center'>
           <Image src={logoMinistere} alt='logo ministere' mr={5} />
