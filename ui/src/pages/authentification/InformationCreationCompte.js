@@ -304,7 +304,7 @@ export default () => {
               {type === 'ENTREPRISE' ? 'Vos informations de contact' : 'Créez votre compte sur Matcha'}
             </Heading>
             <Text fontSize='20px' pt='32px'>
-              Ces informations seront visibles sur vos offres et vous permettrons de recevoir les différentes
+              Ces informations seront visibles sur vos offres et vous permettront de recevoir les différentes
               candidatures.
             </Text>
           </GridItem>
