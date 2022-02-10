@@ -152,7 +152,7 @@ module.exports = ({ formulaire, mail, etablissement, application, users }) => {
       // if first offer creation for an Entreprise, send specific mail
       if (offres.length === 1 && mandataire === false) {
         // Get user account
-        const user = await users.getUser(email);
+        const user = await users.getUser({ email });
         // Get user account validation link
         const url = etablissement.getValidationUrl(user._id);
 

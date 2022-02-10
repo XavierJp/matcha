@@ -16,7 +16,7 @@ const checkToken = (users) => {
       },
       (jwt_payload, done) => {
         return users
-          .getUser(jwt_payload.sub)
+          .getUser({ email: jwt_payload.sub })
           .then((user) => {
             if (!user) {
               return done(null, false, { message: "User not found" });
@@ -41,7 +41,7 @@ module.exports = ({ users, mail, etablissement }) => {
         email: Joi.string().email().required(),
       }).validateAsync(req.body, { abortEarly: false });
 
-      const user = await users.getUser(email);
+      const user = await users.getUser({ email });
 
       if (!user) {
         return res.status(400).json({ error: true, message: "L’adresse email renseignée n’existe pas" });

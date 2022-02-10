@@ -59,6 +59,15 @@ module.exports = {
           enum: ["Apprentissage", "Professionnalisation"],
           description: "Type de contrat",
         },
+        multi_diffuser: {
+          type: "boolean",
+          default: null,
+          description: "Definit si l'offre est diffusé sur d'autre jobboard que Matcha",
+        },
+        delegate: {
+          type: "boolean",
+          description: "Definit si l'entreprise souhaite déléger l'offre à un CFA",
+        },
       },
     },
   },
