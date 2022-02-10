@@ -1,6 +1,6 @@
 import { Box, Button, Flex, Grid, GridItem, Heading, Link, Text, useBreakpointValue } from '@chakra-ui/react'
 import { Form, Formik } from 'formik'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import * as Yup from 'yup'
 import { getCfaInformation, getEntrepriseInformation } from '../../api'
 import AnimationContainer from '../../components/AnimationContainer'
@@ -11,6 +11,7 @@ import AuthentificationLayout from './components/Authentification-layout'
 const CreationCompte = ({ type }) => {
   const buttonSize = useBreakpointValue(['sm', 'md'])
   const navigate = useNavigate()
+  const { origine } = useParams()
 
   const submitSiret = ({ siret }, { setSubmitting, setFieldError }) => {
     // validate SIRET
@@ -18,7 +19,7 @@ const CreationCompte = ({ type }) => {
       getEntrepriseInformation(siret)
         .then(({ data }) => {
           setSubmitting(true)
-          navigate('/creation/detail', { state: { informationSiret: data, type } })
+          navigate('/creation/detail', { state: { informationSiret: data, type, origine } })
         })
         .catch(({ response }) => {
           setFieldError('siret', response.data.message)
