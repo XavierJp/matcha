@@ -22,7 +22,7 @@ import {
 import { Form, Formik } from 'formik'
 import { memo, useContext, useEffect, useState } from 'react'
 import { IoIosAddCircleOutline } from 'react-icons/io'
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import * as Yup from 'yup'
 import { getEntrepriseInformation, getFormulaire, postFormulaire, postOffre, putFormulaire, putOffre } from '../../api'
 import addOfferImage from '../../assets/images/add-offer.svg'
@@ -338,7 +338,7 @@ export default (props) => {
                   {auth.sub !== 'anonymous' && auth.type !== 'ENTREPRISE' ? (
                     <Breadcrumb separator={<ArrowDropRightLine color='grey.600' />} textStyle='xs'>
                       <BreadcrumbItem>
-                        <BreadcrumbLink textDecoration='underline' onClick={() => navigate('/admin')} textStyle='xs'>
+                        <BreadcrumbLink textDecoration='underline' onClick={() => navigate(-1)} textStyle='xs'>
                           Administration des offres
                         </BreadcrumbLink>
                       </BreadcrumbItem>
@@ -352,11 +352,6 @@ export default (props) => {
                     </Breadcrumb>
                   ) : (
                     <Breadcrumb separator={<ArrowDropRightLine color='grey.600' />} textStyle='xs'>
-                      <BreadcrumbItem>
-                        <BreadcrumbLink textDecoration='underline' as={Link} to='/' textStyle='xs'>
-                          Accueil
-                        </BreadcrumbLink>
-                      </BreadcrumbItem>
                       <BreadcrumbItem isCurrentPage>
                         <BreadcrumbLink href='#' textStyle='xs'>
                           {formState._id ? 'Consulter vos offres en cours' : "Nouveau dépot d'offre"}
