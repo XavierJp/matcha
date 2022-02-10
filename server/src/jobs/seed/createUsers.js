@@ -55,7 +55,7 @@ const createUser = async (users) => {
   // Users creation
   await asyncForEach(userList, async (user) => {
     try {
-      let exist = await users.getUser(user.email);
+      let exist = await users.getUser({ email: user.email });
       if (exist) return;
 
       await users.createUser(user);

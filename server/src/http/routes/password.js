@@ -19,7 +19,7 @@ const checkPasswordToken = (users) => {
       },
       (jwt_payload, done) => {
         return users
-          .getUser(jwt_payload.sub)
+          .getUser({ email: jwt_payload.sub })
           .then((user) => {
             if (!user) {
               return done(null, false);
@@ -44,7 +44,7 @@ module.exports = ({ users }) => {
         username: Joi.string().required(),
       }).validateAsync(req.body, { abortEarly: false });
 
-      if (!(await users.getUser(username))) {
+      if (!(await users.getUser({ username }))) {
         throw Boom.badRequest();
       }
 

@@ -1,18 +1,16 @@
 const { offre } = require("./offre");
 
 module.exports = {
-  formulaire: {
+  entreprise: {
     type: "object",
     properties: {
       id_form: {
         type: "string",
-        default: "system",
-        description: "Identifiant de formulaire unique",
+        description: "Identifiant de formulaire unique, déduit par l'application",
       },
       raison_sociale: {
         type: "string",
-        required: true,
-        description: "Raison social de l'entreprise",
+        description: "Raison social de l'entreprise, déduit par l'application",
       },
       siret: {
         type: "string",
@@ -21,13 +19,11 @@ module.exports = {
       },
       adresse: {
         type: "string",
-        required: true,
-        description: "Adresse de l'entreprise",
+        description: "Adresse de l'entreprise, déduit par l'application",
       },
       geo_coordonnees: {
         type: "string",
-        required: true,
-        description: "Longitude/Latitude de l'adresse de l'entreprise ",
+        description: "Longitude/Latitude de l'adresse de l'entreprise, déduit par l'application",
       },
       nom: {
         type: "string",
@@ -49,10 +45,17 @@ module.exports = {
         required: true,
         description: "Email du contact",
       },
+      gestionnaire: {
+        type: "string",
+        description: "SIRET du CFA/OF gestionnaire de l'entreprise, déduit par l'application",
+      },
+      mandataire: {
+        type: "boolean",
+        description: "L'entreprise est géré ou non par un CFA, déduit par l'application",
+      },
       mailing: {
         type: "array",
         description: "Liste des évènements MAIL récupéré par le serveur",
-        required: false,
         items: {
           type: "object",
           required: false,
@@ -83,15 +86,16 @@ module.exports = {
       events: {
         type: "array",
         description: "Liste des évènements sendinblue géré par le serveur",
-        required: false,
       },
       origine: {
         type: "string",
-        default: "user based setup",
-        description: "Origine/organisme lié au formulaire",
-        required: true,
+        description: "Origine/organisme lié au formulaire, déduit par l'application",
       },
       offres: { ...offre, description: "Liste de(s) offre(s) rattachée(s)" },
+      opco: {
+        type: "string",
+        description: "OPCO de rattachement de l'entreprise, déduit par l'application",
+      },
     },
   },
 };

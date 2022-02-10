@@ -46,7 +46,7 @@ module.exports = () => {
         }
       }
     },
-    getEtablissementFromTCO: (siret) =>
+    getEtablissementFromCatalogue: (siret) =>
       axios.get("https://catalogue.apprentissage.beta.gouv.fr/api/v1/entity/etablissements/", {
         params: {
           query: { siret },

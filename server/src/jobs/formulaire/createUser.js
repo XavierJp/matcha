@@ -4,7 +4,7 @@ const createUser = async (
   users,
   { prenom, nom, uai, siret, raison_sociale, telephone, adresse, email, organization, scope, isAdmin }
 ) => {
-  let exist = await users.getUser(email);
+  let exist = await users.getUser({ email });
   if (exist) {
     logger.error(`Users ${email} already exist - ${exist._id}`);
     return;

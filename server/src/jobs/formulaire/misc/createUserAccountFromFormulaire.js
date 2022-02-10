@@ -39,7 +39,7 @@ runScript(async ({ users, etablissement }) => {
     if (result.data?.etablissement.naf.startsWith("85")) {
       // search CFA
       const [catalogue, referentiel] = await Promise.all([
-        etablissement.getEtablissementFromTCO(siret),
+        etablissement.getEtablissementFromCatalogue(siret),
         etablissement.getEtablissementFromReferentiel(siret),
       ]);
 
@@ -104,7 +104,7 @@ runScript(async ({ users, etablissement }) => {
       count.inserted++;
     } else {
       const [catalogue, referentiel] = await Promise.all([
-        etablissement.getEtablissementFromTCO(siret),
+        etablissement.getEtablissementFromCatalogue(siret),
         etablissement.getEtablissementFromReferentiel(siret),
       ]);
 
