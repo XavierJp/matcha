@@ -35,6 +35,10 @@
     "type": "console",
     "level": "info"
   },
+  "lba": {
+    "application": "matcha",
+    "apiKey": "1234"
+  },
   "slackWebhookUrl": null,
   "outputDir": ".local/output"
 }

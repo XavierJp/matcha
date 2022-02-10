@@ -1,31 +1,29 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { Formik, Form, FieldArray } from 'formik'
-import * as Yup from 'yup'
-
-import Layout from '../../components/Layout'
 import {
-  Container,
-  Button,
-  SimpleGrid,
   Box,
+  Button,
+  Container,
+  FormControl,
+  FormHelperText,
+  FormLabel,
   Heading,
   Image,
-  Text,
   Link,
+  SimpleGrid,
   Stack,
+  Text,
   useToast,
-  FormControl,
-  FormLabel,
-  FormHelperText,
 } from '@chakra-ui/react'
-import { ArrowLeft, ArrowRightLine, Close } from '../../theme/components/icons'
-import illustrationCfa from '../../assets/images/illustration-cfa.svg'
-import CustomInput from '../formulaire/components/CustomInput'
+import { FieldArray, Form, Formik } from 'formik'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import * as Yup from 'yup'
 import { getMetier, postEntrepriseLanding } from '../../api'
-import { AnimationContainer } from '../../components'
+import illustrationCfa from '../../assets/images/illustration-cfa.svg'
+import { AnimationContainer, DropdownCombobox } from '../../components'
+import Layout from '../../components/Layout'
+import { ArrowLeft, ArrowRightLine, Close } from '../../theme/components/icons'
+import CustomInput from '../formulaire/components/CustomInput'
 import { EditorialContainer, EditorialTextBlock } from './components'
-import { DropdownCombobox } from '../../components'
 
 export default () => {
   const toast = useToast()
@@ -59,8 +57,8 @@ export default () => {
               </Heading>
               <Text pb={2}>
                 Vous êtes une TPE-PME ? Avec Matcha, transmettez facilement vos offres aux centres de formation à
-                proximité de votre entreprise afin de vous accompagner dans la diffusion et la gestion de vos offres et
-                ainsi trouver l'alternant de vos rêves.
+                proximité de votre entreprise afin de vous faire accompagner dans la diffusion et la gestion de vos
+                offres et ainsi trouver l'alternant de vos rêves.
               </Text>
               <Text fontSize='12px' pb={6} fontStyle='italic'>
                 La prestation de recrutement est gratuite et ne donnera lieu à aucune facturation de la part de
@@ -219,12 +217,12 @@ export default () => {
                 {
                   title: 'Décrivez votre besoin',
                   description:
-                    'Pour que vous soient proposés les meilleurs partenaires possibles en adéquation avec votre projet, il vous faut renseigner votre besoin',
+                    'Pour que vous soient proposés les meilleurs partenaires possibles en adéquation avec votre projet, il vous faut renseigner votre besoin.',
                 },
                 {
                   title: 'Identifiez et transmettez vos offres',
                   description:
-                    "Une fois le formulaire envoyé, nous vous transmettrons par email la liste des organismes de formation que nous avons sélectionné pour vous afin de transmettre vos offres d'alternances",
+                    "Une fois le formulaire envoyé, nous vous transmettrons par email la liste des organismes de formation que nous avons sélectionné pour vous afin de transmettre vos offres d'alternance.",
                 },
                 {
                   title: ' ',
@@ -236,19 +234,19 @@ export default () => {
               header='Pourquoi transmettre mes offres à un organisme de formation ?'
               content={[
                 {
-                  title: 'Gagnez du temps',
+                  title: 'Gagnez du temps.',
                   description:
                     "En transmettant une lettre de mission à un organisme de formation, celui-ci sera en charge de la diffusion, la gestion de votre offre et de la pré-sélection des candidats afin de trouver l'alternant répondant à vos besoins et aux valeurs de votre entreprise.",
                 },
                 {
-                  title: "Rejoignez le réseau des acteurs de l'apprentissage de votre territoire",
+                  title: "Rejoignez le réseau des acteurs de l'apprentissage de votre territoire.",
                   description:
                     "Développez des relations de confiance avec les acteurs de l'apprentissage de votre territoire afin de promouvoir votre entreprise et vos métiers auprès des jeunes.",
                 },
                 {
-                  title: "Présentez une offre d'alternance complète",
+                  title: "Présentez une offre d'alternance complète.",
                   description:
-                    "Facilitez l'entrée des jeunes en alternance et en formation en leurs proposant des offres complètes : formation et emploi",
+                    "Facilitez l'entrée des jeunes en alternance et en formation en leur proposant des offres complètes : formation et emploi.",
                 },
                 {
                   title: ' ',

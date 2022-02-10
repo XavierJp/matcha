@@ -1,14 +1,13 @@
+import { Box, Button, Container, Heading, Image, Link, SimpleGrid, Text, useToast } from '@chakra-ui/react'
+import { Form, Formik } from 'formik'
 import { useNavigate } from 'react-router-dom'
-import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
-
-import Layout from '../../components/Layout'
-import { Flex, Container, Button, SimpleGrid, Box, Heading, Image, Text, Link, Stack, useToast } from '@chakra-ui/react'
-import { ArrowLeft, ArrowRightLine } from '../../theme/components/icons'
-import illustrationCfa from '../../assets/images/illustration-cfa.svg'
-import CustomInput from '../formulaire/components/CustomInput'
 import { postCfaLanding } from '../../api'
+import illustrationCfa from '../../assets/images/illustration-cfa.svg'
 import { AnimationContainer } from '../../components'
+import Layout from '../../components/Layout'
+import { ArrowLeft, ArrowRightLine } from '../../theme/components/icons'
+import CustomInput from '../formulaire/components/CustomInput'
 import { EditorialContainer, EditorialTextBlock } from './components'
 
 export default () => {
@@ -34,7 +33,7 @@ export default () => {
               </Heading>
               <Text pb={2}>
                 Vous êtes un centre de formation ? Avec Matcha, retrouvez facilement les entreprises autour de chez vous
-                prêtes à recruter vos apprenti(e)s. Accompagnez ces entreprises dans la diffusion et la gestion de leurs
+                prêts à recruter vos apprentis. Accompagnez ces entreprises dans la diffusion et la gestion de leurs
                 offres au sein de votre réseau afin d'établir des liens de confiance et développer votre réseau de
                 partenaire.
               </Text>
@@ -96,7 +95,7 @@ export default () => {
                           required={false}
                         />
                         <Text fontSize='14px' color='grey.425' pt={3} pb={6}>
-                          Vos données seront utilisées par Matcha dans le seul but de vous mettre en relation avec un
+                          Vos données seront utilisées par Matcha dans le seul but de vous mettre en relation avec une
                           entreprises. Pour en savoir plus sur vos données et sur vos droits,{' '}
                           <Link textDecoration='underline' color='bluefrance.500'>
                             {' '}
@@ -129,12 +128,12 @@ export default () => {
                 {
                   title: 'Renseignez vos informations',
                   description:
-                    'Le numéro de SIRET nous permettra de facilement localiser votre entreprise et ainsi vous proposer des partenaires à proximité.',
+                    'Le numéro SIRET nous permettra de facilement localiser votre organisme de formation et ainsi vous proposer des partenaires à proximité.',
                 },
                 {
                   title: 'Développez votre réseau',
                   description:
-                    "Une fois le formulaire envoyé, nous vous transmettrons par email la liste des entreprises actuellement à la recherche d'alternants dans votre région afin de prendre contact avec eux.",
+                    "Une fois le formulaire envoyé, nous vous transmettrons par email la liste des entreprises actuellement à la recherche d'alternants dans votre région afin que vous puissiez prendre contact avec eux.",
                 },
                 {
                   title: ' ',
@@ -146,19 +145,19 @@ export default () => {
               header='Pourquoi accompagner des entreprises partenaires ?'
               content={[
                 {
-                  title: 'Gérez les candidatures pour le compte des entreprises',
+                  title: 'Gérez les candidatures pour le compte des entreprises.',
                   description:
-                    'Trouvez des entreprises proches de votre organisme de formation pour leur proposer des candidat(e)s en formation chez vous',
+                    'Trouvez des entreprises proches de votre organisme de formation pour leur proposer des candidats en formation chez vous.',
                 },
                 {
-                  title: 'Développez votre réseau de  partenaires',
+                  title: 'Développez votre réseau de  partenaires.',
                   description:
-                    "Développez des relations de confiance avec les entreprises de votre région en les accompagnants dans leurs recherches d'alternants",
+                    "Développez des relations de confiance avec les entreprises de votre région en les accompagnants dans leursrecherche d'alternants.",
                 },
                 {
-                  title: 'Démultipliez les débouchés pour vos alternants',
+                  title: 'Démultipliez les débouchés pour vos alternants.',
                   description:
-                    "Facilitez l'entrée des jeunes en alternance et en formation en leurs proposant des offres complètes : formation et entreprise d'accueil.",
+                    "Facilitez l'entrée des jeunes en alternance et en formation en leur proposant des offres complètes : formation et entreprise d'accueil.",
                 },
                 {
                   title: ' ',

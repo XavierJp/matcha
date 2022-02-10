@@ -1,4 +1,4 @@
-import { Container, Grid, GridItem, Image, Text, Stack, Link } from '@chakra-ui/react'
+import { Container, Grid, GridItem, Image, Link, Stack, Text } from '@chakra-ui/react'
 import logoMinistere from '../../../assets/images/logo-ministere.svg'
 
 export default () => (
@@ -9,8 +9,8 @@ export default () => (
       </GridItem>
       <GridItem>
         <Text pb={4}>
-          De nombreux jeunes cherchent actuellement un contrat d'apprentissage. Ils et elles sont motivées et
-          disponibles tout de suite, et peuvent correspondre à vos besoins immédiats de recrutement.
+          De nombreux jeunes motivés et disponibles tout de suite cherchent actuellement un contrat d'apprentissage. Ils
+          peuvent correspondre à vos besoins immédiats de recrutement.
         </Text>
         <Text pb={4}>
           L'apprentissage, c'est la garantie de transmettre votre savoir-faire et d'embaucher une future recrue tout en

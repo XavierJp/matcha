@@ -1,6 +1,6 @@
 const express = require("express");
 const tryCatch = require("../middlewares/tryCatchMiddleware");
-const { createUserToken, createMagicLinkToken } = require("../../common/utils/jwtUtils");
+const { createUserToken } = require("../../common/utils/jwtUtils");
 const { User } = require("../../common/model");
 const { CFA } = require("../../common/constants");
 
@@ -86,7 +86,7 @@ module.exports = ({ etablissement, users, mail, formulaire }) => {
       // return res.json({ referentiel: referentiel?.data, catalogue: catalogue?.data?.etablissements[0] });
 
       if (!referentiel) {
-        return res.json({ ...etablissement.formatTCOData(catalogue.data.etablissements[0]) });
+        return res.json({ ...etablissement.formatCatalogueData(catalogue.data.etablissements[0]) });
       }
 
       return res.json({ ...etablissement.formatReferentielData(referentiel.data) });
@@ -111,31 +111,34 @@ module.exports = ({ etablissement, users, mail, formulaire }) => {
       if (ENTREPRISE) {
         formulaireInfo = await formulaire.createFormulaire(req.body);
         partenaire = await users.createUser({ ...req.body, id_form: formulaireInfo.id_form });
+
+        // Dépot simplifié : retourner les informations nécessaire à la suite du parcour
+        return res.json({ formulaire: formulaireInfo, user: partenaire });
+        /**
+         * Comportement précédent ; authentifier l'utilisateur dès la creation
+         * return res.json({ token: createMagicLinkToken(email) });
+         */
       } else {
         partenaire = await users.createUser(req.body);
-      }
 
-      let { email, raison_sociale, _id, nom, prenom, type } = partenaire;
+        let { email, raison_sociale, _id, nom, prenom } = partenaire;
 
-      const url = etablissement.getValidationUrl(_id);
+        const url = etablissement.getValidationUrl(_id);
 
-      const emailBody = mail.getEmailBody({
-        email,
-        senderName: raison_sociale,
-        templateId: type === "ENTREPRISE" ? 226 : 218,
-        tags: ["matcha-confirmation-email"],
-        params: {
-          URL_CONFIRMATION: url,
-          NOM: nom,
-          PRENOM: prenom,
-        },
-      });
+        const emailBody = mail.getEmailBody({
+          email,
+          senderName: raison_sociale,
+          templateId: 218,
+          tags: ["matcha-confirmation-email"],
+          params: {
+            URL_CONFIRMATION: url,
+            NOM: nom,
+            PRENOM: prenom,
+          },
+        });
 
-      await mail.sendmail(emailBody);
+        await mail.sendmail(emailBody);
 
-      if (ENTREPRISE) {
-        return res.json({ token: createMagicLinkToken(email) });
-      } else {
         return res.json({ partenaire });
       }
     })

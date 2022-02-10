@@ -21,8 +21,8 @@ export default ({ title, subtitle, description, buttonLabel, bg, link, type, but
           {subtitle}
         </Text>
         <Text>{description}</Text>
-        <Flex>
-          <Button variant='primary' onClick={() => navigate(`${link}`, { state: { type } })} mr={5}>
+        <Flex direction={['column', 'row']} align={['stretch', 'auto']} sx={{ gap: '10px' }}>
+          <Button variant='primary' onClick={() => navigate(`${link}`, { state: { type } })}>
             {buttonLabel}
           </Button>
           {buttonLabel2 && (

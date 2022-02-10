@@ -8,7 +8,7 @@ export default (props) => {
   const navigate = useNavigate()
 
   return (
-    <Container maxW='container.xl' p={['0', '5']} h='100vh'>
+    <Container maxW='container.xl' p={['0', '5']} pt={[2, 5]} h='100vh'>
       <Flex direction='column' h='100vh' mb={['4', '0']}>
         <Flex justifyContent='space-between' alignItems='center' px={['2', '8']} pb={['4', '0']}>
           <Image display='flex' src={logo} alt='logo matcha' mr={5} />

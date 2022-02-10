@@ -54,7 +54,7 @@ runScript(async ({ users, etablissement }) => {
       }
 
       if (!referentiel) {
-        format = etablissement.formatTCOData(catalogue.data.etablissements[0]);
+        format = etablissement.formatCatalogueData(catalogue.data.etablissements[0]);
       } else {
         format = etablissement.formatReferentielData(referentiel.data);
       }
@@ -119,7 +119,7 @@ runScript(async ({ users, etablissement }) => {
       }
 
       if (!referentiel) {
-        format = etablissement.formatTCOData(catalogue.data.etablissements[0]);
+        format = etablissement.formatCatalogueData(catalogue.data.etablissements[0]);
       } else {
         format = etablissement.formatReferentielData(referentiel.data);
       }

@@ -1,6 +1,4 @@
 import {
-  Alert,
-  AlertIcon,
   Box,
   Breadcrumb,
   BreadcrumbItem,
@@ -23,16 +21,15 @@ import {
 } from '@chakra-ui/react'
 import { Form, Formik } from 'formik'
 import { memo, useContext, useEffect, useState } from 'react'
-import { AiOutlineEdit } from 'react-icons/ai'
 import { IoIosAddCircleOutline } from 'react-icons/io'
-import { Link, useNavigate, useLocation, useParams } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import * as Yup from 'yup'
 import { getEntrepriseInformation, getFormulaire, postFormulaire, postOffre, putFormulaire, putOffre } from '../../api'
 import addOfferImage from '../../assets/images/add-offer.svg'
 import useAuth from '../../common/hooks/useAuth'
 import { AnimationContainer, Layout } from '../../components'
 import { LogoContext } from '../../contextLogo'
-import { ArrowDropRightLine, SearchLine } from '../../theme/components/icons'
+import { ArrowDropRightLine, ArrowRightLine, InfoCircle, SearchLine } from '../../theme/components/icons'
 import AjouterVoeux from './components/AjouterVoeux'
 import ConfirmationSuppression from './components/ConfirmationSuppression'
 import CustomInput from './components/CustomInput'
@@ -133,8 +130,6 @@ export default (props) => {
 
   const newUser = location.state?.newUser ?? false
   const offerPopup = location.state?.offerPopup ?? false
-
-  const hasActiveOffers = offersList.filter((x) => x.statut === 'Active')
 
   const buttonSize = useBreakpointValue(['sm', 'md'])
 
@@ -372,7 +367,6 @@ export default (props) => {
                 </Breadcrumb>
               </Box>
             )}
-
             {readOnlyMode ? (
               <FormulaireLectureSeul formState={formState} buttonSize={buttonSize} setEditionMode={setReadOnlyMode} />
             ) : (
@@ -382,9 +376,7 @@ export default (props) => {
                 initialValues={{
                   mandataire: auth.mandataire,
                   gestionnaire: auth.gestionnaire,
-                  opco: {
-                    libelle: siretInformation.opco?.libelle || formState?.opco?.libelle,
-                  },
+                  opco: siretInformation.opco || formState?.opco,
                   raison_sociale: siretInformation.raison_sociale || formState?.raison_sociale,
                   siret: siretInformation.siret || formState?.siret,
                   adresse: siretInformation.adresse || formState?.adresse,
@@ -421,7 +413,7 @@ export default (props) => {
                         <Box as='h2' fontSize={['sm', '3xl']} fontWeight='700' color='grey.800'>
                           {values.raison_sociale || "Nouveau dépot d'offre"}
                         </Box>
-                        <Spacer />
+                        {/* <Spacer />
                         <Button
                           type='submit'
                           size={buttonSize}
@@ -431,15 +423,21 @@ export default (props) => {
                           isDisabled={!isValid || isSubmitting}
                         >
                           Enregistrer les informations
-                        </Button>
+                        </Button> */}
                       </Flex>
                       <Grid templateColumns='repeat(12, 1fr)'>
                         <GridItem colSpan={12} bg='white' p={8} border='1px solid' borderColor='bluefrance.500'>
                           <Grid templateColumns='repeat(12, 1fr)'>
                             <GridItem colSpan={[12, 6]} p={[, 8]}>
                               <Heading size='md' pb={6}>
-                                Renseignements Entreprise
+                                Renseignements entreprise
                               </Heading>
+                              <Flex alignItems='flex-start' mb='24px'>
+                                <InfoCircle mr={2} mt={1} color='bluefrance.500' />
+                                <Text textAlign='justify'>
+                                  il s’agit de l’entreprise qui vous a mandaté pour gérer ses offres d’emploi.
+                                </Text>
+                              </Flex>
                               {formState._id ? (
                                 <>
                                   <CustomInput
@@ -468,7 +466,7 @@ export default (props) => {
                                       name='opco'
                                       label='Opco de référence'
                                       type='text'
-                                      value={values.opco.libelle}
+                                      value={values.opco}
                                       isDisabled={true}
                                     />
                                   )}
@@ -483,8 +481,14 @@ export default (props) => {
                             </GridItem>
                             <GridItem colSpan={[12, 6]} p={[, 8]}>
                               <Heading size='md' pb={6}>
-                                Informations de contact
+                                Contact privilégié de l’entreprise
                               </Heading>
+                              <Flex alignItems='flex-start' mb='24px'>
+                                <InfoCircle mr={2} mt={1} color='bluefrance.500' />
+                                <Text textAlign='justify'>
+                                  Ces informations ne seront pas visibles sur l’offre d’emploi en ligne.
+                                </Text>
+                              </Flex>
                               <CustomInput name='nom' label='Nom' type='text' value={values.nom} />
                               <CustomInput name='prenom' label='Prénom' type='test' value={values.prenom} />
                               <CustomInput
@@ -501,13 +505,24 @@ export default (props) => {
                           </Grid>
                         </GridItem>
                       </Grid>
+                      <Flex justify='flex-end' mt={5}>
+                        <Button
+                          type='submit'
+                          size={buttonSize}
+                          variant='form'
+                          leftIcon={<ArrowRightLine />}
+                          isActive={isValid}
+                          isDisabled={!isValid || isSubmitting}
+                        >
+                          Enregistrer les informations
+                        </Button>
+                      </Flex>
                     </Form>
                   )
                 }}
               </Formik>
             )}
-
-            {formState?._id && formState.adresse && formState.prenom && formState.nom ? (
+            {formState._id && readOnlyMode && (
               <Box mb={12}>
                 <Flex pt={12} pb={6} alignItems='center'>
                   <Box textStyle='h3' fontSize={['sm', '3xl']} fontWeight='700' color='grey.800'>
@@ -518,7 +533,7 @@ export default (props) => {
                     Ajouter une offre
                   </Button>
                 </Flex>
-                {hasActiveOffers.length > 0 ? (
+                {offersList.length > 0 ? (
                   <ListeVoeux
                     data={offersList}
                     removeOffer={removeOffer}
@@ -557,11 +572,6 @@ export default (props) => {
                   </Flex>
                 )}
               </Box>
-            ) : (
-              <Alert status='info' variant='top-accent' mt={5}>
-                <AlertIcon />
-                Veuillez compléter les informations ci-dessus pour pouvoir déposer vos offres
-              </Alert>
             )}
           </Container>
         </Layout>

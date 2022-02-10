@@ -190,7 +190,13 @@ export default (props) => {
 
                 <FormControl mt={4} isRequired>
                   <FormLabel>Niveau de formation</FormLabel>
-                  <Select size='md' name='niveau' defaultValue={values.niveau} onChange={handleChange}>
+                  <Select
+                    variant='outline'
+                    size='md'
+                    name='niveau'
+                    defaultValue={values.niveau}
+                    onChange={handleChange}
+                  >
                     <option value='' hidden>
                       Choisissez un niveau
                     </option>

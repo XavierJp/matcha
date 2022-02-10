@@ -5,7 +5,7 @@ const config = require("config");
 const { User } = require("../../common/model");
 const esClient = getElasticInstance();
 
-module.exports = ({ formulaire, mail, etablissement }) => {
+module.exports = ({ formulaire, mail, etablissement, application, users }) => {
   const router = express.Router();
 
   /**
@@ -36,6 +36,15 @@ module.exports = ({ formulaire, mail, etablissement }) => {
       if (!result) {
         return res.sendStatus(401);
       }
+
+      await Promise.all(
+        result.offres.map(async (offre) => {
+          let candidatures = await application.getApplication(offre._id);
+          offre.candidatures = candidatures.data.length > 0 ? candidatures.data.length : undefined;
+
+          return offre;
+        })
+      );
 
       return res.json(result);
     })
@@ -111,6 +120,8 @@ module.exports = ({ formulaire, mail, etablissement }) => {
         result.email = cfa.email;
         result.nom = cfa.nom;
         result.prenom = cfa.prenom;
+        result.raison_sociale = cfa.raison_sociale;
+        result.adresse = cfa.adresse;
       }
 
       result.events = undefined;
@@ -129,7 +140,7 @@ module.exports = ({ formulaire, mail, etablissement }) => {
     tryCatch(async (req, res) => {
       const result = await formulaire.createOffre(req.params.id_form, req.body);
 
-      let { email, raison_sociale, prenom, nom, mandataire, gestionnaire } = result;
+      let { email, raison_sociale, prenom, nom, mandataire, gestionnaire, offres } = result;
       let offre = req.body;
       let contactCFA;
 
@@ -137,6 +148,31 @@ module.exports = ({ formulaire, mail, etablissement }) => {
 
       offre.supprimer = `${config.publicUrl}/offre/${offre._id}/cancel`;
       offre.pourvue = `${config.publicUrl}/offre/${offre._id}/provided`;
+
+      // if first offer creation for an Entreprise, send specific mail
+      if (offres.length === 1 && mandataire === false) {
+        // Get user account
+        const user = await users.getUser(email);
+        // Get user account validation link
+        const url = etablissement.getValidationUrl(user._id);
+
+        const body = mail.getEmailBody({
+          email,
+          senderName: raison_sociale,
+          templateId: 241,
+          tags: ["matcha-nouveau-depot-simplifie"],
+          params: {
+            PRENOM: prenom,
+            NOM: nom,
+            CONFIRMATION_URL: url,
+            OFFRES: [offre],
+          },
+        });
+
+        await mail.sendmail(body);
+
+        return res.json(result);
+      }
 
       // get CFA informations if formulaire is handled by a CFA
       if (result.mandataire) {
@@ -307,6 +343,8 @@ module.exports = ({ formulaire, mail, etablissement }) => {
             x._source.email = cfa.email;
             x._source.nom = cfa.nom;
             x._source.prenom = cfa.prenom;
+            x._source.raison_sociale = cfa.raison_sociale;
+            x._source.adresse = cfa.adresse;
           }
 
           x._source.offres.forEach((o) => {

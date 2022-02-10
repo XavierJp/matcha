@@ -10,6 +10,11 @@ const Link = {
     unstyled: {
       _focus: { boxShadow: 'none', outlineColor: 'none' },
     },
+    classic: {
+      textDecoration: 'underline',
+      fontWeight: '700',
+      mx: 1,
+    },
     card: {
       p: 8,
       my: 3,
