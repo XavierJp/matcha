@@ -83,7 +83,7 @@ const Formulaire = () => {
   let navigate = useNavigate()
   let location = useLocation()
   const { raison_sociale, adresse, contacts, siret, geo_coordonnees, uai, opco } = location.state?.informationSiret
-  const { type } = location.state
+  const { type, origine } = location.state
 
   const submitForm = (values, { setSubmitting, setFieldError }) => {
     // save info if not trusted from source
@@ -128,6 +128,7 @@ const Formulaire = () => {
         uai: uai,
         opco: opco,
         type: type,
+        origine: origine ?? 'matcha',
         nom: undefined,
         prenom: undefined,
         telephone: undefined,

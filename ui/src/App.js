@@ -50,6 +50,7 @@ const App = () => {
         <Route path='/' element={<Accueil />} />
         <Route path='/authentification' element={<Connexion />} />
         <Route path='/creation/entreprise' element={<CreationCompte type='ENTREPRISE' />} />
+        <Route path='/creation/entreprise/:origine' element={<CreationCompte type='ENTREPRISE' />} />
         <Route path='/creation/cfa' element={<CreationCompte type='CFA' />} />
         <Route path='/creation/detail' element={<InformationCreationCompte />} />
         <Route path='/creation/offre' element={<DepotRapide_AjouterVoeux />} />
@@ -60,7 +61,7 @@ const App = () => {
         <Route path='/deleguer-gestion-offre-alternant-of' element={<LandingCfa />} />
         <Route path='/accompagner-entreprise-recherche-alternant' element={<LandingEntreprise />} />
         <Route path='/offre/:idOffre/:option' element={<MailActionsOnOffres />} />
-        <Route path='/:origine/' element={<Formulaire />} />
+        {/* <Route path='/:origine/' element={<Formulaire />} /> */}
         <Route path='/widget/:origine/' element={<WidgetFormulaire />} />
         <Route path='/widget/formulaire/:id_form' element={<WidgetFormulaire />} />
         <Route>
