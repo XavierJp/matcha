@@ -335,7 +335,7 @@ export default (props) => {
             {!props.widget && (
               <Box pt={3}>
                 <Breadcrumb separator={<ArrowDropRightLine color='grey.600' />} textStyle='xs'>
-                  {auth.sub !== 'anonymous' && auth.type !== 'ENTREPRISE' ? (
+                  {auth.sub !== 'anonymous' && auth.type !== 'ENTREPRISE' && (
                     <Breadcrumb separator={<ArrowDropRightLine color='grey.600' />} textStyle='xs'>
                       <BreadcrumbItem>
                         <BreadcrumbLink textDecoration='underline' onClick={() => navigate(-1)} textStyle='xs'>
@@ -348,14 +348,6 @@ export default (props) => {
                         ) : (
                           <BreadcrumbLink textStyle='xs'>Nouvelle entreprise</BreadcrumbLink>
                         )}
-                      </BreadcrumbItem>
-                    </Breadcrumb>
-                  ) : (
-                    <Breadcrumb separator={<ArrowDropRightLine color='grey.600' />} textStyle='xs'>
-                      <BreadcrumbItem isCurrentPage>
-                        <BreadcrumbLink href='#' textStyle='xs'>
-                          {formState._id ? 'Consulter vos offres en cours' : "Nouveau dépot d'offre"}
-                        </BreadcrumbLink>
                       </BreadcrumbItem>
                     </Breadcrumb>
                   )}
