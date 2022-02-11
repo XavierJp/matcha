@@ -38,7 +38,7 @@ const App = () => {
               <Search />
             </PrivateRoute>
           }
-        ></Route>
+        />
         <Route
           path='/admin/users'
           element={
@@ -46,7 +46,7 @@ const App = () => {
               <Users />
             </PrivateRoute>
           }
-        ></Route>
+        />
         <Route path='/' element={<Accueil />} />
         <Route path='/authentification' element={<Connexion />} />
         <Route path='/creation/entreprise' element={<CreationCompte type='ENTREPRISE' />} />
@@ -61,19 +61,24 @@ const App = () => {
         <Route path='/deleguer-gestion-offre-alternant-of' element={<LandingCfa />} />
         <Route path='/accompagner-entreprise-recherche-alternant' element={<LandingEntreprise />} />
         <Route path='/offre/:idOffre/:option' element={<MailActionsOnOffres />} />
-        {/* <Route path='/:origine/' element={<Formulaire />} /> */}
+        <Route
+          path='/:origine/'
+          element={
+            <PrivateRoute>
+              <Formulaire />
+            </PrivateRoute>
+          }
+        />
         <Route path='/widget/:origine/' element={<WidgetFormulaire />} />
         <Route path='/widget/formulaire/:id_form' element={<WidgetFormulaire />} />
-        <Route>
-          <Route
-            path='/formulaire/:id_form'
-            element={
-              <PrivateRoute>
-                <Formulaire />
-              </PrivateRoute>
-            }
-          />
-        </Route>
+        <Route
+          path='/formulaire/:id_form'
+          element={
+            <PrivateRoute>
+              <Formulaire />
+            </PrivateRoute>
+          }
+        />
         <Route path='*' element={<NonTrouve />} />
       </Routes>
     </AnimatePresence>
