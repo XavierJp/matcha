@@ -211,7 +211,7 @@ export default (props) => {
   const offreActiveNbr = offreActive.length
 
   const offreToExpire = props.data.filter((x) => {
-    if (willExpire(x.date_expiration)) {
+    if (willExpire(x.date_expiration) && x.statut === 'Active') {
       return x
     }
   })
