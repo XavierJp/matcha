@@ -19,7 +19,6 @@ import {
 } from './pages'
 import DepotRapide_AjouterVoeux from './pages/formulaire/components/DepotRapide_AjouterVoeux'
 import DepotRapide_Fin from './pages/formulaire/components/DepotRapide_Fin'
-import { WidgetFormulaire } from './widget'
 
 function PrivateRoute({ children }) {
   let [auth] = useAuth()
@@ -69,8 +68,7 @@ const App = () => {
             </PrivateRoute>
           }
         />
-        <Route path='/widget/:origine/' element={<WidgetFormulaire />} />
-        <Route path='/widget/formulaire/:id_form' element={<WidgetFormulaire />} />
+        <Route path='/widget/:origine/' element={<CreationCompte type='ENTREPRISE' />} />
         <Route
           path='/formulaire/:id_form'
           element={
