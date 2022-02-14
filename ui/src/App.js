@@ -48,8 +48,8 @@ const App = () => {
         />
         <Route path='/' element={<Accueil />} />
         <Route path='/authentification' element={<Connexion />} />
-        <Route path='/creation/entreprise' element={<CreationCompte type='ENTREPRISE' />} />
-        <Route path='/creation/entreprise/:origine' element={<CreationCompte type='ENTREPRISE' />} />
+        <Route path='/creation/entreprise' element={<CreationCompte type='ENTREPRISE' widget={false} />} />
+        <Route path='/creation/entreprise/:origine' element={<CreationCompte type='ENTREPRISE' widget={false} />} />
         <Route path='/creation/cfa' element={<CreationCompte type='CFA' />} />
         <Route path='/creation/detail' element={<InformationCreationCompte />} />
         <Route path='/creation/offre' element={<DepotRapide_AjouterVoeux />} />
@@ -68,7 +68,7 @@ const App = () => {
             </PrivateRoute>
           }
         />
-        <Route path='/widget/:origine' element={<CreationCompte type='ENTREPRISE' />} />
+        <Route path='/widget/:origine' element={<CreationCompte type='ENTREPRISE' widget={true} />} />
         <Route
           path='/formulaire/:id_form'
           element={

@@ -1,15 +1,14 @@
+import { ChakraProvider } from '@chakra-ui/react'
+import dayjs from 'dayjs'
+import 'dayjs/locale/fr'
 import ReactDOM from 'react-dom'
 import TagManager from 'react-gtm-module'
 import { BrowserRouter } from 'react-router-dom'
-import { ChakraProvider } from '@chakra-ui/react'
-import LogoProvider from './contextLogo'
-import dayjs from 'dayjs'
-
-import theme from './theme'
 import App from './App'
-
+import LogoProvider from './contextLogo'
+import WidgetProvider from './contextWidget'
 import './index.css'
-import 'dayjs/locale/fr'
+import theme from './theme'
 
 dayjs.locale('fr')
 
@@ -18,9 +17,11 @@ TagManager.initialize({ gtmId: 'GTM-KL849C7' })
 ReactDOM.render(
   <BrowserRouter>
     <ChakraProvider theme={theme}>
-      <LogoProvider>
-        <App />
-      </LogoProvider>
+      <WidgetProvider>
+        <LogoProvider>
+          <App />
+        </LogoProvider>
+      </WidgetProvider>
     </ChakraProvider>
   </BrowserRouter>,
   document.getElementById('root')

@@ -1,13 +1,15 @@
 import { Button, Container, Flex, Image } from '@chakra-ui/react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
 import logo from '../../../assets/images/logo.svg'
+import { WidgetContext } from '../../../contextWidget'
 import { Close } from '../../../theme/components/icons'
 
 export default (props) => {
   const navigate = useNavigate()
-  const location = useLocation()
+  const { widget } = useContext(WidgetContext)
 
-  if (location.pathname.includes('widget')) {
+  if (widget) {
     return props.children
   }
 

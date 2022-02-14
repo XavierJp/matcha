@@ -1,9 +1,11 @@
 import { Box, Button, Flex, Grid, GridItem, Heading, Link, Text, useBreakpointValue } from '@chakra-ui/react'
 import { Form, Formik } from 'formik'
+import { useContext } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import * as Yup from 'yup'
 import { getCfaInformation, getEntrepriseInformation } from '../../api'
 import AnimationContainer from '../../components/AnimationContainer'
+import { WidgetContext } from '../../contextWidget'
 import { InfoCircle, SearchLine } from '../../theme/components/icons'
 import CustomInput from '../formulaire/components/CustomInput'
 import AuthentificationLayout from './components/Authentification-layout'
@@ -118,7 +120,13 @@ const InformationSiret = ({ type }) => {
   )
 }
 
-export default ({ type }) => {
+export default ({ type, widget }) => {
+  const { setWidget } = useContext(WidgetContext)
+
+  if (widget) {
+    setWidget(true)
+  }
+
   return (
     <AnimationContainer>
       <AuthentificationLayout>
