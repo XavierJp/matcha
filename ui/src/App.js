@@ -68,7 +68,7 @@ const App = () => {
             </PrivateRoute>
           }
         />
-        <Route path='/widget/:origine/' element={<CreationCompte type='ENTREPRISE' />} />
+        <Route path='/widget/:origine' element={<CreationCompte type='ENTREPRISE' />} />
         <Route
           path='/formulaire/:id_form'
           element={

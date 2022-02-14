@@ -7,8 +7,6 @@ export default (props) => {
   const navigate = useNavigate()
   const location = useLocation()
 
-  console.log(location)
-
   if (location.pathname.includes('widget')) {
     return props.children
   }
