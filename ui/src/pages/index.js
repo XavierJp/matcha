@@ -1,5 +1,5 @@
 import { Accueil, MailActionsOnOffres } from './accueil'
-import { Login, Search, Users } from './admin'
+import { Account, Login, Search, Users } from './admin'
 import {
   ConfirmationCreationCompte,
   ConfirmationValidationEmail,
@@ -28,4 +28,5 @@ export {
   LandingEntreprise,
   LandingCfa,
   MailActionsOnOffres,
+  Account,
 }

@@ -144,6 +144,29 @@ module.exports = ({ etablissement, users, mail, formulaire }) => {
     })
   );
 
+  /**
+   * Récupérer les informations d'un partenaire
+   */
+
+  router.get(
+    "/:siret",
+    tryCatch(async (req, res) => {
+      const partenaire = await users.getUser({ siret: req.params.siret });
+      res.json(partenaire);
+    })
+  );
+  /**
+   * Mise à jour d'un partenaire
+   */
+
+  router.put(
+    "/:id",
+    tryCatch(async (req, res) => {
+      let result = await users.updateUser(req.params.id, req.body);
+      return res.json(result);
+    })
+  );
+
   router.post(
     "/validation",
     tryCatch(async (req, res) => {

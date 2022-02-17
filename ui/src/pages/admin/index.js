@@ -1,5 +1,6 @@
+import Account from './Account'
 import Login from './components/Login'
-import Users from './Users'
 import Search from './Search'
+import Users from './Users'
 
-export { Login, Users, Search }
+export { Login, Users, Search, Account }

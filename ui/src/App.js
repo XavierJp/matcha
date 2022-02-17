@@ -2,6 +2,7 @@ import { AnimatePresence } from 'framer-motion'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import useAuth from './common/hooks/useAuth'
 import {
+  Account,
   Accueil,
   ConfirmationCreationCompte,
   ConfirmationValidationEmail,
@@ -43,6 +44,14 @@ const App = () => {
           element={
             <PrivateRoute>
               <Users />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path='/compte'
+          element={
+            <PrivateRoute>
+              <Account />
             </PrivateRoute>
           }
         />
