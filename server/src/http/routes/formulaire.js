@@ -98,6 +98,14 @@ module.exports = ({ formulaire, mail, etablissement, application, users }) => {
     })
   );
 
+  router.delete(
+    "/:id_form",
+    tryCatch(async (req, res) => {
+      await formulaire.archiveFormulaire(req.params.id_form);
+      return res.sendStatus(200);
+    })
+  );
+
   /**
    * LBA ENDPOINT : get offer from id
    */

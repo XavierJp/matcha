@@ -10,9 +10,15 @@ import {
   Grid,
   GridItem,
   Heading,
+  Icon,
   Link,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Stack,
   Text,
+  useDisclosure,
   useToast,
 } from '@chakra-ui/react'
 import { memo, useEffect, useState } from 'react'
@@ -22,18 +28,21 @@ import { willExpire } from '../../common/utils/dateUtils'
 import { AnimationContainer, Layout } from '../../components'
 import ExportButton from '../../components/ExportButton/ExportButton'
 import Facet from '../../components/Facet/Facet'
-import { BlocNote, Edit2Fill, ExclamationCircle } from '../../theme/components/icons'
+import { BlocNote, ExclamationCircle, NavVerticalDots } from '../../theme/components/icons'
 import constants from './admin.constants'
+import ConfirmationPopup from './components/ConfirmationPopup'
 import EmptySpace from './components/EmptySpace'
 import './search.css'
 
 export default memo(() => {
   const { filters, facetDefinition, dataSearchDefinition, exportableColumns, excludedFields } = constants
   const [filterVisible, setFilterVisible] = useState()
+  const [currentFormulaire, setCurrentFormulaire] = useState()
   const [auth] = useAuth()
   const location = useLocation()
   const navigate = useNavigate()
   const toast = useToast()
+  const confirmationSuppression = useDisclosure()
 
   useEffect(() => {
     if (location.state?.newUser) {
@@ -58,21 +67,84 @@ export default memo(() => {
         },
       },
     }
+
+    // return {
+    //   query: {
+    //     bool: {
+    //       must: {
+    //         match_all: {},
+    //       },
+    //       filter: [
+    //         {
+    //           term: {
+    //             statut: 'Actif',
+    //           },
+    //         },
+    //         {
+    //           term: {
+    //             origine: auth.scope,
+    //           },
+    //         },
+    //       ],
+    //     },
+    //   },
+    // }
+
+    // return {
+    //   query: {
+    //     bool: {
+    //       must: {
+    //         term: {
+    //           origine: auth.scope,
+    //         },
+    //       },
+    //       filter: {
+    //         term: {
+    //           statut: 'Actif',
+    //         },
+    //       },
+    //     },
+    //   },
+    // }
+
+    return {
+      query: {
+        bool: {
+          must: [
+            {
+              match_all: {},
+            },
+          ],
+          filter: [
+            {
+              term: {
+                statut: 'Actif',
+              },
+            },
+            {
+              term: {
+                origine: auth.scope,
+              },
+            },
+          ],
+        },
+      },
+    }
   }
 
   return (
     <AnimationContainer>
+      <ConfirmationPopup {...confirmationSuppression} {...currentFormulaire} />
       <Layout background='beige'>
         <Container maxW='container.xl' py={4}>
-          <Flex justifyContent='space-between' alignItems='center'>
-            <Breadcrumb spacing='4px' textStyle='xs'>
-              <BreadcrumbItem isCurrentPage>
-                <BreadcrumbLink href='#' textStyle='xs'>
-                  Administration des offres
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-            </Breadcrumb>
-
+          <Breadcrumb spacing='4px' textStyle='xs'>
+            <BreadcrumbItem isCurrentPage>
+              <BreadcrumbLink href='#' textStyle='xs'>
+                Administration des offres
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+          </Breadcrumb>
+          <Flex justify='flex-end'>
             <Button
               variant='primary'
               size='sm'
@@ -83,12 +155,18 @@ export default memo(() => {
             </Button>
           </Flex>
           <div className='search-page'>
-            <ReactiveBase url={`${process.env.REACT_APP_BASE_URL}/es/search`} app='formulaires'>
+            <ReactiveBase
+              url={`${process.env.REACT_APP_BASE_URL}/es/search`}
+              app='formulaires'
+              theme={{ typography: { fontFamily: 'Marianne' } }}
+            >
               <Grid templateColumns={filterVisible ? '1fr 3fr' : '1fr'} gap={3} pt={3}>
                 {filterVisible && (
                   <>
                     <GridItem>
-                      <Text fontWeight='700'>RECHERCHER</Text>
+                      <Text fontWeight='700' fontSize='32px'>
+                        Rechercher
+                      </Text>
                     </GridItem>
                     <GridItem sx={{ margin: '0 .7em' }}>
                       <div className='search-container'>
@@ -198,8 +276,12 @@ export default memo(() => {
                       }).length
 
                       return (
-                        <Link as={NavLink} to={`/formulaire/${formulaire.id_form}`} variant='card' key={formulaire._id}>
-                          <Box bg='none' key={formulaire._id}>
+                        <div
+                          style={{
+                            fontFamily: 'Marianne',
+                          }}
+                        >
+                          <Box bg='white' p={8} my={3} key={formulaire._id} key={formulaire._id}>
                             <Flex
                               key={formulaire._id}
                               textStyle='sm'
@@ -215,15 +297,29 @@ export default memo(() => {
                                 </Text>
                               </Box>
                               <Flex align='center'>
-                                <Edit2Fill mr={3} color='bluefrance.500' />
-                                <Link
-                                  fontSize='16px'
-                                  as={NavLink}
-                                  to={`/formulaire/${formulaire.id_form}`}
-                                  color='bluefrance.500'
-                                >
-                                  Voir les offres
-                                </Link>
+                                <Menu>
+                                  {({ isOpen }) => (
+                                    <>
+                                      <MenuButton isActive={isOpen} as={Button} variant='navdot'>
+                                        <Icon as={NavVerticalDots} w='16px' h='16px' />
+                                      </MenuButton>
+                                      <MenuList>
+                                        <Link fontSize='16px' as={NavLink} to={`/formulaire/${formulaire.id_form}`}>
+                                          <MenuItem>Voir les offres</MenuItem>
+                                        </Link>
+                                        <Link
+                                          fontSize='16px'
+                                          onClick={() => {
+                                            setCurrentFormulaire(formulaire)
+                                            confirmationSuppression.onOpen()
+                                          }}
+                                        >
+                                          <MenuItem>Supprimer l'entreprise</MenuItem>
+                                        </Link>
+                                      </MenuList>
+                                    </>
+                                  )}
+                                </Menu>
                               </Flex>
                             </Flex>
                             <Stack direction='row' spacing={3} mt={10}>
@@ -245,7 +341,7 @@ export default memo(() => {
                               )}
                             </Stack>
                           </Box>
-                        </Link>
+                        </div>
                       )
                     }}
                   />

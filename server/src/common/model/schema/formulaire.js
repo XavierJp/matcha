@@ -159,6 +159,12 @@ module.exports = new Schema(
       type: String,
       description: "Information sur l'opco de l'entreprise",
     },
+    statut: {
+      type: String,
+      enum: ["Actif", "Archivé", "En attente de validation"],
+      default: "Actif",
+      description: "Statut du formulaire",
+    },
   },
   {
     timestamps: true,

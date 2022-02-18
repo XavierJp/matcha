@@ -19,7 +19,18 @@ module.exports = () => {
     getFormulaire: (id_form) => Formulaire.findOne({ id_form }).lean(),
     createFormulaire: (payload) => Formulaire.create(payload),
     updateFormulaire: (id_form, payload) => Formulaire.findOneAndUpdate({ id_form }, payload, { new: true }),
-    deleteFormulaire: (id_form) => Formulaire.deleteOne({ id_form }),
+    archiveFormulaire: async (id_form) => {
+      let form = await Formulaire.findOne({ id_form });
+
+      form.offres.map((offre) => {
+        offre.statut = "Annulée";
+      });
+
+      form.statut = "Archivé";
+      await form.save();
+
+      return true;
+    },
     getOffre: (id) => Formulaire.findOne({ "offres._id": id }),
     createOffre: (id_form, payload) =>
       Formulaire.findOneAndUpdate({ id_form }, { $push: { offres: payload } }, { new: true }),

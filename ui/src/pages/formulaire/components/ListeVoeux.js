@@ -8,7 +8,6 @@ import {
   Link,
   Menu,
   MenuButton,
-  MenuDivider,
   MenuItem,
   MenuList,
   Spacer,
@@ -72,19 +71,16 @@ const Card = ({ offre, ...props }) => {
                         <>
                           <MenuItem>
                             <Link
-                              color='bluefrance.500'
                               isExternal
                               href={`https://labonnealternance.apprentissage.beta.gouv.fr/recherche-apprentissage-formation?&caller=matcha&romes=${offre.romes}&lon=${lon}&lat=${lat}`}
                             >
                               Voir les centres de formations
                             </Link>
                           </MenuItem>
-                          <MenuDivider />
                         </>
                       )}
                       <MenuItem>
                         <Link
-                          color='bluefrance.500'
                           isExternal
                           href={`https://labonnealternance${
                             window.location.href.includes('recette') ? '-recette' : ''
