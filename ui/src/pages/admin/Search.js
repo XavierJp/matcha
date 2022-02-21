@@ -62,68 +62,16 @@ export default memo(() => {
 
     return {
       query: {
-        match_phrase_prefix: {
-          origine: auth.scope,
-        },
-      },
-    }
-
-    // return {
-    //   query: {
-    //     bool: {
-    //       must: {
-    //         match_all: {},
-    //       },
-    //       filter: [
-    //         {
-    //           term: {
-    //             statut: 'Actif',
-    //           },
-    //         },
-    //         {
-    //           term: {
-    //             origine: auth.scope,
-    //           },
-    //         },
-    //       ],
-    //     },
-    //   },
-    // }
-
-    // return {
-    //   query: {
-    //     bool: {
-    //       must: {
-    //         term: {
-    //           origine: auth.scope,
-    //         },
-    //       },
-    //       filter: {
-    //         term: {
-    //           statut: 'Actif',
-    //         },
-    //       },
-    //     },
-    //   },
-    // }
-
-    return {
-      query: {
         bool: {
-          must: [
-            {
-              match_all: {},
+          must: {
+            match_phrase_prefix: {
+              origine: auth.scope,
             },
-          ],
+          },
           filter: [
             {
-              term: {
+              match: {
                 statut: 'Actif',
-              },
-            },
-            {
-              term: {
-                origine: auth.scope,
               },
             },
           ],

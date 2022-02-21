@@ -19,21 +19,22 @@ export default (props) => {
   const toast = useToast()
 
   const SupprimerFormulaire = () => {
-    archiveFormulaire(id_form).then(() => {
-      toast({
-        title: 'Suppression réussie',
-        description: "L'entreprise et ses offres ont bien été supprimée.",
-        position: 'top-right',
-        status: 'success',
-        duration: 4000,
-        isClosable: true,
+    archiveFormulaire(id_form)
+      .then(() => {
+        toast({
+          title: 'Suppression réussie',
+          description: "L'entreprise et ses offres ont bien été supprimée.",
+          position: 'top-right',
+          status: 'success',
+          duration: 4000,
+          isClosable: true,
+        })
       })
-    })
-    // .finally(() => {
-    //   setTimeout(() => {
-    //     window.location.reload()
-    //   }, 1000)
-    // })
+      .finally(() => {
+        setTimeout(() => {
+          window.location.reload()
+        }, 1000)
+      })
     onClose()
   }
 
