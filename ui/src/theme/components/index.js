@@ -5,6 +5,7 @@ import { Button } from './button'
 import { Checkbox } from './checkbox'
 import { Input } from './input'
 import { Link } from './link'
+import { Menu } from './menu'
 import { Radio } from './radio'
 import { Select } from './select'
 import { Switch } from './switch'
@@ -25,6 +26,7 @@ const components = {
   Accordion,
   Select,
   Radio,
+  Menu,
   Checkbox,
 }
 
