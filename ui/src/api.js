@@ -47,7 +47,8 @@ export const validateToken = async (token) => await API.post(`/login/verificatio
 export const sendMagiclink = async (email) => await API.post(`/login/magiclink`, email)
 
 export const getCfaInformation = async (siret) => await API.get(`/etablissement/cfa/${siret}`)
-export const getEntrepriseInformation = async (siret) => await API.get(`/etablissement/entreprise/${siret}`)
+export const getEntrepriseInformation = async (siret, options) =>
+  await API.get(`/etablissement/entreprise/${siret}`, { params: options })
 export const getPartenaire = (siret) => API.get(`etablissement/${siret}`)
 export const createPartenaire = (partenaire) => API.post('/etablissement/creation', partenaire)
 export const updatePartenaire = (id, partenaire) => API.put(`/etablissement/${id}`, partenaire)

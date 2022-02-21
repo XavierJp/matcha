@@ -171,6 +171,7 @@ const Formulaire = () => {
               type='tel'
               pattern='[0-9]{10}'
               maxLength='10'
+              helper="Le numéro de téléphone sera visible sur l'offre d'emploi"
               value={informationForm.values.telephone}
             />
             {/* Quick fix */}
