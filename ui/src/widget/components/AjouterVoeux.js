@@ -1,36 +1,34 @@
-import { useState, useRef, useContext } from 'react'
 import {
-  Button,
-  Modal,
-  ModalContent,
-  ModalBody,
-  ModalHeader,
-  ModalFooter,
-  ModalOverlay,
-  FormControl,
-  FormLabel,
-  FormHelperText,
-  Select,
-  Textarea,
-  FormErrorMessage,
-  Input,
-  Text,
-  Heading,
-  Flex,
-  Radio,
-  RadioGroup,
-  Stack,
-  Link,
   Box,
+  Button,
+  Checkbox,
+  CheckboxGroup,
+  Flex,
+  FormControl,
+  FormErrorMessage,
+  FormHelperText,
+  FormLabel,
+  Heading,
+  Input,
+  Link,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Select,
+  Stack,
+  Text,
+  Textarea,
 } from '@chakra-ui/react'
-import { Formik } from 'formik'
-
-import * as Yup from 'yup'
 import dayjs from 'dayjs'
-
+import { Formik } from 'formik'
+import { useContext, useRef, useState } from 'react'
+import * as Yup from 'yup'
 import { DropdownCombobox } from '../../components'
-import { ArrowRightLine, Close, ExternalLinkLine, ThumbDown, ThumbUp } from '../../theme/components/icons'
 import { LogoContext } from '../../contextLogo'
+import { ArrowRightLine, Close, ExternalLinkLine, ThumbDown, ThumbUp } from '../../theme/components/icons'
 
 const DATE_FORMAT = 'YYYY-MM-DD'
 
@@ -73,7 +71,7 @@ export default (props) => {
         date_creation: props.date_creation ?? dayjs().format(DATE_FORMAT),
         date_expiration: props.date_expiration ?? dayjs().add(1, 'month').format(DATE_FORMAT),
         statut: props.statut ?? 'Active',
-        type: props.type ?? 'Apprentissage',
+        type: props.type ?? ['Apprentissage'],
         multi_diffuser: props.multi_diffuser ?? undefined,
       }}
       validationSchema={Yup.object().shape({
@@ -81,7 +79,7 @@ export default (props) => {
         niveau: Yup.string().required('Champ obligatoire'),
         date_debut_apprentissage: Yup.date().required('Champ obligatoire'),
         description: Yup.string(),
-        type: Yup.string().required('Champ obligatoire'),
+        type: Yup.array().required('Champ obligatoire'),
         multi_diffuser: Yup.boolean(),
       })}
       onSubmit={async (values, { resetForm }) => {
@@ -174,17 +172,18 @@ export default (props) => {
                       </Link>
                     </Flex>
                   </FormLabel>
-                  <RadioGroup
+                  <CheckboxGroup
                     onChange={(value) => {
                       setFieldValue('type', value)
                     }}
                     value={values.type}
+                    defaultValue={['Apprentissage']}
                   >
                     <Stack direction='row' spacing={5}>
-                      <Radio value='Apprentissage'>Apprentissage</Radio>
-                      <Radio value='Professionnalisation'>Professionnalisation</Radio>
+                      <Checkbox value='Apprentissage'>Apprentissage</Checkbox>
+                      <Checkbox value='Professionnalisation'>Professionnalisation</Checkbox>
                     </Stack>
-                  </RadioGroup>
+                  </CheckboxGroup>
                 </FormControl>
 
                 <FormControl mt={4} isRequired>

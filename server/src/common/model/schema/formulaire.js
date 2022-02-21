@@ -60,7 +60,7 @@ const offresSchema = new Schema({
     description: "Statut de l'offre",
   },
   type: {
-    type: String,
+    type: [String],
     default: "Apprentissage",
     enum: ["Apprentissage", "Professionnalisation"],
     description: "Type de contrat",
