@@ -19,8 +19,6 @@ module.exports = ({ etablissement, users, mail, formulaire }) => {
 
       const result = await etablissement.getEtablissementFromGouv(req.params.siret);
 
-      // return res.json(result.data);
-
       if (!result) {
         return res.status(400).json({ error: true, message: "Le numéro siret est invalide." });
       }
@@ -29,16 +27,21 @@ module.exports = ({ etablissement, users, mail, formulaire }) => {
         return res.status(400).json({ error: true, message: "Cette entreprise est considérée comme fermé." });
       }
 
-      if (result.data?.etablissement.naf.startsWith("85")) {
-        return res.status(400).json({
-          error: true,
-          message: "Le numéro siret n'est pas référencé comme une entreprise.",
-        });
+      // Allow cfa to add themselves as a company
+      if (!req.query.fromDashboardCfa) {
+        if (result.data?.etablissement.naf.startsWith("85")) {
+          return res.status(400).json({
+            error: true,
+            message: "Le numéro siret n'est pas référencé comme une entreprise.",
+          });
+        }
       }
 
       let opcoResult = await etablissement.getOpco(req.params.siret);
 
       let response = etablissement.formatEntrepriseData(result.data.etablissement);
+
+      console.log(result.data);
 
       response.geo_coordonnees = await etablissement.getGeoCoordinates(
         `${response.adresse}, ${response.code_postal}, ${response.commune}`
