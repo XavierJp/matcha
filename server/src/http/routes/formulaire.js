@@ -62,12 +62,16 @@ module.exports = ({ formulaire, mail, etablissement, application, users }) => {
        * HOTFIX 18/02 : dans le modèle précédent du widget, les utilisateurs n'était pas créé dans la collection User.
        */
       if (req.body.origine === "akto") {
-        await users.createUser({
-          ...req.body,
-          type: "ENTREPRISE",
-          id_form: response.id_form,
-          email_valide: true,
-        });
+        let exist = await users.getUser({ email: req.body.email });
+
+        if (!exist) {
+          await users.createUser({
+            ...req.body,
+            type: "ENTREPRISE",
+            id_form: response.id_form,
+            email_valide: true,
+          });
+        }
       }
       /** 
        * 20/12/2021 : mise en commentaire car l'accès est impossible depuis l'URL seul, il faut être authentifié.
