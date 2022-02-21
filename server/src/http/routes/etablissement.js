@@ -29,7 +29,11 @@ module.exports = ({ etablissement, users, mail, formulaire }) => {
 
       // Check if a CFA already has the company as partenaire
       if (req.query.fromDashboardCfa) {
-        const exist = await formulaire.getFormulaire({ siret: req.params.siret, gestionnaire: req.query.gestionnaire });
+        const exist = await formulaire.getFormulaire({
+          siret: req.params.siret,
+          gestionnaire: req.query.gestionnaire,
+          statut: "Actif",
+        });
 
         if (exist) {
           return res.status(400).json({
