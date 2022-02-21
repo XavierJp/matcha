@@ -31,7 +31,7 @@ module.exports = ({ formulaire, mail, etablissement, application, users }) => {
   router.get(
     "/:id_form",
     tryCatch(async (req, res) => {
-      let result = await formulaire.getFormulaire(req.params.id_form);
+      let result = await formulaire.getFormulaire({ id_form: req.params.id_form });
 
       if (!result) {
         return res.sendStatus(401);

@@ -242,7 +242,7 @@ export default (props) => {
 
   const submitSiret = ({ siret }, { setSubmitting, setFieldError, setFieldValue }) => {
     // validate SIRET
-    getEntrepriseInformation(siret, { fromDashboardCfa: true })
+    getEntrepriseInformation(siret, { fromDashboardCfa: true, gestionnaire: auth.gestionnaire })
       .then(({ data }) => {
         setSubmitting(true)
         setSiretInformation(data)

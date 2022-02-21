@@ -27,6 +27,18 @@ module.exports = ({ etablissement, users, mail, formulaire }) => {
         return res.status(400).json({ error: true, message: "Cette entreprise est considérée comme fermé." });
       }
 
+      // Check if a CFA already has the company as partenaire
+      if (req.query.fromDashboardCfa) {
+        const exist = await formulaire.getFormulaire({ siret: req.params.siret, gestionnaire: req.query.gestionnaire });
+
+        if (exist) {
+          return res.status(400).json({
+            error: true,
+            message: "L'entreprise est déjà référencer comme partenaire.",
+          });
+        }
+      }
+
       // Allow cfa to add themselves as a company
       if (!req.query.fromDashboardCfa) {
         if (result.data?.etablissement.naf.startsWith("85")) {
