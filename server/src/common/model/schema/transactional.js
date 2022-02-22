@@ -1,6 +1,6 @@
 const { Schema } = require("mongoose");
 
-const transactionalSchema = new Schema(
+module.exports = new Schema(
   {
     campagne: {
       type: String,
@@ -23,5 +23,3 @@ const transactionalSchema = new Schema(
     timestamps: true,
   }
 );
-
-module.exports = { transactionalSchema };

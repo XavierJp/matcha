@@ -4,6 +4,7 @@ const logSchema = require("./logs");
 const usersSchema = require("./users");
 const credentialsSchema = require("./credentials");
 const landingSchema = require("./landing");
+const offresSchema = require("./offre");
 
 module.exports = {
   transactionalSchema,
@@ -12,4 +13,5 @@ module.exports = {
   usersSchema,
   credentialsSchema,
   landingSchema,
+  offresSchema,
 };
