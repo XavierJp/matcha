@@ -38,7 +38,7 @@ module.exports = ({ etablissement, users, mail, formulaire }) => {
         if (exist) {
           return res.status(400).json({
             error: true,
-            message: "L'entreprise est déjà référencer comme partenaire.",
+            message: "L'entreprise est déjà référencée comme partenaire.",
           });
         }
       }
