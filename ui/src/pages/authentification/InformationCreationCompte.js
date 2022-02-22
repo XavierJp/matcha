@@ -14,11 +14,12 @@ import {
   WrapItem,
 } from '@chakra-ui/react'
 import { Form, Formik } from 'formik'
-import { memo } from 'react'
+import { memo, useContext } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import * as Yup from 'yup'
 import { createPartenaire } from '../../api'
 import { AnimationContainer, InfoTooltip } from '../../components'
+import { WidgetContext } from '../../contextWidget'
 import { ArrowRightLine, InfoCircle } from '../../theme/components/icons'
 import CustomInput from '../formulaire/components/CustomInput'
 import CustomSelect from '../formulaire/components/CustomSelect'
@@ -82,6 +83,7 @@ const Formulaire = () => {
   const buttonSize = useBreakpointValue(['sm', 'md'])
   let navigate = useNavigate()
   let location = useLocation()
+  const { widget } = useContext(WidgetContext)
   const { raison_sociale, adresse, contacts, siret, geo_coordonnees, uai, opco } = location.state?.informationSiret
   const { type, origine } = location.state
 
@@ -185,9 +187,11 @@ const Formulaire = () => {
             />
             {/* <ContactField values={informationForm.values} /> */}
             <Flex justifyContent='flex-end' alignItems='center' mt={5}>
-              <ChakraLink as={Link} size={buttonSize} variant='secondary' mr={5} to='/'>
-                Annuler
-              </ChakraLink>
+              {!widget && (
+                <ChakraLink as={Link} size={buttonSize} variant='secondary' mr={5} to='/'>
+                  Annuler
+                </ChakraLink>
+              )}
               <Button
                 type='submit'
                 size={buttonSize}
