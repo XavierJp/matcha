@@ -9,6 +9,7 @@ const { resetPassword } = require("./jobs/formulaire/resetPassword");
 const { generateIndexes } = require("./jobs/indexes/generateIndexes");
 const { annuleFormulaire } = require("./jobs/formulaire/annuleFormulaire");
 const { relanceFormulaire } = require("./jobs/formulaire/relanceFormulaire");
+const { createOffreCollection } = require("./jobs/seed/createOffre");
 
 cli.addHelpText("after");
 
@@ -90,6 +91,13 @@ cli
   .description("Récupérer l'ensemble des emails envoyés pour un formulaire donné")
   .action(() => {
     runScript(({ mail }) => getAllEvents(mail));
+  });
+
+cli
+  .command("creer-offre-metabase")
+  .description("Permet de créer une collection dédiée aux offres pour metabase")
+  .action(() => {
+    runScript(() => createOffreCollection());
   });
 
 cli.parse(process.argv);

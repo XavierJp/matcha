@@ -8,7 +8,6 @@ import {
   Link,
   Menu,
   MenuButton,
-  MenuDivider,
   MenuItem,
   MenuList,
   Spacer,
@@ -72,19 +71,16 @@ const Card = ({ offre, ...props }) => {
                         <>
                           <MenuItem>
                             <Link
-                              color='bluefrance.500'
                               isExternal
                               href={`https://labonnealternance.apprentissage.beta.gouv.fr/recherche-apprentissage-formation?&caller=matcha&romes=${offre.romes}&lon=${lon}&lat=${lat}`}
                             >
                               Voir les centres de formations
                             </Link>
                           </MenuItem>
-                          <MenuDivider />
                         </>
                       )}
                       <MenuItem>
                         <Link
-                          color='bluefrance.500'
                           isExternal
                           href={`https://labonnealternance${
                             window.location.href.includes('recette') ? '-recette' : ''
@@ -103,7 +99,7 @@ const Card = ({ offre, ...props }) => {
               <Flex align='center'>
                 <BlocNote color='bluefrance.500' w='18px' h='22px' mr={2} />
                 <Text>
-                  {offre.type} en {offre.niveau}
+                  {offre.type.length > 1 ? `Apprentissage / Professionnalisation` : offre.type[0]} en {offre.niveau}
                 </Text>
               </Flex>
               <Flex align='center'>

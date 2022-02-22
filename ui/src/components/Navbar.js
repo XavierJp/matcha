@@ -72,6 +72,7 @@ export default () => {
                 {auth.sub !== 'anonymous' && auth.type !== 'ENTREPRISE' && (
                   <>
                     <MenuItem onClick={() => navigate('/admin')}>Gestion des offres</MenuItem>
+                    <MenuItem onClick={() => navigate('/compte')}>Mes informations</MenuItem>
                     <MenuDivider />
                   </>
                 )}

@@ -19,8 +19,6 @@ module.exports = ({ etablissement, users, mail, formulaire }) => {
 
       const result = await etablissement.getEtablissementFromGouv(req.params.siret);
 
-      // return res.json(result.data);
-
       if (!result) {
         return res.status(400).json({ error: true, message: "Le numéro siret est invalide." });
       }
@@ -29,16 +27,37 @@ module.exports = ({ etablissement, users, mail, formulaire }) => {
         return res.status(400).json({ error: true, message: "Cette entreprise est considérée comme fermé." });
       }
 
-      if (result.data?.etablissement.naf.startsWith("85")) {
-        return res.status(400).json({
-          error: true,
-          message: "Le numéro siret n'est pas référencé comme une entreprise.",
+      // Check if a CFA already has the company as partenaire
+      if (req.query.fromDashboardCfa) {
+        const exist = await formulaire.getFormulaire({
+          siret: req.params.siret,
+          gestionnaire: req.query.gestionnaire,
+          statut: "Actif",
         });
+
+        if (exist) {
+          return res.status(400).json({
+            error: true,
+            message: "L'entreprise est déjà référencée comme partenaire.",
+          });
+        }
+      }
+
+      // Allow cfa to add themselves as a company
+      if (!req.query.fromDashboardCfa) {
+        if (result.data?.etablissement.naf.startsWith("85")) {
+          return res.status(400).json({
+            error: true,
+            message: "Le numéro siret n'est pas référencé comme une entreprise.",
+          });
+        }
       }
 
       let opcoResult = await etablissement.getOpco(req.params.siret);
 
       let response = etablissement.formatEntrepriseData(result.data.etablissement);
+
+      console.log(result.data);
 
       response.geo_coordonnees = await etablissement.getGeoCoordinates(
         `${response.adresse}, ${response.code_postal}, ${response.commune}`
@@ -141,6 +160,29 @@ module.exports = ({ etablissement, users, mail, formulaire }) => {
 
         return res.json({ partenaire });
       }
+    })
+  );
+
+  /**
+   * Récupérer les informations d'un partenaire
+   */
+
+  router.get(
+    "/:siret",
+    tryCatch(async (req, res) => {
+      const partenaire = await users.getUser({ siret: req.params.siret });
+      res.json(partenaire);
+    })
+  );
+  /**
+   * Mise à jour d'un partenaire
+   */
+
+  router.put(
+    "/:id",
+    tryCatch(async (req, res) => {
+      let result = await users.updateUser(req.params.id, req.body);
+      return res.json(result);
     })
   );
 

@@ -1,6 +1,6 @@
-import { escapeDiacritics, getLocation, getStreet, getPostcode } from '../../common/utils/downloadUtils'
-import { CloseCircleLine, SearchLine } from '../../theme/components/icons'
 import dayjs from 'dayjs'
+import { escapeDiacritics, getLocation, getPostcode, getStreet } from '../../common/utils/downloadUtils'
+import { CloseCircleLine, SearchLine } from '../../theme/components/icons'
 
 const filters = [
   'searchFormulaire',
@@ -164,8 +164,8 @@ const facetDefinition = [
     componentId: `statutFilter`,
     dataField: 'offres.statut.keyword',
     nestedField: 'offres',
-    title: 'Statut(s) de(s) offre(s)',
-    filterLabel: 'Statut(s)',
+    title: 'Statut des offres',
+    filterLabel: 'Statut des offres',
     sortBy: 'asc',
     helpTextSection: '',
     showSearch: false,
@@ -174,8 +174,8 @@ const facetDefinition = [
   {
     componentId: `siretFilter`,
     dataField: 'siret.keyword',
-    title: 'Siret(s)',
-    filterLabel: 'Siret(s)',
+    title: 'Siret',
+    filterLabel: 'Siret',
     sortBy: 'asc',
     helpTextSection: '',
     showSearch: true,
@@ -185,8 +185,8 @@ const facetDefinition = [
     componentId: `libelleFilter`,
     dataField: 'offres.libelle.keyword',
     nestedField: 'offres',
-    title: 'Métier(s)',
-    filterLabel: 'Métier(s)',
+    title: 'Métiers',
+    filterLabel: 'Métiers',
     sortBy: 'asc',
     helpTextSection: '',
     showSearch: true,
@@ -196,8 +196,8 @@ const facetDefinition = [
     componentId: `niveauFilter`,
     dataField: 'offres.niveau.keyword',
     nestedField: 'offres',
-    title: 'Niveau(x)',
-    filterLabel: 'Niveau(x)',
+    title: 'Niveaux',
+    filterLabel: 'Niveaux',
     sortBy: 'asc',
     helpTextSection: '',
     showSearch: false,
@@ -207,8 +207,8 @@ const facetDefinition = [
     componentId: `contratFilter`,
     dataField: 'offres.type.keyword',
     nestedField: 'offres',
-    title: 'Type(s) de contrat',
-    filterLabel: 'Type(s) de contrat',
+    title: 'Types de contrat',
+    filterLabel: 'Types de contrat',
     sortBy: 'asc',
     helpTextSection: '',
     showSearch: false,
@@ -217,8 +217,8 @@ const facetDefinition = [
   {
     componentId: `origineFilter`,
     dataField: 'origine.keyword',
-    title: 'Origine(s)',
-    filterLabel: 'Origine(s)',
+    title: 'Origines',
+    filterLabel: 'Origines',
     selectAllLabel: 'Toutes',
     sortBy: 'asc',
     helpTextSection: '',

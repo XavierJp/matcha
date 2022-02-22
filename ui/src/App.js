@@ -2,6 +2,7 @@ import { AnimatePresence } from 'framer-motion'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import useAuth from './common/hooks/useAuth'
 import {
+  Account,
   Accueil,
   ConfirmationCreationCompte,
   ConfirmationValidationEmail,
@@ -19,7 +20,6 @@ import {
 } from './pages'
 import DepotRapide_AjouterVoeux from './pages/formulaire/components/DepotRapide_AjouterVoeux'
 import DepotRapide_Fin from './pages/formulaire/components/DepotRapide_Fin'
-import { WidgetFormulaire } from './widget'
 
 function PrivateRoute({ children }) {
   let [auth] = useAuth()
@@ -47,10 +47,18 @@ const App = () => {
             </PrivateRoute>
           }
         />
+        <Route
+          path='/compte'
+          element={
+            <PrivateRoute>
+              <Account />
+            </PrivateRoute>
+          }
+        />
         <Route path='/' element={<Accueil />} />
         <Route path='/authentification' element={<Connexion />} />
-        <Route path='/creation/entreprise' element={<CreationCompte type='ENTREPRISE' />} />
-        <Route path='/creation/entreprise/:origine' element={<CreationCompte type='ENTREPRISE' />} />
+        <Route path='/creation/entreprise' element={<CreationCompte type='ENTREPRISE' widget={false} />} />
+        <Route path='/creation/entreprise/:origine' element={<CreationCompte type='ENTREPRISE' widget={false} />} />
         <Route path='/creation/cfa' element={<CreationCompte type='CFA' />} />
         <Route path='/creation/detail' element={<InformationCreationCompte />} />
         <Route path='/creation/offre' element={<DepotRapide_AjouterVoeux />} />
@@ -69,8 +77,7 @@ const App = () => {
             </PrivateRoute>
           }
         />
-        <Route path='/widget/:origine/' element={<WidgetFormulaire />} />
-        <Route path='/widget/formulaire/:id_form' element={<WidgetFormulaire />} />
+        <Route path='/widget/:origine' element={<CreationCompte type='ENTREPRISE' widget={true} />} />
         <Route
           path='/formulaire/:id_form'
           element={

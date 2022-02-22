@@ -1,11 +1,17 @@
-import { Container, Flex, Image, Button, Box } from '@chakra-ui/react'
+import { Button, Container, Flex, Image } from '@chakra-ui/react'
+import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
-
 import logo from '../../../assets/images/logo.svg'
+import { WidgetContext } from '../../../contextWidget'
 import { Close } from '../../../theme/components/icons'
 
 export default (props) => {
   const navigate = useNavigate()
+  const { widget } = useContext(WidgetContext)
+
+  if (widget) {
+    return props.children
+  }
 
   return (
     <Container maxW='container.xl' p={['0', '5']} pt={[2, 5]} h='100vh'>

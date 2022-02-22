@@ -138,7 +138,7 @@ module.exports = ({ formulaire, etablissement, users }) => {
   router.get(
     "/formulaire/:formulaireId",
     tryCatch(async (req, res) => {
-      const response = await formulaire.getFormulaire(req.params.formulaireId);
+      const response = await formulaire.getFormulaire({ id_form: req.params.formulaireId });
       return res.json(response);
     })
   );
@@ -307,7 +307,7 @@ module.exports = ({ formulaire, etablissement, users }) => {
   router.post(
     "/offre/:formulaireId",
     tryCatch(async (req, res) => {
-      const exist = await formulaire.getFormulaire(req.params.formulaireId);
+      const exist = await formulaire.getFormulaire({ id_form: req.params.formulaireId });
 
       if (!exist) {
         return res.status(400).json({ status: "INVALID_RESSOURCE", message: "Form does not exist" });
@@ -367,7 +367,7 @@ module.exports = ({ formulaire, etablissement, users }) => {
   router.put(
     "/formulaire/:formulaireId",
     tryCatch(async (req, res) => {
-      const exist = await formulaire.getFormulaire(req.params.formulaireId);
+      const exist = await formulaire.getFormulaire({ id_form: req.params.formulaireId });
 
       if (!exist) {
         return res.status(400).json({ status: "INVALID_RESSOURCE", message: "Formulaire does not exist" });
@@ -425,7 +425,7 @@ module.exports = ({ formulaire, etablissement, users }) => {
   router.put(
     "/offre/:offreId",
     tryCatch(async (req, res) => {
-      const checkFormulaire = await formulaire.getFormulaire(req.params.formulaireId);
+      const checkFormulaire = await formulaire.getFormulaire({ id_form: req.params.formulaireId });
 
       if (!checkFormulaire) {
         return res.status(400).json({ status: "INVALID_RESSOURCE", message: "Form does not exist" });

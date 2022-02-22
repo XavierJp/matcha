@@ -31,7 +31,7 @@ module.exports = ({ formulaire, mail, etablissement, application, users }) => {
   router.get(
     "/:id_form",
     tryCatch(async (req, res) => {
-      let result = await formulaire.getFormulaire(req.params.id_form);
+      let result = await formulaire.getFormulaire({ id_form: req.params.id_form });
 
       if (!result) {
         return res.sendStatus(401);
@@ -111,6 +111,14 @@ module.exports = ({ formulaire, mail, etablissement, application, users }) => {
     tryCatch(async (req, res) => {
       const result = await formulaire.updateFormulaire(req.params.id_form, req.body);
       return res.json(result);
+    })
+  );
+
+  router.delete(
+    "/:id_form",
+    tryCatch(async (req, res) => {
+      await formulaire.archiveFormulaire(req.params.id_form);
+      return res.sendStatus(200);
     })
   );
 

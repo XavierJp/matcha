@@ -96,6 +96,12 @@ module.exports = {
         type: "string",
         description: "OPCO de rattachement de l'entreprise, déduit par l'application",
       },
+      statut: {
+        type: "string",
+        enum: ["Actif", "Archivé", "En attente de validation"],
+        default: "Actif",
+        description: "Statut de l'entreprise",
+      },
     },
   },
 };

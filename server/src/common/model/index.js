@@ -27,4 +27,5 @@ module.exports = {
   Credential: createModel("credentials", schema.credentialsSchema),
   Log: createModel("logs", schema.logSchema),
   Landing: createModel("landing", schema.landingSchema),
+  Offre: createModel("offre", schema.offresSchema),
 };
