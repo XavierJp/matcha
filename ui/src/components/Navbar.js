@@ -30,9 +30,11 @@ export default () => {
   const [auth, setAuth] = useAuth()
   const navigate = useNavigate()
 
+  const baseUrl = process.env.REACT_APP_BASE_URL
+
   return (
     <Box pb={3}>
-      {process.env.REACT_APP_BASE_URL.includes('recette') && (
+      {baseUrl.includes('recette') && (
         <Alert status='info' variant='top-accent' justifyContent='center'>
           <AlertIcon />
           Environnement de test
