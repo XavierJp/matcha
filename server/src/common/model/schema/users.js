@@ -72,6 +72,10 @@ module.exports = new Schema(
       default: null,
       description: "Date de dernière connexion",
     },
+    origine: {
+      type: String,
+      description: "Origine de la creation de l'utilisateur (ex: Campagne mail, lien web, etc...) pour suivi",
+    },
   },
   {
     timestamps: true,

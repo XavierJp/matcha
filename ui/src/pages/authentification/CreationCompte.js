@@ -32,7 +32,7 @@ const CreationCompte = ({ type }) => {
       getCfaInformation(siret)
         .then(({ data }) => {
           setSubmitting(false)
-          navigate('/creation/detail', { state: { informationSiret: data, type } })
+          navigate('/creation/detail', { state: { informationSiret: data, type, origine } })
         })
         .catch(({ response }) => {
           setFieldError('siret', response.data.message)
