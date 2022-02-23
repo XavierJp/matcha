@@ -183,6 +183,17 @@ const AjoutVoeux = (props) => {
               />
             </FormControl>
 
+            {(values.description || organisation?.includes('akto')) && (
+              <FormControl mt={4}>
+                <FormLabel>Description</FormLabel>
+                <Textarea rows='6' name='description' defaultValue={values.description} onChange={handleChange} />
+                <FormHelperText>
+                  Insérer ici une description de l'offre d'apprentissage, un lien vers la fiche de poste ou tout élément
+                  permettant de présenter le poste à pourvoir.
+                </FormHelperText>
+              </FormControl>
+            )}
+
             <FormControl mt={8}>
               <Box p={3} bg='beige' borderBottom='4px solid #000091'>
                 <FormLabel>
@@ -208,17 +219,6 @@ const AjoutVoeux = (props) => {
                 </Stack>
               </Box>
             </FormControl>
-
-            {(values.description || organisation?.includes('akto')) && (
-              <FormControl mt={4}>
-                <FormLabel>Description</FormLabel>
-                <Textarea rows='6' name='description' defaultValue={values.description} onChange={handleChange} />
-                <FormHelperText>
-                  Insérer ici une description de l'offre d'apprentissage, un lien vers la fiche de poste ou tout élément
-                  permettant de présenter le poste à pourvoir.
-                </FormHelperText>
-              </FormControl>
-            )}
 
             <Flex justify='flex-end' mt={5}>
               <Button

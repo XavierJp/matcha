@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import * as Yup from 'yup'
 import { getCfaInformation, getEntrepriseInformation } from '../../api'
 import AnimationContainer from '../../components/AnimationContainer'
+import { LogoContext } from '../../contextLogo'
 import { WidgetContext } from '../../contextWidget'
 import { InfoCircle, SearchLine } from '../../theme/components/icons'
 import CustomInput from '../formulaire/components/CustomInput'
@@ -122,9 +123,12 @@ const InformationSiret = ({ type }) => {
 
 export default ({ type, widget }) => {
   const { setWidget } = useContext(WidgetContext)
+  const { setOrganisation } = useContext(LogoContext)
+  const params = useParams()
 
   if (widget) {
     setWidget(true)
+    setOrganisation(params.origine ?? '')
   }
 
   return (
