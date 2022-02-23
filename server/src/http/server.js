@@ -21,6 +21,7 @@ const formulaire = require("./routes/formulaire");
 const etablissement = require("./routes/etablissement");
 const externalAPI = require("./routes/api");
 const landing = require("./routes/landing");
+const rome = require("./routes/rome");
 
 const swaggerOptions = {
   definition: {
@@ -76,6 +77,7 @@ module.exports = async (components) => {
   app.use(logMiddleware());
 
   app.use("/api/v1/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpecification, swaggerUIOptions));
+  app.use("/api/v1", apiMiddleware, externalAPI(components));
 
   app.use("/api/user", user(components));
   app.use("/api/login", login(components));
@@ -84,7 +86,7 @@ module.exports = async (components) => {
   app.use("/api/etablissement", etablissement(components));
   app.use("/api/es/search", esSearch());
   app.use("/api/landing", landing());
-  app.use("/api/v1", apiMiddleware, externalAPI(components));
+  app.use("/api/rome", rome());
 
   app.get(
     "/api",

@@ -39,6 +39,10 @@
     "application": "matcha",
     "apiKey": "1234"
   },
+  "pe": {
+    "client_id": "",
+    "client_secret": ""
+  },
   "slackWebhookUrl": null,
   "outputDir": ".local/output"
 }

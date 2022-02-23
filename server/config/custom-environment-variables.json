@@ -31,6 +31,10 @@
     "application": "MATCHA_LBA_APPLICATION_NAME",
     "apiKey": "MATCHA_LBA_ACCESS_KEY"
   },
+  "pe": {
+    "client_id": "MATCHA_PE_CLIENT_ID",
+    "client_secret": "MATCHA_PE_SECRET_ID"
+  },
   "log": {
     "type": "MATCHA_LOG_TYPE",
     "level": "MATCHA_LOG_LEVEL"
