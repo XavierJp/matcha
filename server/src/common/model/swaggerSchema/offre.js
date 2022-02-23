@@ -54,7 +54,10 @@ module.exports = {
           description: "Statut de l'offre",
         },
         type: {
-          type: "string",
+          type: "array",
+          items: {
+            type: "string",
+          },
           default: "Apprentissage",
           enum: ["Apprentissage", "Professionnalisation"],
           description: "Type de contrat",
