@@ -32,6 +32,10 @@ module.exports = {
           description: "Liste des romes lié au métier",
           required: true,
         },
+        rome_detail: {
+          type: "object",
+          description: "Détail du code ROME selon la nomenclature Pole Emploi",
+        },
         date_creation: {
           type: "string",
           default: "system",

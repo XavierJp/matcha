@@ -30,9 +30,9 @@ import useAuth from '../../common/hooks/useAuth'
 import { AnimationContainer, Layout } from '../../components'
 import { LogoContext } from '../../contextLogo'
 import { ArrowDropRightLine, ArrowRightLine, InfoCircle, SearchLine } from '../../theme/components/icons'
-import AjouterVoeux from './components/AjouterVoeux'
 import ConfirmationSuppression from './components/ConfirmationSuppression'
 import CustomInput from './components/CustomInput'
+import Dashboard_AjouterVoeux from './components/Dashboard_AjouterVoeux'
 import FormulaireLectureSeul from './components/FormulaireLectureSeul'
 import ListeVoeux from './components/ListeVoeux'
 
@@ -325,7 +325,7 @@ export default (props) => {
     <>
       <AnimationContainer>
         <Layout background='beige' widget={props?.widget ?? false}>
-          <AjouterVoeux {...ajouterVoeuxPopup} {...currentOffer} handleSave={saveOffer} />
+          <Dashboard_AjouterVoeux {...ajouterVoeuxPopup} {...currentOffer} handleSave={saveOffer} />
           <ConfirmationSuppression
             {...confirmationSuppression}
             currentOffer={currentOffer}

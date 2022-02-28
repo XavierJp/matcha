@@ -22,6 +22,10 @@ module.exports = new Schema({
     default: [],
     description: "Liste des romes lié au métier",
   },
+  rome_detail: {
+    type: Object,
+    description: "Détail du code ROME selon la nomenclature Pole Emploi",
+  },
   date_creation: {
     type: Date,
     default: null,
