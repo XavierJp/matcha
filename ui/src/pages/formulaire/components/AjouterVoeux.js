@@ -1,7 +1,6 @@
 import {
   Accordion,
   AccordionButton,
-  AccordionIcon,
   AccordionItem,
   AccordionPanel,
   Box,
@@ -33,7 +32,15 @@ import * as Yup from 'yup'
 import { getRomeDetail, postOffre } from '../../../api'
 import { AnimationContainer, DropdownCombobox } from '../../../components'
 import { LogoContext } from '../../../contextLogo'
-import { ArrowRightLine, ExternalLinkLine, InfoCircle, ThumbDown, ThumbUp } from '../../../theme/components/icons'
+import {
+  ArrowRightLine,
+  ExternalLinkLine,
+  InfoCircle,
+  Minus,
+  Plus,
+  ThumbDown,
+  ThumbUp,
+} from '../../../theme/components/icons'
 import { J1S, Lba, Parcoursup } from '../../../theme/components/logos'
 import AuthentificationLayout from '../../authentification/components/Authentification-layout'
 import './voeux.css'
@@ -282,45 +289,53 @@ const Information = (props) => {
               Voici la description visible par les candidats lors de la mise en ligne de l’offre d’emploi en alternance.
             </Text>
           </Flex>
-          <Accordion defaultIndex={[0]} reduceMotion>
+          <Accordion defaultIndex={[0]}>
             <AccordionItem>
-              <h2>
-                <AccordionButton>
-                  <Text fontWeight='700' flex='1' textAlign='left'>
-                    Description du métier
-                  </Text>
-                  <AccordionIcon />
-                </AccordionButton>
-              </h2>
-              <AccordionPanel pb={4}>
-                <List>
-                  <ul>
-                    {definitionSplitted.map((x) => {
-                      return <li>{x}</li>
-                    })}
-                  </ul>
-                </List>
-              </AccordionPanel>
+              {({ isExpanded }) => (
+                <>
+                  <h2>
+                    <AccordionButton>
+                      <Text fontWeight='700' flex='1' textAlign='left'>
+                        Description du métier
+                      </Text>
+                      {isExpanded ? <Minus color='bluefrance.500' /> : <Plus color='bluefrance.500' />}
+                    </AccordionButton>
+                  </h2>
+                  <AccordionPanel pb={4}>
+                    <List>
+                      <ul>
+                        {definitionSplitted.map((x) => {
+                          return <li>{x}</li>
+                        })}
+                      </ul>
+                    </List>
+                  </AccordionPanel>
+                </>
+              )}
             </AccordionItem>
             <hr />
             <AccordionItem>
-              <h2>
-                <AccordionButton>
-                  <Text fontWeight='700' flex='1' textAlign='left'>
-                    Quelles sont les compétences attendues ?
-                  </Text>
-                  <AccordionIcon />
-                </AccordionButton>
-              </h2>
-              <AccordionPanel pb={4}>
-                <List>
-                  <ul>
-                    {competencesDeBase.map((x) => (
-                      <li>{x.libelle}</li>
-                    ))}
-                  </ul>
-                </List>
-              </AccordionPanel>
+              {({ isExpanded }) => (
+                <>
+                  <h2>
+                    <AccordionButton>
+                      <Text fontWeight='700' flex='1' textAlign='left'>
+                        Quelles sont les compétences attendues ?
+                      </Text>
+                      {isExpanded ? <Minus color='bluefrance.500' /> : <Plus color='bluefrance.500' />}
+                    </AccordionButton>
+                  </h2>
+                  <AccordionPanel pb={4}>
+                    <List>
+                      <ul>
+                        {competencesDeBase.map((x) => (
+                          <li>{x.libelle}</li>
+                        ))}
+                      </ul>
+                    </List>
+                  </AccordionPanel>
+                </>
+              )}
             </AccordionItem>
           </Accordion>
         </Box>
