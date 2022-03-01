@@ -60,6 +60,7 @@ const App = () => {
         <Route path='/creation/entreprise' element={<CreationCompte type='ENTREPRISE' widget={false} />} />
         <Route path='/creation/entreprise/:origine' element={<CreationCompte type='ENTREPRISE' widget={false} />} />
         <Route path='/creation/cfa' element={<CreationCompte type='CFA' />} />
+        <Route path='/creation/cfa/:origine' element={<CreationCompte type='CFA' />} />
         <Route path='/creation/detail' element={<InformationCreationCompte />} />
         <Route path='/creation/offre' element={<DepotRapide_AjouterVoeux />} />
         <Route path='/creation/fin' element={<DepotRapide_Fin />} />
