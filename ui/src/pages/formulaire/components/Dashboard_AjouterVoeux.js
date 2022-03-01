@@ -18,7 +18,7 @@ export default (props) => {
       size='full'
     >
       <ModalContent>
-        <DepotRapide {...props} fromDashboard={true} />
+        <DepotRapide {...props} fromDashboard={true} onClose={onClose} />
       </ModalContent>
     </Modal>
   )

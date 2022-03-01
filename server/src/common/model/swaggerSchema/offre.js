@@ -22,7 +22,6 @@ module.exports = {
         description: {
           type: "string",
           description: "Description de l'offre d'apprentissage",
-          required: true,
         },
         romes: {
           type: "array",

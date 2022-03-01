@@ -1,10 +1,10 @@
+import { Box, Input } from '@chakra-ui/react'
 import { useCombobox } from 'downshift'
-import { Input, Box } from '@chakra-ui/react'
 
 export default (props) => {
   let { saveSelectedItem, setInputItems, handleSearch, value, placeholder, inputItems, name } = props
 
-  const itemToString = (item) => (item ? item.label : '')
+  const itemToString = (item) => (item ? item.intitule : '')
   const onInputValueChange = async ({ inputValue }) => setInputItems(await handleSearch(inputValue))
   const onSelectedItemChange = ({ selectedItem }) => saveSelectedItem(selectedItem, reset)
 
@@ -47,7 +47,7 @@ export default (props) => {
               key={`${item}${index}`}
               {...getItemProps({ item, index })}
             >
-              {item.label}
+              {item.intitule}
             </li>
           ))}
       </Box>

@@ -14,7 +14,6 @@ module.exports = new Schema({
   },
   description: {
     type: String,
-    default: null,
     description: "Description de l'offre d'apprentissage",
   },
   romes: {
