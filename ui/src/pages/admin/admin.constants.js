@@ -87,7 +87,7 @@ const exportableColumns = [
       return values.map((x, i) => {
         return {
           Statut: escapeDiacritics(x.statut),
-          Type: escapeDiacritics(x.type),
+          Type: x.type.length > 0 ? x.type.join('/') : x.type[0],
           Metier: escapeDiacritics(x.libelle),
           Niveau: escapeDiacritics(x.niveau),
           Prolongation: x.nombre_prolongation ?? 0,
@@ -99,7 +99,7 @@ const exportableColumns = [
             ? dayjs(x.date_debut_apprentissage).format('YYYY-MM-DD')
             : 'NA',
           Date_expiration: dayjs(x.date_expiration).format('YYYY-MM-DD'),
-          Description: escapeDiacritics(x.description),
+          Description: escapeDiacritics(x.description ?? ''),
         }
       })
     },
