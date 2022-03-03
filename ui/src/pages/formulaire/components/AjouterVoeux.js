@@ -17,7 +17,6 @@ import {
   Heading,
   Input,
   Link,
-  List,
   Select,
   Spinner,
   Stack,
@@ -289,8 +288,9 @@ const Information = (props) => {
               Voici la description visible par les candidats lors de la mise en ligne de l’offre d’emploi en alternance.
             </Text>
           </Flex>
+
           <Accordion defaultIndex={[0]}>
-            <AccordionItem>
+            <AccordionItem key={0}>
               {({ isExpanded }) => (
                 <>
                   <h2>
@@ -301,20 +301,18 @@ const Information = (props) => {
                       {isExpanded ? <Minus color='bluefrance.500' /> : <Plus color='bluefrance.500' />}
                     </AccordionButton>
                   </h2>
-                  <AccordionPanel pb={4}>
-                    <List>
-                      <ul>
-                        {definitionSplitted.map((x) => {
-                          return <li>{x}</li>
-                        })}
-                      </ul>
-                    </List>
+                  <AccordionPanel pb={4} ml={6} mr={3}>
+                    <ul>
+                      {definitionSplitted.map((x, index) => {
+                        return <li key={index}>{x}</li>
+                      })}
+                    </ul>
                   </AccordionPanel>
                 </>
               )}
             </AccordionItem>
             <hr />
-            <AccordionItem>
+            <AccordionItem key={1}>
               {({ isExpanded }) => (
                 <>
                   <h2>
@@ -325,14 +323,12 @@ const Information = (props) => {
                       {isExpanded ? <Minus color='bluefrance.500' /> : <Plus color='bluefrance.500' />}
                     </AccordionButton>
                   </h2>
-                  <AccordionPanel pb={4}>
-                    <List>
-                      <ul>
-                        {competencesDeBase.map((x) => (
-                          <li>{x.libelle}</li>
-                        ))}
-                      </ul>
-                    </List>
+                  <AccordionPanel pb={4} ml={6} mr={3}>
+                    <ul>
+                      {competencesDeBase.map((x) => (
+                        <li key={x.codeRome}>{x.libelle}</li>
+                      ))}
+                    </ul>
                   </AccordionPanel>
                 </>
               )}
@@ -388,7 +384,7 @@ export default (props) => {
   return (
     <AnimationContainer>
       <AuthentificationLayout fromDashboard={props.fromDashboard} onClose={props.onClose}>
-        <Grid templateRows={['1fr', '.5fr 2fr']} templateColumns={['1fr', '4fr 5fr']} gap={4}>
+        <Grid templateRows={['1fr', '.5fr auto']} templateColumns={['1fr', '4fr 5fr']} gap={4}>
           <GridItem px={[4, 8]} pt={[6, 12]}>
             <Heading fontSize='32px'>Votre besoin de recrutement</Heading>
             <Text fontSize='20px' pt='32px'>
