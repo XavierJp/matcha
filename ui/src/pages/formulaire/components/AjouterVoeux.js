@@ -278,7 +278,7 @@ const Information = (props) => {
 
     return (
       <>
-        <Box border='1px solid #000091' p={5}>
+        <Box border='1px solid #000091' p={5} mb={5}>
           <Heading fontSize='24px' mb={3}>
             {props.libelle}
           </Heading>
@@ -323,7 +323,7 @@ const Information = (props) => {
                       {isExpanded ? <Minus color='bluefrance.500' /> : <Plus color='bluefrance.500' />}
                     </AccordionButton>
                   </h2>
-                  <AccordionPanel pb={4} ml={6} mr={3}>
+                  <AccordionPanel maxH='50%' pb={4} ml={6} mr={3}>
                     <ul>
                       {competencesDeBase.map((x) => (
                         <li key={x.codeRome}>{x.libelle}</li>
