@@ -33,6 +33,7 @@ export default (props) => {
           background: '#fff',
           overflow: 'auto',
           boxShadow: '0px 1px 8px rgba(8, 67, 85, 0.24)',
+          maxH: '50vh',
         }}
         {...getMenuProps()}
       >
