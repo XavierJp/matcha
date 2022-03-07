@@ -318,7 +318,7 @@ const Information = (props) => {
                   <h2>
                     <AccordionButton>
                       <Text fontWeight='700' flex='1' textAlign='left'>
-                        Quelles sont les compétences attendues ?
+                        Quelles sont les compétences visées ?
                       </Text>
                       {isExpanded ? <Minus color='bluefrance.500' /> : <Plus color='bluefrance.500' />}
                     </AccordionButton>
