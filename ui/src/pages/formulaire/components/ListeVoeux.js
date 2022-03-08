@@ -48,11 +48,11 @@ const Card = ({ offre, ...props }) => {
                 {offre.candidatures} {offre.candidatures > 1 ? 'candidatures' : 'candidature'}
               </Badge>
             )}
-            <Flex align='center' direction={['column', 'row']}>
-              <Heading textStyle='h3' size='md' pr={3}>
-                <Text isTruncated>{offre.libelle}</Text>
+            <Flex align={['flex-start', 'center']} direction={['column', 'row']}>
+              <Heading textStyle='h3' size='md' pr={3} isTruncated maxWidth='100%'>
+                {offre.libelle}
               </Heading>
-              <Flex align='center' ml={10}>
+              <Flex align='center' ml={[0, 10]} pt={[3, 0]}>
                 <Edit2Fill mr={3} color='bluefrance.500' />
                 <Link fontSize='16px' onClick={() => props.editOffer(offre)} color='bluefrance.500'>
                   Modifier l'offre
@@ -60,40 +60,42 @@ const Card = ({ offre, ...props }) => {
               </Flex>
               <Spacer />
 
-              <Menu>
-                {({ isOpen }) => (
-                  <>
-                    <MenuButton isActive={isOpen} as={Button} variant='navdot'>
-                      <Icon as={NavVerticalDots} w='16px' h='16px' />
-                    </MenuButton>
-                    <MenuList>
-                      {auth.type !== 'CFA' && (
-                        <>
-                          <MenuItem>
-                            <Link
-                              isExternal
-                              href={`https://labonnealternance.apprentissage.beta.gouv.fr/recherche-apprentissage-formation?&caller=matcha&romes=${offre.romes}&lon=${lon}&lat=${lat}`}
-                            >
-                              Voir les centres de formations
-                            </Link>
-                          </MenuItem>
-                        </>
-                      )}
-                      <MenuItem>
-                        <Link
-                          isExternal
-                          href={`https://labonnealternance${
-                            window.location.href.includes('recette') ? '-recette' : ''
-                          }.apprentissage.beta.gouv.fr/recherche-apprentissage?&type=matcha&itemId=${offre._id}`}
-                        >
-                          Voir l'offre en ligne
-                          <ExternalLinkLine ml={1} color='bluefrance.500' />
-                        </Link>
-                      </MenuItem>
-                    </MenuList>
-                  </>
-                )}
-              </Menu>
+              <Box display={['none', 'block']}>
+                <Menu>
+                  {({ isOpen }) => (
+                    <>
+                      <MenuButton isActive={isOpen} as={Button} variant='navdot'>
+                        <Icon as={NavVerticalDots} w='16px' h='16px' />
+                      </MenuButton>
+                      <MenuList>
+                        {auth.type !== 'CFA' && (
+                          <>
+                            <MenuItem>
+                              <Link
+                                isExternal
+                                href={`https://labonnealternance.apprentissage.beta.gouv.fr/recherche-apprentissage-formation?&caller=matcha&romes=${offre.romes}&lon=${lon}&lat=${lat}`}
+                              >
+                                Voir les centres de formations
+                              </Link>
+                            </MenuItem>
+                          </>
+                        )}
+                        <MenuItem>
+                          <Link
+                            isExternal
+                            href={`https://labonnealternance${
+                              window.location.href.includes('recette') ? '-recette' : ''
+                            }.apprentissage.beta.gouv.fr/recherche-apprentissage?&type=matcha&itemId=${offre._id}`}
+                          >
+                            Voir l'offre en ligne
+                            <ExternalLinkLine ml={1} color='bluefrance.500' />
+                          </Link>
+                        </MenuItem>
+                      </MenuList>
+                    </>
+                  )}
+                </Menu>
+              </Box>
             </Flex>
             <Stack direction={['column', 'row']} spacing={3} py={5}>
               <Flex align='center'>

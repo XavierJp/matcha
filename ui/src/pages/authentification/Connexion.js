@@ -1,13 +1,10 @@
-import { Flex, Button, Heading, Text, Box, Stack, useBreakpointValue, useToast } from '@chakra-ui/react'
-
-import { Formik, Form } from 'formik'
+import { Box, Button, Center, Flex, Heading, Stack, Text, useBreakpointValue, useToast } from '@chakra-ui/react'
+import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
-
-import { ArrowRightLine } from '../../theme/components/icons'
-import CustomInput from '../formulaire/components/CustomInput'
-
 import { sendMagiclink } from '../../api'
 import AnimationContainer from '../../components/AnimationContainer'
+import { ArrowRightLine } from '../../theme/components/icons'
+import CustomInput from '../formulaire/components/CustomInput'
 import AuthentificationLayout from './components/Authentification-layout'
 
 const ConnexionCompte = () => {
@@ -89,9 +86,11 @@ export default () => {
     <AnimationContainer>
       <AuthentificationLayout>
         <Flex align='center' justify='center' flex='1'>
-          <Box bg='grey.150' maxW='50%'>
-            <ConnexionCompte />
-          </Box>
+          <Center h='100vh'>
+            <Box bg='grey.150' maxW='50%'>
+              <ConnexionCompte />
+            </Box>
+          </Center>
         </Flex>
       </AuthentificationLayout>
     </AnimationContainer>

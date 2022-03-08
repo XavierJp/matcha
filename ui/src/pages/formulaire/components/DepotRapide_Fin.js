@@ -29,10 +29,10 @@ export default (props) => {
 
   return (
     <AuthentificationLayout>
-      <Flex border='1px solid #000091' m={[4, 8]} p={[4, 8]}>
+      <Flex direction={['column', 'row']} border='1px solid #000091' m={[4, 8]} p={[4, 8]}>
         <MailCloud />
         <Spacer />
-        <Box>
+        <Box pt={[3, 0]}>
           <Heading fontSize='24px' mb='16px'>
             Félicitations, votre offre a bien été créée!
           </Heading>

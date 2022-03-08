@@ -49,6 +49,7 @@ module.exports = ({ etablissement, users, mail, formulaire }) => {
           return res.status(400).json({
             error: true,
             message: "Le numéro siret n'est pas référencé comme une entreprise.",
+            isCfa: true,
           });
         }
       }
@@ -104,11 +105,11 @@ module.exports = ({ etablissement, users, mail, formulaire }) => {
 
       // return res.json({ referentiel: referentiel?.data, catalogue: catalogue?.data?.etablissements[0] });
 
-      if (!referentiel) {
-        return res.json({ ...etablissement.formatCatalogueData(catalogue.data.etablissements[0]) });
+      if (!catalogue) {
+        return res.json({ ...etablissement.formatReferentielData(referentiel.data) });
       }
 
-      return res.json({ ...etablissement.formatReferentielData(referentiel.data) });
+      return res.json({ ...etablissement.formatCatalogueData(catalogue.data.etablissements[0]) });
     })
   );
 

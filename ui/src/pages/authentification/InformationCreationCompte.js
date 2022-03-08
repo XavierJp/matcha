@@ -275,7 +275,7 @@ const InformationLegale = () => {
             <InfoTooltip description='La donnée "Opco" provient de CFADOCK puis est déduite du SIRET. Si cette information est erronée, merci de leur signaler.' />
           </Flex>
         )}
-        {uai && (
+        {uai && uai.length > 0 && (
           <Flex align='flex-start'>
             <Text width='45px' mr={3}>
               UAI :

@@ -89,7 +89,7 @@ module.exports = () => {
     formatCatalogueData: (d) => ({
       etat: d.ferme === false ? etat_etablissements.FERME : etat_etablissements.ACTIF,
       siret: d.siret,
-      uai: d.uai,
+      uai: [d.uai],
       raison_sociale: d.entreprise_raison_sociale,
       contacts: [], // les tco n'ont pas d'information de contact, mais conserve un standard pour l'ui,
       commune: d.localite,

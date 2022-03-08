@@ -22,7 +22,6 @@ module.exports = {
         description: {
           type: "string",
           description: "Description de l'offre d'apprentissage",
-          required: true,
         },
         romes: {
           type: "array",
@@ -31,6 +30,10 @@ module.exports = {
           },
           description: "Liste des romes lié au métier",
           required: true,
+        },
+        rome_detail: {
+          type: "object",
+          description: "Détail du code ROME selon la nomenclature Pole Emploi",
         },
         date_creation: {
           type: "string",
