@@ -103,12 +103,17 @@ module.exports = ({ etablissement, users, mail, formulaire }) => {
           .json({ error: true, message: "Le numéro siret n'est pas référencé comme centre de formation." });
       }
 
-      // return res.json({ referentiel: referentiel?.data, catalogue: catalogue?.data?.etablissements[0] });
+      // return res.json({
+      //   referentiel: referentiel?.data,
+      //   catalogue: catalogue?.data?.etablissements[0],
+      // });
 
-      if (!catalogue) {
+      if (catalogue?.data?.etablissements.length === 0) {
+        console.log("coucou ref");
         return res.json({ ...etablissement.formatReferentielData(referentiel.data) });
       }
 
+      console.log("coucou cat");
       return res.json({ ...etablissement.formatCatalogueData(catalogue.data.etablissements[0]) });
     })
   );
