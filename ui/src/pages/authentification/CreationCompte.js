@@ -1,6 +1,18 @@
-import { Box, Button, Flex, Grid, GridItem, Heading, Link, Text, useBreakpointValue } from '@chakra-ui/react'
+import {
+  Alert,
+  AlertIcon,
+  Box,
+  Button,
+  Flex,
+  Grid,
+  GridItem,
+  Heading,
+  Link,
+  Text,
+  useBreakpointValue,
+} from '@chakra-ui/react'
 import { Form, Formik } from 'formik'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import * as Yup from 'yup'
 import { getCfaInformation, getEntrepriseInformation } from '../../api'
@@ -12,6 +24,7 @@ import CustomInput from '../formulaire/components/CustomInput'
 import AuthentificationLayout from './components/Authentification-layout'
 
 const CreationCompte = ({ type }) => {
+  const [isCfa, setIsCfa] = useState(false)
   const buttonSize = useBreakpointValue(['sm', 'md'])
   const navigate = useNavigate()
   const { origine } = useParams()
@@ -26,6 +39,7 @@ const CreationCompte = ({ type }) => {
         })
         .catch(({ response }) => {
           setFieldError('siret', response.data.message)
+          setIsCfa(response.data?.isCfa)
           setSubmitting(false)
         })
     } else {
@@ -54,7 +68,7 @@ const CreationCompte = ({ type }) => {
       })}
       onSubmit={submitSiret}
     >
-      {({ values, isValid, isSubmitting }) => {
+      {({ values, isValid, isSubmitting, setFieldValue, submitForm }) => {
         return (
           <>
             <Form>
@@ -66,6 +80,27 @@ const CreationCompte = ({ type }) => {
                 value={values.siret}
                 maxLength='14'
               />
+              {isCfa && (
+                <Alert status='info' variant='top-accent'>
+                  <AlertIcon />
+                  {/* <Flex> */}
+                  <Text>
+                    Pour les organismes de formation,{' '}
+                    <Link
+                      variant='classic'
+                      onClick={() => {
+                        setIsCfa(false)
+                        setFieldValue('siret', values.siret)
+                        navigate('/creation/cfa')
+                        submitForm()
+                      }}
+                    >
+                      veuillez utiliser ce lien
+                    </Link>
+                  </Text>
+                  {/* </Flex> */}
+                </Alert>
+              )}
               <Flex justify='flex-end' mt={5}>
                 <Button
                   type='submit'

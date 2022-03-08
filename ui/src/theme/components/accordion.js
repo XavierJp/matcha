@@ -1,7 +1,7 @@
 const Accordion = {
   parts: ['container', 'button', 'panel', 'icon'],
   baseStyle: {
-    container: { mb: 2, fontFamily: 'Marianne' },
+    container: { mb: 2, mt: 2, fontFamily: 'Marianne', borderTop: 'none' },
     panel: {
       fontFamily: 'Marianne',
     },
