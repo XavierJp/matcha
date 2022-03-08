@@ -14,7 +14,7 @@ export default (props) => {
   }
 
   return (
-    <Container maxW='container.xl' p={props.fromDashboard ? '0' : ['0', '5']} pt={props.fromDashboard ? '0' : [2, 5]}>
+    <Container maxW='container.xl' p={['0', '5']} pt={[2, 5]}>
       <Flex direction='column' mb={['4', '0']}>
         <Flex justifyContent='space-between' alignItems='center' px={['2', '8']} pb={['4', '0']}>
           <Image display='flex' src={logo} alt='logo matcha' mr={5} />
